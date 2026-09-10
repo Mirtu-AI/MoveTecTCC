@@ -1,0 +1,34 @@
+.nav-professor {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #ffffff;
+  border-top: 1px solid #eaeaea;
+  padding: 10px 0;
+  z-index: 10;
+}
+
+.nav-professor-item {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 24px;
+  border-radius: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.nav-professor-item:hover {
+  background-color: #f0f0f0;
+}
+
+.nav-professor-item.ativo {
+  background-color: #ece9ff;
+}
+
+.nav-professor-icone {
+  font-size: 1.3rem;
+}

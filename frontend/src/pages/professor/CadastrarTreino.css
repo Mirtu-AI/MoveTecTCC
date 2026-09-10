@@ -1,0 +1,314 @@
+/* ==========================================================================
+   CADASTRO DE TREINO - IDENTIDADE MOVETEC
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --laranja-move: #ff5722;
+  --laranja-hover: #e04818;
+  --laranja-suave: #fff3f0;
+  --cinza-fundo: #f8f9fa;
+  --cinza-borda: #eaeaea;
+  --texto-principal: #1a1a1a;
+  --texto-secundario: #666666;
+  --vermelho-erro: #ef4444;
+}
+
+.cadastrar-treino-page {
+  min-height: 100vh;
+  background-color: var(--cinza-fundo);
+  /* Textura Quadriculada MoveTec */
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.cadastrar-treino-mensagem {
+  text-align: center;
+  color: var(--texto-secundario);
+  margin-top: 60px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* HEADER */
+.cadastrar-treino-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 24px;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--cinza-borda);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.cadastrar-treino-voltar {
+  background: none;
+  border: 1px solid var(--cinza-borda);
+  color: var(--texto-principal);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+}
+
+.cadastrar-treino-voltar:hover {
+  background-color: var(--laranja-suave);
+  border-color: var(--laranja-move);
+  color: var(--laranja-move);
+}
+
+.cadastrar-treino-header h1 {
+  font-size: 1.2rem;
+  margin: 0;
+  color: var(--texto-principal);
+  font-weight: 700;
+}
+
+/* CONTEÚDO E FORMULÁRIO */
+.cadastrar-treino-conteudo {
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+.cadastrar-treino-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.cadastrar-treino-form label {
+  font-size: 0.82rem;
+  color: var(--texto-secundario);
+  margin-bottom: 6px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Estilização unificada dos campos de texto e do SELECT de Tipo de Treino */
+.cadastrar-treino-form input,
+.cadastrar-treino-form textarea,
+.cadastrar-treino-form > select,
+.cadastrar-treino-seletor select {
+  font-family: inherit;
+  padding: 12px 16px;
+  border: 1px solid var(--cinza-borda);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  color: var(--texto-principal);
+  background-color: #ffffff;
+  outline: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.cadastrar-treino-form input,
+.cadastrar-treino-form textarea,
+.cadastrar-treino-form > select {
+  margin-bottom: 20px;
+}
+
+.cadastrar-treino-form textarea {
+  resize: vertical;
+}
+
+.cadastrar-treino-form input:focus,
+.cadastrar-treino-form textarea:focus,
+.cadastrar-treino-form > select:focus,
+.cadastrar-treino-seletor select:focus {
+  border-color: var(--laranja-move);
+  box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.15);
+}
+
+/* SEÇÃO DE SELEÇÃO DE EXERCÍCIOS */
+.cadastrar-treino-exercicios-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.cadastrar-treino-exercicios-topo span {
+  font-size: 0.82rem;
+  color: var(--texto-secundario);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.cadastrar-treino-catalogo-link {
+  background: none;
+  border: none;
+  color: var(--laranja-move);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.cadastrar-treino-catalogo-link:hover {
+  color: var(--laranja-hover);
+}
+
+.cadastrar-treino-seletor {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.cadastrar-treino-seletor select {
+  flex: 1;
+}
+
+.cadastrar-treino-add-btn {
+  background-color: var(--laranja-move);
+  color: #ffffff;
+  border: none;
+  padding: 0 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 87, 34, 0.2);
+  transition: all 0.2s ease;
+}
+
+.cadastrar-treino-add-btn:hover:not(:disabled) {
+  background-color: var(--laranja-hover);
+  transform: translateY(-1px);
+}
+
+.cadastrar-treino-add-btn:disabled {
+  background-color: var(--cinza-borda);
+  color: var(--texto-secundario);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.cadastrar-treino-aviso-catalogo {
+  font-size: 0.85rem;
+  color: #c2410c;
+  background-color: var(--laranja-suave);
+  border: 1px solid rgba(255, 87, 34, 0.2);
+  padding: 12px 14px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+/* LISTA DE EXERCÍCIOS ADICIONADOS */
+.cadastrar-treino-exercicios-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.cadastrar-treino-exercicio-card {
+  background-color: #ffffff;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid var(--cinza-borda);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.cadastrar-treino-exercicio-nome-selo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--texto-principal);
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+}
+
+.cadastrar-treino-exercicio-nome-selo span {
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.cadastrar-treino-exercicio-campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.cadastrar-treino-exercicio-campos input {
+  margin-bottom: 0;
+  padding: 10px 12px;
+  font-size: 0.88rem;
+}
+
+.cadastrar-treino-remover-btn {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: var(--texto-secundario);
+  transition: all 0.2s ease;
+}
+
+.cadastrar-treino-remover-btn:hover {
+  background-color: #fee2e2;
+  color: var(--vermelho-erro);
+}
+
+/* MENSAGEM DE ERRO E BOTÃO SALVAR */
+.cadastrar-treino-erro {
+  color: var(--vermelho-erro);
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin: -10px 0 16px;
+}
+
+.cadastrar-treino-salvar-btn {
+  width: 100%;
+  padding: 14px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  background-color: var(--laranja-move);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(255, 87, 34, 0.25);
+  transition: all 0.2s ease;
+}
+
+.cadastrar-treino-salvar-btn:hover:not(:disabled) {
+  background-color: var(--laranja-hover);
+  transform: translateY(-1px);
+}
+
+.cadastrar-treino-salvar-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .cadastrar-treino-header {
+    padding: 14px 16px;
+  }
+
+  .cadastrar-treino-conteudo {
+    padding: 16px 12px 32px;
+  }
+
+  .cadastrar-treino-exercicio-campos {
+    grid-template-columns: 1fr 1fr auto;
+  }
+}

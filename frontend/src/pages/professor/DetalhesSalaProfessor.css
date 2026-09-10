@@ -1,0 +1,137 @@
+/* ==========================================================================
+   DETALHES DA SALA DO PROFESSOR - IDENTIDADE MOVETEC
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+.sala-professor-detalhes-page {
+  min-height: 100vh;
+  background-color: var(--papel-branco);
+  /* Textura sutil estilo caderno de exercícios */
+  background-image: 
+    linear-gradient(var(--papel-linha) 1px, transparent 1px),
+    linear-gradient(90deg, var(--papel-linha) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+  padding-bottom: 72px; /* espaço pra barra de navegação fixa */
+}
+
+/* HEADER */
+.sala-professor-detalhes-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 24px;
+  background-color: var(--branco);
+  border-bottom: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+.sala-professor-detalhes-voltar {
+  background: none;
+  border: 2px solid var(--papel-linha);
+  color: var(--azul-marinho);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+}
+
+.sala-professor-detalhes-voltar:hover {
+  background-color: var(--laranja-move);
+  border-color: var(--laranja-move);
+  color: var(--branco);
+}
+
+.sala-professor-detalhes-header h1 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--azul-marinho);
+  letter-spacing: 0.3px;
+}
+
+/* CONTEÚDO */
+.sala-professor-detalhes-conteudo {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.sala-professor-detalhes-subtitulo {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--cinza-texto);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0 0 16px 4px;
+}
+
+.sala-professor-mensagem {
+  text-align: center;
+  color: var(--cinza-texto);
+  margin-top: 60px;
+  font-size: 0.95rem;
+}
+
+/* LISTA DE ALUNOS */
+.sala-professor-alunos-lista {
+  background-color: var(--branco);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.sala-professor-aluno-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--papel-linha);
+  transition: background-color 0.2s ease;
+}
+
+.sala-professor-aluno-card:last-child {
+  border-bottom: none;
+}
+
+.sala-professor-aluno-card:hover {
+  background-color: var(--papel-branco);
+}
+
+.sala-professor-aluno-icone {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: rgba(242, 101, 34, 0.1);
+  color: var(--laranja-move);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(242, 101, 34, 0.15);
+}
+
+.sala-professor-aluno-nome {
+  font-weight: 700;
+  color: var(--azul-marinho);
+  font-size: 0.95rem;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .sala-professor-detalhes-header {
+    padding: 14px 16px;
+  }
+
+  .sala-professor-detalhes-conteudo {
+    padding: 16px;
+  }
+}

@@ -1,0 +1,209 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --laranja-move: #ff5722;
+  --laranja-hover: #e04818;
+  --laranja-suave: #fff3f0;
+  --cinza-fundo: #f8f9fa;
+  --cinza-borda: #eaeaea;
+  --texto-principal: #1a1a1a;
+  --texto-secundario: #666666;
+  --sucesso-verde: #22c55e;
+  --sucesso-hover: #16a34a;
+}
+
+.executar-atividade-page {
+  min-height: 100vh;
+  background-color: var(--cinza-fundo);
+  /* Fundo Quadriculado MoveTec */
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.executar-atividade-mensagem {
+  text-align: center;
+  color: var(--texto-secundario);
+  margin-top: 60px;
+  font-weight: 500;
+}
+
+/* HEADER SUPERIOR */
+.executar-atividade-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 24px;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--cinza-borda);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.executar-atividade-voltar-topo {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: var(--texto-principal);
+  padding: 6px 10px;
+  border-radius: 10px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.executar-atividade-voltar-topo:hover {
+  background-color: var(--laranja-suave);
+  color: var(--laranja-move);
+}
+
+.executar-atividade-header h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--texto-principal);
+}
+
+/* CONTEÚDO DA EXECUÇÃO */
+.executar-atividade-conteudo {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 40px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ANEL DE PROGRESSO & MÍDIA */
+.executar-atividade-midia-wrap {
+  position: relative;
+  width: 210px;
+  height: 210px;
+  margin-bottom: 24px;
+}
+
+.executar-atividade-anel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.executar-atividade-anel-trilha {
+  fill: none;
+  stroke: var(--cinza-borda);
+  stroke-width: 6;
+}
+
+.executar-atividade-anel-progresso {
+  fill: none;
+  stroke: var(--laranja-move);
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.executar-atividade-midia {
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%; /* Mantido arredondado para combinar com o anel */
+  background-color: var(--texto-principal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.executar-atividade-midia-play {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--laranja-move);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  text-decoration: none;
+  padding-left: 3px; /* Ajuste óptico do ícone de play */
+  box-shadow: 0 4px 12px rgba(255, 87, 34, 0.4);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.executar-atividade-midia-play:hover {
+  transform: scale(1.08);
+  background-color: var(--laranja-hover);
+}
+
+.executar-atividade-midia-placeholder {
+  font-size: 2.4rem;
+  color: #666;
+}
+
+/* INFORMAÇÕES DO EXERCÍCIO */
+.executar-atividade-nome {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--texto-principal);
+  margin: 0 0 6px;
+  text-align: center;
+}
+
+.executar-atividade-tempo {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--laranja-move);
+  margin-bottom: 32px;
+  letter-spacing: 0.03em;
+}
+
+/* CONTROLES DE AÇÃO */
+.executar-atividade-controles {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.executar-atividade-controle-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid var(--cinza-borda);
+  background-color: #ffffff;
+  color: var(--texto-principal);
+  font-size: 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.executar-atividade-controle-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: var(--laranja-move);
+  color: var(--laranja-move);
+}
+
+.executar-atividade-controle-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.executar-atividade-controle-btn.confirmar {
+  background-color: var(--sucesso-verde);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.executar-atividade-controle-btn.confirmar:hover:not(:disabled) {
+  background-color: var(--sucesso-hover);
+  color: #ffffff;
+}

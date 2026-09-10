@@ -1,0 +1,319 @@
+/* ==========================================================================
+   PERFIL DO PROFESSOR - IDENTIDADE MOVETEC
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+.perfil-professor-page {
+  min-height: 100vh;
+  background-color: var(--papel-branco);
+  /* Textura sutil estilo caderno de exercícios */
+  background-image: 
+    linear-gradient(var(--papel-linha) 1px, transparent 1px),
+    linear-gradient(90deg, var(--papel-linha) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+}
+
+/* HEADER */
+.perfil-professor-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background-color: var(--branco);
+  color: var(--azul-marinho);
+  border-bottom: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+.perfil-professor-voltar {
+  background: none;
+  border: 2px solid var(--papel-linha);
+  color: var(--azul-marinho);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+}
+
+.perfil-professor-voltar:hover {
+  background-color: var(--laranja-move);
+  border-color: var(--laranja-move);
+  color: var(--branco);
+}
+
+.perfil-professor-header h1 {
+  flex: 1;
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--azul-marinho);
+}
+
+.perfil-professor-acoes {
+  display: flex;
+  gap: 10px;
+}
+
+.perfil-professor-icone-btn {
+  background: none;
+  border: 1.5px solid var(--papel-linha);
+  color: var(--azul-marinho);
+  font-size: 1.1rem;
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  align-items: center;
+  justify-content: center;
+}
+
+.perfil-professor-icone-btn:hover {
+  border-color: var(--laranja-move);
+  color: var(--laranja-move);
+  background-color: rgba(242, 101, 34, 0.05);
+}
+
+/* CONTEÚDO / CARD BRANCO DE INFORMAÇÕES */
+.perfil-professor-conteudo {
+  max-width: 440px;
+  margin: 32px auto;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--branco);
+  border-radius: 20px;
+  border: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.perfil-professor-mensagem {
+  color: var(--cinza-texto);
+  margin-top: 60px;
+  font-size: 0.95rem;
+}
+
+/* AVATAR */
+.perfil-professor-avatar-btn {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: var(--laranja-move);
+  border: 3px solid var(--branco);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 6px 18px rgba(242, 101, 34, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.perfil-professor-avatar-btn:hover {
+  transform: scale(1.04);
+  box-shadow: 0 8px 22px rgba(242, 101, 34, 0.35);
+}
+
+.perfil-professor-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.perfil-professor-avatar-placeholder {
+  font-size: 2.2rem;
+  color: var(--branco);
+  font-weight: 800;
+}
+
+.perfil-professor-nome {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--azul-marinho);
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+/* CAMPOS DE EXIBIÇÃO */
+.perfil-professor-campo {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.perfil-professor-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--cinza-texto);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.perfil-professor-valor {
+  background-color: var(--papel-branco);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: var(--azul-marinho);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1.5px solid var(--papel-linha);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
+}
+
+.perfil-professor-senha {
+  letter-spacing: 3px;
+}
+
+/* BOTÃO ALTERAR SENHA (DESKTOP) */
+.perfil-professor-btn-editar-senha {
+  margin-top: 12px;
+  width: 100%;
+  padding: 12px;
+  background-color: transparent;
+  border: 2px solid var(--laranja-move);
+  color: var(--laranja-move);
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.perfil-professor-btn-editar-senha:hover {
+  background-color: var(--laranja-move);
+  color: var(--branco);
+}
+
+/* MODAIS DA TELA (SENHA E FOTO) */
+.modal-form-campos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.modal-form-campos label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--azul-marinho);
+}
+
+.modal-form-campos input {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--papel-linha);
+  background-color: var(--papel-branco);
+  font-size: 0.95rem;
+  color: var(--azul-marinho);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.modal-form-campos input:focus {
+  border-color: var(--laranja-move);
+  background-color: var(--branco);
+  box-shadow: 0 0 0 3px rgba(242, 101, 34, 0.15);
+}
+
+.modal-form-erro {
+  color: #dc2626;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 4px 0 0;
+}
+
+.modal-alterar-foto-corpo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.modal-alterar-foto-preview {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: var(--laranja-move);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--branco);
+  font-size: 2.2rem;
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(242, 101, 34, 0.25);
+}
+
+.modal-alterar-foto-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-alterar-foto-input-oculto {
+  display: none;
+}
+
+.modal-btn-escolher {
+  background: none;
+  border: 2px solid var(--laranja-move);
+  color: var(--laranja-move);
+  padding: 8px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.modal-btn-escolher:hover {
+  background-color: var(--laranja-move);
+  color: var(--branco);
+}
+
+.perfil-professor-page .modal-botoes {
+  gap: 12px;
+}
+
+/* VISIBILIDADE DE ELEMENTOS (DESKTOP VS MOBILE) */
+.mobile-only {
+  display: none;
+}
+
+.desktop-only {
+  display: block;
+}
+
+/* REGRAS RESPONSIVAS (MOBILE) */
+@media (max-width: 768px) {
+  .mobile-only {
+    display: flex;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  .perfil-professor-header {
+    padding: 14px 16px;
+  }
+
+  .perfil-professor-conteudo {
+    margin: 16px;
+    padding: 24px 16px;
+  }
+
+  .perfil-professor-avatar-btn {
+    width: 88px;
+    height: 88px;
+  }
+}

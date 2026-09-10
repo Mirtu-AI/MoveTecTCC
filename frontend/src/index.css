@@ -1,0 +1,30 @@
+:root {
+  --fonte-titulo: "Space Grotesk", sans-serif;
+  --fonte-corpo: "Urbanist", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+
+body {
+  font-family: var(--fonte-corpo);
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--fonte-titulo);
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}

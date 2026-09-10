@@ -1,0 +1,31 @@
+/* Esconde o cursor padrão apenas na Landing Page */
+@media (pointer: fine) {
+  .landing,
+  .landing * {
+    cursor: none !important;
+  }
+}
+
+.cursor-customizado {
+  width: 28px;
+  height: 28px;
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-30%, -10%); /* Ajusta o ponto exato da ponta do raio */
+  transition: transform 0.05s ease-out;
+  z-index: 99999;
+}
+
+/* Ícone do Raio em SVG */
+.cursor-customizado::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: var(--laranja-move, #ff5722);
+  /* Formato do raio feito com máscara SVG */
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 2L3 14h7v8l10-12h-7z"/></svg>') no-repeat center / contain;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 2L3 14h7v8l10-12h-7z"/></svg>') no-repeat center / contain;
+  /* Efeito Neon/Glow em volta do raio */
+  filter: drop-shadow(0 0 6px var(--laranja-move, #ff5722)) drop-shadow(0 0 10px #ffb703);
+}

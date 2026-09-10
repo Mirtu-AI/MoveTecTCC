@@ -1,0 +1,328 @@
+/* ==========================================================================
+   DETALHES (PROFESSOR / SALA) - IDENTIDADE MOVETEC
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+.detalhes-page {
+  min-height: 100vh;
+  background-color: var(--papel-branco);
+  /* Textura sutil estilo caderno de exercícios */
+  background-image: 
+    linear-gradient(var(--papel-linha) 1px, transparent 1px),
+    linear-gradient(90deg, var(--papel-linha) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+}
+
+.detalhes-mensagem {
+  text-align: center;
+  margin-top: 60px;
+  color: var(--cinza-texto);
+  font-size: 0.95rem;
+}
+
+/* HEADER */
+.detalhes-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  background-color: var(--branco);
+  border-bottom: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+.detalhes-header h1 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--azul-marinho);
+  flex: 1;
+}
+
+/* BOTÕES DO HEADER E AÇÕES */
+.voltar-btn {
+  background: none;
+  border: 2px solid var(--papel-linha);
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: var(--azul-marinho);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.voltar-btn:hover {
+  background-color: var(--laranja-move);
+  border-color: var(--laranja-move);
+  color: var(--branco);
+}
+
+.excluir-btn {
+  background: none;
+  border: 1.5px solid #fca5a5;
+  color: #dc2626;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+  margin-left: auto;
+}
+
+.excluir-btn:hover {
+  background-color: #dc2626;
+  color: var(--branco);
+  border-color: #dc2626;
+}
+
+.editar-btn {
+  background: none;
+  border: 2px solid var(--laranja-move);
+  color: var(--laranja-move);
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editar-btn:hover {
+  background-color: var(--laranja-move);
+  color: var(--branco);
+}
+
+.info-card-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.info-card-topo h3 {
+  margin: 0;
+  font-weight: 800;
+  color: var(--azul-marinho);
+}
+
+/* CONTEÚDO PRINCIPAL (DESKTOP: 2 COLUNAS) */
+.detalhes-conteudo {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.detalhes-coluna-principal {
+  flex: 1;
+  min-width: 280px;
+}
+
+.detalhes-coluna-salas {
+  flex: 1;
+  padding-right: 4px;
+}
+
+/* AVATAR GRANDE */
+.detalhes-avatar-grande {
+  width: 110px;
+  height: 110px;
+  border-radius: 24px;
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 2.2rem;
+  margin-bottom: 24px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(242, 101, 34, 0.25);
+}
+
+.detalhes-avatar-grande-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* CARDS DE INFORMAÇÃO */
+.detalhes-info-card {
+  background-color: var(--branco);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid var(--papel-linha);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.detalhes-info-card h3 {
+  margin: 0 0 16px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--azul-marinho);
+}
+
+.info-linha {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.info-linha:last-child {
+  margin-bottom: 0;
+}
+
+.info-label {
+  font-size: 0.75rem;
+  color: var(--cinza-texto);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.info-valor {
+  font-size: 0.95rem;
+  color: var(--azul-marinho);
+  font-weight: 600;
+  background-color: var(--papel-branco);
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--papel-linha);
+}
+
+/* SALAS E ALUNOS (COLUNA DIREITA) */
+.detalhes-coluna-salas h3 {
+  margin: 0 0 16px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--azul-marinho);
+}
+
+.detalhes-mensagem-salas {
+  color: var(--cinza-texto);
+  font-size: 0.9rem;
+}
+
+.salas-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 480px; 
+  overflow-y: auto !important;
+  scroll-behavior: smooth;
+  padding-right: 6px;
+} 
+
+.sala-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background-color: var(--branco);
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 1px solid var(--papel-linha);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--azul-marinho);
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.sala-card:hover {
+  border-color: rgba(242, 101, 34, 0.3);
+  box-shadow: 0 4px 12px rgba(242, 101, 34, 0.08);
+}
+
+.sala-icone {
+  font-size: 1.2rem;
+}
+
+/* LISTAGEM DE ALUNOS NOS DETALHES DA SALA */
+.aluno-card {
+  justify-content: space-between;
+}
+
+.aluno-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.aluno-nome {
+  font-weight: 700;
+  color: var(--azul-marinho);
+}
+
+.aluno-email {
+  font-size: 0.8rem;
+  color: var(--cinza-texto);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aluno-acoes {
+  display: flex;
+  gap: 6px;
+}
+
+.aluno-acao-btn {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 8px;
+  color: var(--cinza-texto);
+  transition: all 0.2s ease;
+}
+
+.aluno-acao-btn:hover {
+  background-color: var(--azul-marinho);
+  color: var(--branco);
+}
+
+.aluno-acao-excluir:hover {
+  background-color: rgb(235, 78, 78);
+  color: var(--branco);
+}
+
+/* REGRAS EXCLUSIVAS MOBILE */
+@media (max-width: 768px) {
+  .detalhes-conteudo {
+    flex-direction: column;
+    padding: 20px 16px;
+    gap: 24px;
+  }
+
+  .detalhes-avatar-grande {
+    width: 100%;
+    height: 140px;
+    border-radius: 18px;
+    font-size: 2.5rem;
+  }
+
+  .sala-card {
+    background-color: var(--branco);
+    border-radius: 12px;
+    border: 1.5px solid var(--papel-linha);
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
+    padding: 14px 16px;
+  }
+
+  .sala-card:hover {
+    border-color: var(--papel-linha);
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
+  }
+}

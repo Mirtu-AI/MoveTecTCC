@@ -1,0 +1,373 @@
+/* ==========================================================================
+   LISTA DE TREINOS DO PROFESSOR - IDENTIDADE MOVETEC
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+.lista-treinos-page {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--papel-branco);
+  /* Textura de caderno de exercícios */
+  background-image: 
+    linear-gradient(var(--papel-linha) 1px, transparent 1px),
+    linear-gradient(90deg, var(--papel-linha) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+}
+
+/* ÁREA PRINCIPAL DA PÁGINA */
+.lista-treinos-main {
+  flex: 1;
+  margin-left: 240px; /* Offset para a Sidebar Desktop */
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+.lista-treinos-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
+  background-color: var(--branco);
+  border-bottom: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+.lista-treinos-header h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.4rem;
+  margin: 0;
+  color: var(--azul-marinho);
+  font-weight: 700;
+}
+
+.lista-treinos-header-acoes {
+  display: flex;
+  gap: 10px;
+}
+
+.lista-treinos-exercicios-btn {
+  background: transparent;
+  border: 1.5px solid var(--laranja-move);
+  color: var(--laranja-move);
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lista-treinos-exercicios-btn:hover {
+  background-color: rgba(242, 101, 34, 0.1);
+  transform: translateY(-1px);
+}
+
+.lista-treinos-novo-btn {
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  border: 1.5px solid var(--laranja-move);
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(242, 101, 34, 0.25);
+  transition: all 0.2s ease;
+}
+
+.lista-treinos-novo-btn:hover {
+  background-color: #d85418;
+  border-color: #d85418;
+  transform: translateY(-1px);
+}
+
+/* CAMPO DE BUSCA DE TREINOS */
+.lista-treinos-busca-container {
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.lista-treinos-busca-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.95rem;
+  color: var(--azul-marinho);
+  background-color: var(--branco);
+  border: 1.5px solid var(--papel-linha);
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+}
+
+.lista-treinos-busca-input:focus {
+  border-color: var(--laranja-move);
+  box-shadow: 0 0 0 3px rgba(242, 101, 34, 0.15);
+}
+
+/* CONTEÚDO */
+.lista-treinos-conteudo {
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.lista-treinos-mensagem {
+  text-align: center;
+  color: var(--cinza-texto);
+  margin-top: 60px;
+  font-size: 0.95rem;
+  font-family: 'Urbanist', sans-serif;
+}
+
+.treinos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.treino-card {
+  background-color: var(--branco);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.treino-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(242, 101, 34, 0.4);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+.treino-card-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.treino-card-topo h3 {
+  margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  color: var(--azul-marinho);
+  font-weight: 700;
+}
+
+.treino-card-contagem {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--laranja-move);
+  background-color: rgba(242, 101, 34, 0.1);
+  padding: 4px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.treino-card-descricao {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.9rem;
+  color: var(--cinza-texto);
+  margin: 0 0 16px;
+  line-height: 1.4;
+}
+
+.treino-card-exercicios {
+  border-top: 1px solid var(--papel-linha);
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.treino-exercicio-linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.88rem;
+}
+
+.treino-exercicio-nome {
+  color: var(--azul-marinho);
+  font-weight: 600;
+}
+
+.treino-exercicio-detalhe {
+  color: var(--cinza-texto);
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   COMPONENTES DE NAVEGAÇÃO
+   ========================================================================== */
+
+.navegacao-professor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100vh;
+  background-color: var(--branco);
+  border-right: 1.5px solid var(--papel-linha);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  z-index: 100;
+  box-shadow: 4px 0 12px rgba(15, 23, 42, 0.03);
+}
+
+/* ESTILIZAÇÃO DO LOGOTIPO */
+.navegacao-logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 32px;
+  padding: 0 8px;
+  width: 100%;
+}
+
+.navegacao-logo img {
+  max-width: 100%;
+  height: auto;
+  max-height: 48px;
+  object-fit: contain;
+  display: block;
+}
+
+.navegacao-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.navegacao-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: none;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  color: var(--azul-marinho);
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.navegacao-btn:hover {
+  background-color: var(--papel-branco);
+  color: var(--laranja-move);
+}
+
+.navegacao-btn.ativo {
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(242, 101, 34, 0.25);
+}
+
+.navegacao-icone {
+  font-size: 1.2rem;
+}
+
+.navegacao-rotulo {
+  display: inline;
+}
+
+/* ==========================================================================
+   REGRAS RESPONSIVAS (MOBILE)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .lista-treinos-main {
+    margin-left: 0;
+    padding-bottom: 72px;
+  }
+
+  .lista-treinos-header {
+    padding: 14px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .lista-treinos-header-acoes {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .lista-treinos-conteudo {
+    padding: 16px;
+  }
+
+  .navegacao-professor {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: 64px;
+    border-right: none;
+    border-top: 1.5px solid var(--papel-linha);
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 8px;
+    box-shadow: 0 -4px 12px rgba(15, 23, 42, 0.04);
+  }
+
+  .navegacao-logo {
+    display: none;
+  }
+
+  .navegacao-lista {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    gap: 0;
+  }
+
+  .navegacao-btn {
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .navegacao-btn.ativo {
+    background-color: rgba(242, 101, 34, 0.15);
+    color: var(--laranja-move);
+    box-shadow: none;
+  }
+
+  .navegacao-icone {
+    font-size: 1.1rem;
+  }
+
+  .navegacao-rotulo {
+    font-size: 0.65rem;
+  }
+}

@@ -1,0 +1,198 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --movetec-laranja: #ff552e;
+  --movetec-laranja-hover: #e0441f;
+  --movetec-laranja-suave: #fff0ed;
+  --movetec-azul-escuro: #121929;
+  --movetec-azul-card: #1e293b;
+  --movetec-texto-principal: #1f2937;
+  --movetec-texto-secundario: #6b7280;
+  --movetec-fundo: #f4f6f8;
+  --movetec-branco: #ffffff;
+  --movetec-borda: #e5e7eb;
+  --movetec-sucesso: #10b981;
+  --movetec-sucesso-suave: #ecfdf5;
+}
+
+/* LAYOUT E FUNDO */
+.detalhes-rotina-page {
+  min-height: 100vh;
+  background-color: var(--movetec-fundo);
+  background-image: 
+    linear-gradient(to right, rgba(18, 25, 41, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(18, 25, 41, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--movetec-texto-principal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 16px 110px;
+}
+
+.detalhes-rotina-conteudo {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.detalhes-rotina-mensagem {
+  color: var(--movetec-texto-secundario);
+  margin-top: 60px;
+  font-size: 0.95rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* CABEÇALHO */
+.detalhes-rotina-header {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.detalhes-rotina-header h1 {
+  flex: 1;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--movetec-azul-escuro);
+  margin: 0;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+.detalhes-rotina-voltar {
+  background: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  color: var(--movetec-azul-escuro);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(18, 25, 41, 0.04);
+  transition: all 0.2s ease;
+}
+
+.detalhes-rotina-voltar:hover {
+  background-color: var(--movetec-laranja-suave);
+  color: var(--movetec-laranja);
+  border-color: rgba(255, 85, 46, 0.3);
+}
+
+/* GRUPOS DE TREINO */
+.detalhes-rotina-grupo {
+  background-color: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 20px;
+  padding: 20px 16px;
+  box-shadow: 0 4px 20px rgba(18, 25, 41, 0.05);
+}
+
+.detalhes-rotina-grupo-titulo {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--movetec-azul-escuro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.detalhes-rotina-grupo-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* CARDS DE TREINO (BOTÕES DE CONCLUSÃO) */
+.detalhes-rotina-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background-color: var(--movetec-fundo);
+  border: 1.5px solid var(--movetec-borda);
+  border-radius: 14px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.detalhes-rotina-item:hover:not(:disabled) {
+  border-color: var(--movetec-laranja);
+  background-color: var(--movetec-laranja-suave);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 85, 46, 0.12);
+}
+
+.detalhes-rotina-item:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.detalhes-rotina-item-icone {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detalhes-rotina-item-nome {
+  flex: 1;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--movetec-azul-escuro);
+}
+
+/* ESTADO CONCLUÍDO (FEITO) */
+.detalhes-rotina-item.feito {
+  background-color: var(--movetec-sucesso-suave);
+  border-color: var(--movetec-sucesso);
+}
+
+.detalhes-rotina-item.feito .detalhes-rotina-item-nome {
+  color: #065f46;
+}
+
+.detalhes-rotina-item-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: var(--movetec-sucesso);
+  color: var(--movetec-branco);
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+/* DESKTOPS / TELAS MAIORES */
+@media (min-width: 900px) {
+  .detalhes-rotina-page {
+    padding: 40px 20px 120px;
+  }
+
+  .detalhes-rotina-header,
+  .detalhes-rotina-conteudo {
+    max-width: 520px;
+  }
+
+  .detalhes-rotina-grupo {
+    padding: 24px 20px;
+  }
+}

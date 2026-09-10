@@ -1,0 +1,391 @@
+/* ==========================================================================
+   DETALHES DO ALUNO - IDENTIDADE MOVETEC
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+.detalhes-aluno-page {
+  min-height: 100vh;
+  background-color: var(--papel-branco);
+  /* Textura de caderno de exercícios */
+  background-image: 
+    linear-gradient(var(--papel-linha) 1px, transparent 1px),
+    linear-gradient(90deg, var(--papel-linha) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+  padding-bottom: 90px;
+}
+
+.detalhes-aluno-mensagem {
+  text-align: center;
+  color: var(--cinza-texto);
+  margin-top: 60px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.95rem;
+}
+
+/* HEADER */
+.detalhes-aluno-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 32px;
+  background-color: var(--branco);
+  border-bottom: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+.detalhes-aluno-voltar {
+  background: transparent;
+  border: 1.5px solid var(--papel-linha);
+  color: var(--azul-marinho);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.detalhes-aluno-voltar:hover {
+  background-color: var(--papel-branco);
+  border-color: var(--laranja-move);
+  color: var(--laranja-move);
+  transform: translateX(-2px);
+}
+
+.detalhes-aluno-header h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--azul-marinho);
+}
+
+/* ESTRUTURA E CONTEÚDO (CARD PRINCIPAL UNIFICADO COM FUNDO BRANCO) */
+.detalhes-aluno-conteudo {
+  max-width: 480px;
+  margin: 32px auto 0;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  
+  /* Fundo branco e estilos de card na seção principal */
+  background-color: var(--branco);
+  border-radius: 20px;
+  border: 1.5px solid var(--papel-linha);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+.detalhes-aluno-coluna-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* AVATAR DO ALUNO */
+.detalhes-aluno-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 20px;
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 20px rgba(242, 101, 34, 0.25);
+  border: 3px solid var(--branco);
+}
+
+/* SANFONA (TOGGLE) DE INFORMAÇÕES - MOBILE */
+.detalhes-aluno-info-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--papel-branco);
+  border: 1.5px solid var(--papel-linha);
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--azul-marinho);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+  transition: border-color 0.2s ease;
+}
+
+.detalhes-aluno-info-toggle:hover {
+  border-color: var(--laranja-move);
+}
+
+.detalhes-aluno-seta {
+  transition: transform 0.2s ease;
+  color: var(--laranja-move);
+}
+
+.detalhes-aluno-seta.aberta {
+  transform: rotate(180deg);
+}
+
+.detalhes-aluno-info-corpo {
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease;
+}
+
+.detalhes-aluno-info-corpo.aberta {
+  max-height: 400px;
+  margin-top: 14px;
+}
+
+/* CAMPOS DE INFORMAÇÃO */
+.detalhes-aluno-campo {
+  margin-bottom: 14px;
+}
+
+.detalhes-aluno-label {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--azul-marinho);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.detalhes-aluno-valor {
+  background-color: var(--papel-branco);
+  border: 1.5px solid var(--papel-linha);
+  border-radius: 12px;
+  padding: 10px 14px;
+  color: var(--azul-marinho);
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: inset 0 1px 3px rgba(15, 23, 42, 0.02);
+}
+
+/* SEÇÃO DE ATIVIDADES */
+.detalhes-aluno-coluna-atividades {
+  width: 100%;
+}
+
+.detalhes-aluno-atividades-topo {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 4px 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--azul-marinho);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1.5px solid var(--papel-linha);
+  margin-bottom: 14px;
+}
+
+.detalhes-aluno-mensagem-atividades {
+  color: var(--cinza-texto);
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.88rem;
+  text-align: center;
+  padding: 24px 0;
+}
+
+/* LISTA DE ATIVIDADES COM SCROLL */
+.detalhes-aluno-atividades-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+/* ESTILIZAÇÃO DA BARRA DE ROLAGEM */
+.detalhes-aluno-atividades-lista::-webkit-scrollbar {
+  width: 6px;
+}
+
+.detalhes-aluno-atividades-lista::-webkit-scrollbar-track {
+  background: var(--papel-branco);
+  border-radius: 8px;
+}
+
+.detalhes-aluno-atividades-lista::-webkit-scrollbar-thumb {
+  background-color: var(--papel-linha);
+  border-radius: 8px;
+}
+
+.detalhes-aluno-atividades-lista::-webkit-scrollbar-thumb:hover {
+  background-color: var(--laranja-move);
+}
+
+.detalhes-aluno-atividade-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background-color: var(--papel-branco);
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1.5px solid var(--papel-linha);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.detalhes-aluno-atividade-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(242, 101, 34, 0.3);
+  background-color: var(--branco);
+}
+
+.detalhes-aluno-atividade-card.clicavel {
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.detalhes-aluno-atividade-card.clicavel:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.detalhes-aluno-atividade-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.detalhes-aluno-atividade-icone {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background-color: var(--laranja-claro);
+  color: var(--laranja-move);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.detalhes-aluno-atividade-titulo {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  color: var(--azul-marinho);
+  font-size: 0.9rem;
+}
+
+.detalhes-aluno-atividade-data {
+  display: block;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.78rem;
+  color: var(--cinza-texto);
+  font-weight: 500;
+}
+
+/* STATUS DAS ATIVIDADES */
+.detalhes-aluno-atividade-status {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.detalhes-aluno-atividade-status.entregue {
+  color: #16a34a;
+  background-color: #e7f6ec;
+}
+
+.detalhes-aluno-atividade-status.andamento {
+  color: var(--laranja-move);
+  background-color: var(--laranja-claro);
+}
+
+.detalhes-aluno-atividade-status.nao-entregue {
+  color: #e53e3e;
+  background-color: #fdeaea;
+}
+
+/* BOTÃO FLUTUANTE (FAB) */
+.detalhes-aluno-fab-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 50%;
+  transform: translateX(50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  border: none;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(242, 101, 34, 0.35);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.detalhes-aluno-fab-btn:hover {
+  background-color: var(--laranja-hover);
+  transform: translateX(50%) scale(1.08);
+}
+
+/* RESPONSIVIDADE DESKTOP */
+@media (min-width: 900px) {
+  .detalhes-aluno-conteudo {
+    max-width: 900px;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 36px;
+    padding: 40px 32px;
+  }
+
+  .detalhes-aluno-coluna-info {
+    width: 280px;
+    flex-shrink: 0;
+  }
+
+  .detalhes-aluno-info-toggle {
+    display: none;
+  }
+
+  .detalhes-aluno-info-corpo {
+    max-height: none !important;
+    overflow: visible;
+    margin-top: 14px !important;
+  }
+
+  .detalhes-aluno-coluna-atividades {
+    flex: 1;
+  }
+
+  .detalhes-aluno-fab-btn {
+    right: 40px;
+    transform: none;
+  }
+
+  .detalhes-aluno-fab-btn:hover {
+    transform: scale(1.08);
+  }
+}

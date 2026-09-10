@@ -1,0 +1,437 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --movetec-laranja: #ff552e;
+  --movetec-laranja-hover: #e0441f;
+  --movetec-laranja-suave: #fff0ed;
+  --movetec-azul-escuro: #121929;
+  --movetec-azul-card: #1e293b;
+  --movetec-texto-principal: #1f2937;
+  --movetec-texto-secundario: #6b7280;
+  --movetec-fundo: #f4f6f8;
+  --movetec-branco: #ffffff;
+  --movetec-borda: #e5e7eb;
+}
+
+.perfil-aluno-page {
+  min-height: 100vh;
+  background-color: var(--movetec-fundo);
+  background-image: 
+    linear-gradient(to right, rgba(18, 25, 41, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(18, 25, 41, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--movetec-texto-principal);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.perfil-aluno-main {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 20px 16px 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* CABEÇALHO */
+.perfil-aluno-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.perfil-aluno-header h1 {
+  flex: 1;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--movetec-azul-escuro);
+  margin: 0;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+.perfil-aluno-voltar,
+.perfil-aluno-sair-icone-btn {
+  background: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  color: var(--movetec-azul-escuro);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(18, 25, 41, 0.04);
+  transition: all 0.2s ease;
+}
+
+.perfil-aluno-voltar:hover,
+.perfil-aluno-sair-icone-btn:hover {
+  background-color: var(--movetec-laranja-suave);
+  color: var(--movetec-laranja);
+  border-color: rgba(255, 85, 46, 0.3);
+}
+
+.perfil-aluno-conteudo {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.perfil-aluno-mensagem {
+  color: var(--movetec-texto-secundario);
+  margin-top: 60px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* AVATAR E FOTO EDITÁVEL */
+.perfil-aluno-avatar-editavel {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.perfil-aluno-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background-color: var(--movetec-azul-escuro);
+  color: var(--movetec-branco);
+  border: 3px solid var(--movetec-laranja);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.4rem;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 6px 16px rgba(255, 85, 46, 0.2);
+  transition: opacity 0.2s ease;
+}
+
+.perfil-aluno-avatar-editavel:hover .perfil-aluno-avatar {
+  opacity: 0.9;
+}
+
+.perfil-aluno-avatar-editar-icone {
+  position: absolute;
+  bottom: 16px;
+  right: -2px;
+  background: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 50%;
+  padding: 4px 6px;
+  font-size: 13px;
+  line-height: 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+  transition: transform 0.2s ease;
+}
+
+.perfil-aluno-avatar-editavel:hover .perfil-aluno-avatar-editar-icone {
+  transform: scale(1.1);
+}
+
+.perfil-aluno-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.perfil-aluno-erro-foto {
+  color: #c0392b;
+  background: #fdecea;
+  border: 1px solid #f5b7b1;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.82rem;
+  text-align: center;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+/* NOME E DESCRIÇÃO EDITÁVEIS */
+.perfil-aluno-nome {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--movetec-azul-escuro);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.perfil-aluno-nome-editavel,
+.perfil-aluno-descricao-editavel {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.perfil-aluno-nome-editavel:hover,
+.perfil-aluno-descricao-editavel:hover {
+  color: var(--movetec-laranja);
+}
+
+.perfil-aluno-lapis {
+  font-size: 0.75em;
+  opacity: 0.5;
+  margin-left: 4px;
+  transition: opacity 0.2s ease;
+}
+
+.perfil-aluno-nome-editavel:hover .perfil-aluno-lapis,
+.perfil-aluno-descricao-editavel:hover .perfil-aluno-lapis {
+  opacity: 1;
+}
+
+.perfil-aluno-nome-input {
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-family: inherit;
+  color: var(--movetec-azul-escuro);
+  text-align: center;
+  border: 1.5px solid var(--movetec-laranja);
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin-bottom: 8px;
+  outline: none;
+  background: var(--movetec-branco);
+  width: 100%;
+  max-width: 320px;
+}
+
+.perfil-aluno-descricao {
+  font-size: 0.9rem;
+  color: var(--movetec-texto-secundario);
+  text-align: center;
+  max-width: 320px;
+  margin: 0 0 24px 0;
+  line-height: 1.4;
+}
+
+.perfil-aluno-descricao-input {
+  width: 100%;
+  max-width: 320px;
+  font-family: inherit;
+  border: 1.5px solid var(--movetec-laranja);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  color: var(--movetec-texto-principal);
+  background: var(--movetec-branco);
+  resize: none;
+  outline: none;
+  margin-bottom: 24px;
+}
+
+/* CARD COM FUNDO BRANCO PARA AS INFORMAÇÕES */
+.perfil-aluno-card-container {
+  width: 100%;
+  background-color: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 20px;
+  padding: 24px 20px;
+  box-shadow: 0 4px 20px rgba(18, 25, 41, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* SEÇÕES DE CONTEÚDO */
+.perfil-aluno-secao {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.perfil-aluno-secao-titulo {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--movetec-azul-escuro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+/* CONQUISTAS / MEDALHAS */
+.perfil-aluno-conquistas {
+  display: flex;
+  gap: 12px;
+  background-color: var(--movetec-fundo);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 14px;
+  padding: 16px;
+  justify-content: space-around;
+}
+
+.perfil-aluno-medalha-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.perfil-aluno-medalha {
+  font-size: 1.8rem;
+  opacity: 0.25;
+  filter: grayscale(1);
+  cursor: default;
+  transition: transform 0.2s ease;
+}
+
+.perfil-aluno-medalha-wrap.desbloqueada .perfil-aluno-medalha {
+  opacity: 1;
+  filter: none;
+}
+
+.perfil-aluno-medalha-wrap:hover .perfil-aluno-medalha {
+  transform: scale(1.15);
+}
+
+.perfil-aluno-medalha-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background-color: var(--movetec-azul-escuro);
+  color: var(--movetec-branco);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.perfil-aluno-medalha-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--movetec-azul-escuro);
+}
+
+.perfil-aluno-medalha-wrap:hover .perfil-aluno-medalha-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* DESEMPENHO */
+.perfil-aluno-desempenho {
+  background-color: var(--movetec-fundo);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 14px;
+  padding: 18px;
+  text-align: center;
+}
+
+.perfil-aluno-desempenho p {
+  margin: 0 0 10px;
+  font-size: 0.85rem;
+  color: var(--movetec-texto-secundario);
+}
+
+.perfil-aluno-desempenho p:last-child {
+  margin-bottom: 0;
+}
+
+.perfil-aluno-desempenho strong {
+  color: var(--movetec-azul-escuro);
+  font-weight: 700;
+}
+
+/* CAMPO DE INFORMAÇÕES (EMAIL) */
+.perfil-aluno-campo {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.perfil-aluno-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--movetec-azul-escuro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.perfil-aluno-valor {
+  background-color: var(--movetec-fundo);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: var(--movetec-texto-principal);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* BOTÕES */
+.perfil-aluno-botoes {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.perfil-aluno-botoes button {
+  background-color: var(--movetec-branco);
+  border: 1.5px solid var(--movetec-laranja);
+  color: var(--movetec-laranja);
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.perfil-aluno-botoes button:hover {
+  background-color: var(--movetec-laranja);
+  color: var(--movetec-branco);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 85, 46, 0.25);
+}
+
+/* MEDIA QUERY (DESKTOP) */
+@media (min-width: 900px) {
+  .perfil-aluno-main {
+    max-width: 520px;
+    padding: 40px 20px;
+  }
+
+  .perfil-aluno-card-container {
+    padding: 32px 28px;
+  }
+
+  .perfil-aluno-conquistas {
+    padding: 20px;
+  }
+
+  .perfil-aluno-medalha {
+    font-size: 2rem;
+  }
+
+  .perfil-aluno-botoes {
+    flex-direction: row;
+  }
+
+  .perfil-aluno-botoes button {
+    flex: 1;
+  }
+}

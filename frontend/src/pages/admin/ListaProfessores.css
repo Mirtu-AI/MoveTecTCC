@@ -1,0 +1,322 @@
+/* ==========================================================================
+   LISTA DE PROFESSORES / SALAS - IDENTIDADE MOVETEC (COM BOTÃO LOGOUT)
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+.lista-page {
+  min-height: 100vh;
+  background-color: var(--papel-branco);
+  /* Textura sutil estilo caderno de exercícios */
+  background-image: 
+    linear-gradient(var(--papel-linha) 1px, transparent 1px),
+    linear-gradient(90deg, var(--papel-linha) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+}
+
+/* HEADER AJUSTADO */
+.lista-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  background-color: var(--branco);
+  border-bottom: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+.voltar-btn {
+  background: none;
+  border: 2px solid var(--papel-linha);
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--azul-marinho);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.voltar-btn:hover {
+  background-color: var(--laranja-move);
+  border-color: var(--laranja-move);
+  color: var(--branco);
+}
+
+.lista-header h1 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--azul-marinho);
+  flex: 1;
+}
+
+/* ESPAÇAMENTO DOS BOTÕES NO HEADER */
+.header-acoes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.novo-professor-btn {
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  border: none;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(242, 101, 34, 0.2);
+}
+
+.novo-professor-btn:hover {
+  background-color: var(--laranja-escuro);
+  transform: translateY(-1px);
+}
+
+.salas-btn {
+  background: none;
+  border: 2px solid var(--laranja-move);
+  color: var(--laranja-move);
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
+}
+
+.salas-btn:hover {
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  transform: translateY(-1px);
+}
+
+/* BOTÃO DE LOGOUT COM MAIOR EVIDÊNCIA */
+.logout-btn {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: 1.5px solid #fca5a5;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.88rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+}
+
+/* CONTEÚDO */
+.lista-conteudo {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.lista-mensagem {
+  text-align: center;
+  color: var(--cinza-texto);
+  margin-top: 60px;
+  font-size: 0.95rem;
+}
+
+/* GRID DE CARDS */
+.professores-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.professor-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: var(--branco);
+  padding: 16px 20px;
+  border-radius: 16px;
+  border: 1px solid var(--papel-linha);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.professor-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(242, 101, 34, 0.3);
+  box-shadow: 0 8px 20px rgba(242, 101, 34, 0.1);
+}
+
+.professor-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1rem;
+  flex-shrink: 0;
+  box-shadow: 0 3px 8px rgba(242, 101, 34, 0.25);
+}
+
+.professor-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.professor-nome {
+  font-weight: 700;
+  color: var(--azul-marinho);
+  font-size: 0.95rem;
+}
+
+.professor-email {
+  color: var(--cinza-texto);
+  font-size: 0.82rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+
+/* BOTÕES FLUTUANTES (FAB) */
+.fab-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 50%;
+  transform: translateX(50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  border: none;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(242, 101, 34, 0.35);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.fab-btn:hover {
+  background-color: var(--laranja-escuro);
+  transform: translateX(50%) scale(1.08);
+}
+
+.fab-grupo-mobile {
+  position: fixed;
+  bottom: 28px;
+  right: 50%;
+  transform: translateX(50%);
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.fab-grupo-mobile .fab-btn {
+  position: static;
+  transform: none;
+}
+
+.fab-grupo-mobile .fab-btn:hover {
+  transform: scale(1.08);
+}
+
+.fab-secundario {
+  width: 50px;
+  height: 50px;
+  background-color: var(--branco);
+  color: var(--azul-marinho);
+  border: 2px solid var(--papel-linha);
+  font-size: 1.3rem;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+
+.fab-secundario:hover {
+  border-color: var(--laranja-move);
+  color: var(--laranja-move);
+}
+
+/* CONTROLE DE VISIBILIDADE */
+.mobile-only {
+  display: none !important;
+}
+
+.desktop-only {
+  display: inline-block !important;
+}
+
+/* REGRAS EXCLUSIVAS MOBILE */
+@media (max-width: 768px) {
+  .mobile-only {
+    display: flex !important;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .lista-header {
+    padding: 14px 16px;
+    gap: 8px;
+  }
+
+  .lista-header h1 {
+    font-size: 1.05rem;
+  }
+
+  .header-acoes {
+    gap: 6px;
+  }
+
+  .logout-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .lista-conteudo {
+    padding: 16px;
+  }
+
+  .professores-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* CARDS SÓLIDOS COM BORDA NO MOBILE */
+  .professor-card {
+    background-color: var(--branco) !important;
+    border-radius: 14px;
+    border: 1.5px solid var(--papel-linha);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+    padding: 14px 16px;
+  }
+
+  .professor-card:hover {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+  }
+}

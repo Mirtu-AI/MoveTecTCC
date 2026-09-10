@@ -1,0 +1,255 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --movetec-laranja: #ff552e;
+  --movetec-laranja-hover: #e0441f;
+  --movetec-laranja-suave: #fff0ed;
+  --movetec-azul-escuro: #121929;
+  --movetec-azul-card: #1e293b;
+  --movetec-texto-principal: #1f2937;
+  --movetec-texto-secundario: #6b7280;
+  --movetec-fundo: #f4f6f8;
+  --movetec-branco: #ffffff;
+  --movetec-borda: #e5e7eb;
+  --movetec-sucesso: #10b981;
+}
+
+.foguinho-page {
+  min-height: 100vh;
+  background-color: var(--movetec-fundo);
+  background-image: 
+    linear-gradient(to right, rgba(18, 25, 41, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(18, 25, 41, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--movetec-texto-principal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.foguinho-mensagem {
+  text-align: center;
+  color: var(--movetec-texto-secundario);
+  margin-top: 60px;
+  font-size: 0.95rem;
+}
+
+/* CABEÇALHO (Nome/Apelido alinhado à esquerda) */
+.foguinho-header {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 16px 20px;
+  background-color: transparent;
+  margin-top: 10px;
+}
+
+.foguinho-voltar {
+  background: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: var(--movetec-azul-escuro);
+  padding: 8px 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(18, 25, 41, 0.04);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.foguinho-voltar:hover {
+  background-color: var(--movetec-laranja-suave);
+  color: var(--movetec-laranja);
+  border-color: rgba(255, 85, 46, 0.3);
+}
+
+.foguinho-apelido-btn {
+  background: none;
+  border: none;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--movetec-azul-escuro);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.02em;
+}
+
+.foguinho-apelido-lapis {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.foguinho-apelido-input {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--movetec-azul-escuro);
+  border: 1px solid var(--movetec-laranja);
+  border-radius: 8px;
+  padding: 4px 8px;
+  outline: none;
+  background: var(--movetec-branco);
+}
+
+/* CONTEÚDO PRINCIPAL */
+.foguinho-conteudo {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 16px 60px;
+}
+
+.foguinho-icone-grande {
+  font-size: 4rem;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 4px 12px rgba(255, 85, 46, 0.3));
+  animation: pulsoFogo 2s infinite ease-in-out;
+}
+
+@keyframes pulsoFogo {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.foguinho-texto {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--movetec-azul-escuro);
+  margin-bottom: 24px;
+}
+
+/* CALENDÁRIO CARD */
+.foguinho-calendario {
+  width: 100%;
+  background-color: var(--movetec-branco);
+  border-radius: 20px;
+  border: 1px solid var(--movetec-borda);
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(18, 25, 41, 0.05);
+}
+
+/* Mês centralizado com botões fixos à direita */
+.foguinho-calendario-topo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  min-height: 32px;
+}
+
+.foguinho-mes-nome {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--movetec-azul-escuro);
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.foguinho-calendario-navegacao {
+  position: absolute;
+  right: 0;
+  display: flex;
+  gap: 6px;
+}
+
+.foguinho-calendario-navegacao button {
+  background: var(--movetec-fundo);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--movetec-azul-escuro);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.foguinho-calendario-navegacao button:hover {
+  background-color: var(--movetec-laranja-suave);
+  color: var(--movetec-laranja);
+  border-color: rgba(255, 85, 46, 0.3);
+}
+
+/* GRADE DO CALENDÁRIO */
+.foguinho-calendario-grade {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  text-align: center;
+}
+
+.foguinho-calendario-cabecalho {
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--movetec-texto-secundario);
+  margin-bottom: 8px;
+}
+
+.foguinho-dia {
+  position: relative;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--movetec-texto-principal);
+  border-radius: 10px;
+}
+
+.foguinho-dia-vazio {
+  height: 40px;
+}
+
+/* DIA DE HOJE */
+.foguinho-dia-hoje {
+  background-color: var(--movetec-laranja);
+  color: var(--movetec-branco) !important;
+  font-weight: 800;
+  box-shadow: 0 3px 10px rgba(255, 85, 46, 0.35);
+}
+
+.foguinho-dia-hoje span:first-child {
+  background: transparent;
+  color: var(--movetec-branco);
+  padding: 0;
+}
+
+/* BOLINHA DE TREINO */
+.foguinho-dia-bolinha {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--movetec-sucesso);
+  position: absolute;
+  bottom: 4px;
+}
+
+.foguinho-dia-hoje .foguinho-dia-bolinha {
+  background-color: var(--movetec-branco);
+}
+
+/* MEDIA QUERIES */
+@media (min-width: 900px) {
+  .foguinho-header,
+  .foguinho-conteudo {
+    max-width: 600px;
+  }
+}
