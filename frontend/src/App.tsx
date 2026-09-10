@@ -29,6 +29,8 @@ import ExecutarAtividade from "./pages/aluno/ExecutarAtividade";
 import ParabensAtividade from "./pages/aluno/ParabensAtividade";
 import TelaFoguinho from "./pages/aluno/TelaFoguinho";
 import DetalhesRotinaAluno from "./pages/aluno/DetalhesRotinaAluno";
+import CadastrarRotina from "./pages/professor/CadastrarRotina";
+import ListaRotinas from "./pages/professor/ListaRotinas";
 
 import RotaProtegida from "./pages/components/RotaProtegida";
 import RotaPublica from "./pages/components/RotaPublica";
@@ -133,9 +135,9 @@ function App() {
             <RotaProtegida tipoPermitido="aluno">
               <DetalhesRotinaAluno />
             </RotaProtegida>}
-            />
-            {/* Rotas Protegidas - Professor */ }
-            < Route
+        />
+        {/* Rotas Protegidas - Professor */}
+        < Route
           path="/dashboard"
           element={
             <RotaProtegida tipoPermitido="professor">
@@ -214,7 +216,41 @@ function App() {
             </RotaProtegida>
           }
         />
+        <Route
+          path="/professor/rotinas"
+          element={
+            <RotaProtegida tipoPermitido="professor">
+              <ListaRotinas />
+            </RotaProtegida>
+          }
+        />
 
+        <Route
+          path="/professor/rotinas/nova"
+          element={
+            <RotaProtegida tipoPermitido="professor">
+              <CadastrarRotina />
+            </RotaProtegida>
+          }
+        />
+
+        <Route
+          path="/professor/rotinas/:id/editar"
+          element={
+            <RotaProtegida tipoPermitido="professor">
+              <CadastrarRotina />
+            </RotaProtegida>
+          }
+        />
+
+        <Route
+          path="/aluno/rotinas/:id"
+          element={
+            <RotaProtegida tipoPermitido="aluno">
+              <DetalhesRotinaAluno />
+            </RotaProtegida>
+          }
+        />
         {/* Rotas Protegidas - Admin */}
         <Route
           path="/admin"

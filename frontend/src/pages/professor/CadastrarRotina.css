@@ -1,0 +1,337 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --movetec-laranja: #ff552e;
+  --movetec-laranja-hover: #e0441f;
+  --movetec-laranja-suave: #fff0ed;
+  --movetec-azul-escuro: #121929;
+  --movetec-azul-card: #1e293b;
+  --movetec-texto-principal: #1f2937;
+  --movetec-texto-secundario: #6b7280;
+  --movetec-fundo: #f4f6f8;
+  --movetec-branco: #ffffff;
+  --movetec-borda: #e5e7eb;
+  --movetec-vermelho: #ef4444;
+  --movetec-vermelho-suave: #fef2f2;
+  --movetec-sucesso: #10b981;
+}
+
+/* ESTRUTURA GERAL DA PÁGINA */
+.cadastrar-rotina-page {
+  min-height: 100vh;
+  background-color: var(--movetec-fundo);
+  background-image: 
+    linear-gradient(to right, rgba(18, 25, 41, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(18, 25, 41, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--movetec-texto-principal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 16px 110px;
+}
+
+.cadastrar-rotina-conteudo {
+  width: 100%;
+  max-width: 520px;
+}
+
+.cadastrar-rotina-mensagem {
+  color: var(--movetec-texto-secundario);
+  margin-top: 60px;
+  font-size: 0.95rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* CABEÇALHO */
+.cadastrar-rotina-header {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.cadastrar-rotina-header h1 {
+  flex: 1;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--movetec-azul-escuro);
+  margin: 0;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+.cadastrar-rotina-voltar {
+  background: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  color: var(--movetec-azul-escuro);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(18, 25, 41, 0.04);
+  transition: all 0.2s ease;
+}
+
+.cadastrar-rotina-voltar:hover {
+  background-color: var(--movetec-laranja-suave);
+  color: var(--movetec-laranja);
+  border-color: rgba(255, 85, 46, 0.3);
+}
+
+/* FORMULÁRIO */
+.cadastrar-rotina-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 20px;
+  padding: 24px 20px;
+  box-shadow: 0 4px 20px rgba(18, 25, 41, 0.05);
+}
+
+.cadastrar-rotina-form label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--movetec-azul-escuro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: -8px;
+}
+
+.cadastrar-rotina-form input[type="text"],
+.cadastrar-rotina-form textarea {
+  width: 100%;
+  background-color: var(--movetec-fundo);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: var(--movetec-texto-principal);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.cadastrar-rotina-form input[type="text"]:focus,
+.cadastrar-rotina-form textarea:focus {
+  border-color: var(--movetec-laranja);
+  background-color: var(--movetec-branco);
+  box-shadow: 0 0 0 3px rgba(255, 85, 46, 0.15);
+}
+
+.cadastrar-rotina-form textarea {
+  resize: vertical;
+}
+
+.cadastrar-rotina-aviso-catalogo {
+  background-color: #fffbe3;
+  border: 1px solid #fce99f;
+  color: #856404;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin: 8px 0;
+}
+
+/* SEÇÃO DE GRUPOS */
+.cadastrar-rotina-grupos-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--movetec-borda);
+}
+
+.cadastrar-rotina-grupos-topo span {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--movetec-azul-escuro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.cadastrar-rotina-add-grupo-btn {
+  background: var(--movetec-laranja-suave);
+  border: 1px solid rgba(255, 85, 46, 0.3);
+  color: var(--movetec-laranja);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cadastrar-rotina-add-grupo-btn:hover {
+  background: var(--movetec-laranja);
+  color: var(--movetec-branco);
+}
+
+.cadastrar-rotina-grupos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cadastrar-rotina-grupo-card {
+  background-color: var(--movetec-fundo);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cadastrar-rotina-grupo-topo {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.cadastrar-rotina-grupo-nome-input {
+  flex: 1;
+  background-color: var(--movetec-branco) !important;
+}
+
+.cadastrar-rotina-remover-grupo-btn {
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  color: var(--movetec-texto-secundario);
+  transition: all 0.2s ease;
+}
+
+.cadastrar-rotina-remover-grupo-btn:hover {
+  background-color: var(--movetec-vermelho-suave);
+  color: var(--movetec-vermelho);
+}
+
+/* SELEÇÃO DE TREINOS DENTRO DO GRUPO */
+.cadastrar-rotina-treinos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cadastrar-rotina-treino-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background-color: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+}
+
+.cadastrar-rotina-treino-item:hover {
+  border-color: rgba(255, 85, 46, 0.4);
+}
+
+.cadastrar-rotina-treino-item.marcado {
+  background-color: var(--movetec-laranja-suave);
+  border-color: var(--movetec-laranja);
+}
+
+.cadastrar-rotina-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1.5px solid var(--movetec-borda);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--movetec-branco);
+  background-color: var(--movetec-branco);
+  transition: all 0.15s ease;
+}
+
+.cadastrar-rotina-check.marcado {
+  background-color: var(--movetec-laranja);
+  border-color: var(--movetec-laranja);
+}
+
+.cadastrar-rotina-treino-icone {
+  font-size: 1rem;
+}
+
+.cadastrar-rotina-treino-nome {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--movetec-azul-escuro);
+}
+
+/* MENSAGEM DE ERRO */
+.cadastrar-rotina-erro {
+  background-color: var(--movetec-vermelho-suave);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: var(--movetec-vermelho);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  text-align: center;
+  margin: 4px 0 0;
+}
+
+/* BOTÃO SALVAR */
+.cadastrar-rotina-salvar-btn {
+  margin-top: 8px;
+  width: 100%;
+  background-color: var(--movetec-laranja);
+  color: var(--movetec-branco);
+  border: none;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(255, 85, 46, 0.25);
+}
+
+.cadastrar-rotina-salvar-btn:hover:not(:disabled) {
+  background-color: var(--movetec-laranja-hover);
+  transform: translateY(-1px);
+}
+
+.cadastrar-rotina-salvar-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* RESPONSIVIDADE (DESKTOP) */
+@media (min-width: 900px) {
+  .cadastrar-rotina-page {
+    padding: 40px 20px 120px;
+  }
+
+  .cadastrar-rotina-header,
+  .cadastrar-rotina-conteudo {
+    max-width: 560px;
+  }
+
+  .cadastrar-rotina-form {
+    padding: 28px 24px;
+  }
+}
