@@ -72,8 +72,10 @@ export async function listarTreinos(db, apenasEspecificas = false) {
     const colecao = db.collection(NOME_COLECAO);
     const filtro = apenasEspecificas ? { especifica: true } : {};
 
-    const treinos = await colecao.find(filtro).sort({ criadoEm: -1 }).toArray();
-    return popularExercicios(db, treinos);
+    const pipeline = montarPipelinePopularExercicios(filtro);
+    pipeline.splice(1, 0, { $sort: { criadoEm: -1 } });
+
+    return colecao.aggregate(pipeline).toArray();
 }
 
 function montarPipelinePopularExercicios(filtro) {
@@ -135,4 +137,12 @@ export async function excluirTreino(db, id) {
         _id: new ObjectId(id),
     });
     return resultado.deletedCount > 0;
+}
+
+function montarItensExercicios(itens) {
+    return itens.map((item) => ({
+        exercicioId: new ObjectId(item.exercicioId),
+        series: item.series,
+        repeticoes: item.repeticoes,
+    }));
 }

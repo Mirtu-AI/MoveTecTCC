@@ -53,7 +53,7 @@ export default function TelaAlunoLicitacao() {
 
   const [perfil, setPerfil] = useState<Perfil | null>(null);
   const [atividades, setAtividades] = useState<AtividadeProposta[]>([]);
-  const [rotinas, setRotinas] = useState<Treino[]>([]);
+  const [rotinas, setRotinas] = useState<Rotina[]>([]); // troca o tipo de Treino[] pra Rotina[]
   const [especificas, setEspecificas] = useState<Treino[]>([]);
   const [historico, setHistorico] = useState<HistoricoTreino[]>([]);
   const [busca, setBusca] = useState("");
@@ -65,6 +65,7 @@ export default function TelaAlunoLicitacao() {
     carregarDados();
   }, []);
 
+
   async function carregarDados() {
     try {
       const token = localStorage.getItem("token");
@@ -73,17 +74,16 @@ export default function TelaAlunoLicitacao() {
       const [respPerfil, respAtividades, respRotinas, respEspecificas, respHistorico] = await Promise.all([
         axios.get("http://localhost:3000/api/aluno/perfil", cabecalho),
         axios.get("http://localhost:3000/api/aluno/atividades", cabecalho),
-        axios.get("http://localhost:3000/api/aluno/treinos?tipo=rotina", cabecalho),
         axios.get("http://localhost:3000/api/aluno/rotinas", cabecalho),
+        axios.get("http://localhost:3000/api/aluno/treinos?tipo=especifica", cabecalho),
         axios.get("http://localhost:3000/api/aluno/historico", cabecalho).catch(() => ({ data: { historico: [] } })),
       ]);
 
       setPerfil(respPerfil.data.aluno || null);
       setAtividades(respAtividades.data.atividades || []);
-      setRotinas(respRotinas.data.treinos || []);
+      setRotinas(respRotinas.data.rotinas || []);
       setEspecificas(respEspecificas.data.treinos || []);
       setHistorico(respHistorico.data.historico || []);
-      setRotinas(respRotinas.data.rotinas || [])
 
       setStreakAnimando(true);
       setTimeout(() => setStreakAnimando(false), 900);

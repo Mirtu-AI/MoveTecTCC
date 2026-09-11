@@ -142,7 +142,11 @@ export default function CadastrarTreino() {
 
       navigate("/professor/treinos");
     } catch (err: any) {
-      const mensagem = err.response?.data?.erros?.[0] || "Não foi possível salvar o treino.";
+      const mensagem =
+        err.response?.data?.erros?.[0] ||
+        err.response?.data?.erro ||
+        "Não foi possível salvar o treino. Tente novamente em instantes.";
+      setErro(mensagem);
       setErro(mensagem);
     } finally {
       setCarregando(false);
