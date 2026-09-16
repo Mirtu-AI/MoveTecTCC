@@ -11,6 +11,7 @@ interface Aluno {
     descricao?: string | null;
     email: string;
     foto?: string | null;
+    conquistasFixadas?: string[]; // <-- novo
 }
 interface Conquista {
     id: string;
@@ -41,6 +42,10 @@ export default function PerfilAluno() {
     const [descricaoInput, setDescricaoInput] = useState("");
     const [salvandoDescricao, setSalvandoDescricao] = useState(false);
 
+    const [editandoConquistas, setEditandoConquistas] = useState(false);
+    const [selecaoTemp, setSelecaoTemp] = useState<string[]>([]);
+    const [salvandoConquistas, setSalvandoConquistas] = useState(false);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -55,6 +60,8 @@ export default function PerfilAluno() {
                 ]);
 
                 const dadosAluno = respAluno.data.aluno || null;
+                setAluno(dadosAluno);
+                setSelecaoTemp(dadosAluno?.conquistasFixadas || []);
                 setAluno(dadosAluno);
                 setNomeSocialInput(dadosAluno?.nomeSocial || dadosAluno?.nome || "");
                 setDescricaoInput(dadosAluno?.descricao || "");
@@ -152,6 +159,32 @@ export default function PerfilAluno() {
 
     const nomeExibido = aluno?.nomeSocial || aluno?.nome || "";
 
+    function alternarSelecaoConquista(id: string) {
+        setSelecaoTemp((atual) => {
+            if (atual.includes(id)) return atual.filter((c) => c !== id);
+            if (atual.length >= 3) return atual; // limite de 3
+            return [...atual, id];
+        });
+    }
+
+    async function salvarConquistasFixadas() {
+        setSalvandoConquistas(true);
+        try {
+            const token = localStorage.getItem("token");
+            await axios.put(
+                "http://localhost:3000/api/aluno/conquistas-fixadas",
+                { conquistaIds: selecaoTemp },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            setAluno((atual) => (atual ? { ...atual, conquistasFixadas: selecaoTemp } : atual));
+            setEditandoConquistas(false);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setSalvandoConquistas(false);
+        }
+    }
+
     return (
         <div className="perfil-aluno-page">
             <NavegacaoAluno />
@@ -243,21 +276,76 @@ export default function PerfilAluno() {
 
                         <div className="perfil-aluno-card-container">
                             <div className="perfil-aluno-secao">
-                                <span className="perfil-aluno-secao-titulo">Conquistas</span>
-                                <div className="perfil-aluno-conquistas">
-                                    {desempenho?.conquistas.map((conquista) => (
-                                        <span
-                                            key={conquista.id}
-                                            className={`perfil-aluno-medalha-wrap ${conquista.desbloqueada ? "desbloqueada" : ""}`}
-                                        >
-                                            <span className="perfil-aluno-medalha">🎖️</span>
-                                            <span className="perfil-aluno-medalha-tooltip">{conquista.nome}</span>
-                                        </span>
-                                    ))}
+                                <div className="perfil-aluno-conquistas-topo">
+                                    <span className="perfil-aluno-secao-titulo">Conquistas</span>
+                                    <button
+                                        type="button"
+                                        className="perfil-aluno-conquistas-editar-btn"
+                                        onClick={() => {
+                                            if (editandoConquistas) {
+                                                setSelecaoTemp(aluno.conquistasFixadas || []);
+                                            }
+                                            setEditandoConquistas((atual) => !atual);
+                                        }}
+                                    >
+                                        {editandoConquistas ? "Cancelar" : "Escolher"}
+                                    </button>
                                 </div>
+
+                                <div className="perfil-aluno-conquistas">
+                                    {(editandoConquistas
+                                        ? desempenho?.conquistas
+                                        : desempenho?.conquistas.filter((c) =>
+                                            (aluno.conquistasFixadas && aluno.conquistasFixadas.length > 0
+                                                ? aluno.conquistasFixadas
+                                                : desempenho.conquistas.filter((x) => x.desbloqueada).slice(0, 3).map((x) => x.id)
+                                            ).includes(c.id)
+                                        )
+                                    )?.map((conquista) => {
+                                        const selecionada = selecaoTemp.includes(conquista.id);
+                                        return (
+                                            <span
+                                                key={conquista.id}
+                                                className={`perfil-aluno-medalha-wrap ${conquista.desbloqueada ? "desbloqueada" : ""} ${editandoConquistas && conquista.desbloqueada ? "selecionavel" : ""
+                                                    } ${selecionada ? "selecionada" : ""}`}
+                                                onClick={() => {
+                                                    if (editandoConquistas && conquista.desbloqueada) alternarSelecaoConquista(conquista.id);
+                                                }}
+                                            >
+                                                <span className="perfil-aluno-medalha">🎖️</span>
+                                                <span className="perfil-aluno-medalha-tooltip">{conquista.nome}</span>
+                                            </span>
+                                        );
+                                    })}
+                                </div>
+
+                                {editandoConquistas && (
+                                    <>
+                                        <p className="perfil-aluno-conquistas-aviso">Escolha até 3 conquistas para exibir no seu perfil.</p>
+                                        <button
+                                            type="button"
+                                            className="btn btn-filled"
+                                            onClick={salvarConquistasFixadas}
+                                            disabled={salvandoConquistas}
+                                        >
+                                            {salvandoConquistas ? "Salvando..." : "✓ Salvar"}
+                                        </button>
+                                    </>
+                                )}
                             </div>
 
-                            <div className="perfil-aluno-secao">
+                            <div
+                                className="perfil-aluno-secao perfil-aluno-secao-clicavel"
+                                onClick={() => navigate("/aluno/desempenho")}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter" || e.key === " ") {
+                                        e.preventDefault();
+                                        navigate("/aluno/desempenho");
+                                    }
+                                }}
+                            >
                                 <span className="perfil-aluno-secao-titulo">Desempenho</span>
                                 <div className="perfil-aluno-desempenho">
                                     <p>
@@ -285,7 +373,7 @@ export default function PerfilAluno() {
                                 <button
                                     type="button"
                                     className="btn btn-outline"
-                                    onClick={() => navigate("/aluno/historico")}
+                                    onClick={() => navigate("/aluno/minha-historia")}
                                 >
                                     Histórico
                                 </button>

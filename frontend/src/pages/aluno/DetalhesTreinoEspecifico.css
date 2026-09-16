@@ -1,0 +1,212 @@
+/* ==========================================================================
+   DETALHES DO TREINO ESPECÍFICO (ALUNO) - IDENTIDADE MOVETEC
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+.detalhes-treino-especifico-page {
+  min-height: 100vh;
+  background-color: var(--papel-branco);
+  /* Textura de caderno */
+  background-image:
+    linear-gradient(var(--papel-linha) 1px, transparent 1px),
+    linear-gradient(90deg, var(--papel-linha) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+}
+
+.detalhes-treino-especifico-mensagem {
+  text-align: center;
+  color: var(--cinza-texto);
+  margin-top: 60px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.95rem;
+}
+
+/* HEADER */
+.detalhes-treino-especifico-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 24px;
+  background-color: var(--branco);
+  border-bottom: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+.detalhes-treino-especifico-voltar {
+  background: none;
+  border: 2px solid var(--papel-linha);
+  color: var(--azul-marinho);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.detalhes-treino-especifico-voltar:hover {
+  background-color: var(--laranja-move);
+  border-color: var(--laranja-move);
+  color: var(--branco);
+}
+
+.detalhes-treino-especifico-header h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.3rem;
+  margin: 0;
+  color: var(--azul-marinho);
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* CONTEÚDO */
+.detalhes-treino-especifico-conteudo {
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+/* MÍDIA */
+.detalhes-treino-especifico-midia {
+  width: 100%;
+  height: 180px;
+  border-radius: 16px;
+  background-color: var(--branco);
+  border: 1.5px dashed var(--papel-linha);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  font-size: 2.4rem;
+}
+
+.detalhes-treino-especifico-midia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* DESCRIÇÃO */
+.detalhes-treino-especifico-descricao {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.92rem;
+  color: var(--cinza-texto);
+  background-color: var(--branco);
+  border: 1.5px solid var(--papel-linha);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+/* TÍTULO DE SEÇÃO */
+.detalhes-treino-especifico-secao-titulo {
+  display: block;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--azul-marinho);
+  margin-bottom: 10px;
+}
+
+/* LISTA DE EXERCÍCIOS */
+.detalhes-treino-especifico-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.detalhes-treino-especifico-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background-color: var(--branco);
+  border: 1.5px solid var(--papel-linha);
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  transition: all 0.2s ease;
+}
+
+.detalhes-treino-especifico-item:hover {
+  border-color: rgba(242, 101, 34, 0.4);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+}
+
+.detalhes-treino-especifico-item-nome {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  color: var(--azul-marinho);
+  font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.detalhes-treino-especifico-item-detalhe {
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--laranja-move);
+  background-color: rgba(242, 101, 34, 0.1);
+  border-radius: 999px;
+  padding: 4px 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* BOTAO COMEÇAR */
+.detalhes-treino-especifico-comecar-btn {
+  width: 100%;
+  padding: 14px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  border: 1.5px solid var(--laranja-move);
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(242, 101, 34, 0.3);
+  transition: all 0.2s ease;
+}
+
+.detalhes-treino-especifico-comecar-btn:hover:not(:disabled) {
+  background-color: #d85418;
+  border-color: #d85418;
+  transform: translateY(-1px);
+}
+
+.detalhes-treino-especifico-comecar-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@media (max-width: 480px) {
+  .detalhes-treino-especifico-header {
+    padding: 14px 16px;
+  }
+
+  .detalhes-treino-especifico-conteudo {
+    padding: 16px 12px 32px;
+  }
+
+  .detalhes-treino-especifico-midia {
+    height: 150px;
+  }
+}

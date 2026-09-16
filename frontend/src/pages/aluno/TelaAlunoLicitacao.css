@@ -733,6 +733,25 @@ html, body {
   animation: cair-confete 1.4s ease-in forwards;
 }
 
+.aluno-home-aviso-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: #fff4e6;
+  border: 1px solid orange;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+
+.aluno-home-aviso-fechar {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1em;
+  color: #666;
+}
+
 @keyframes cair-confete {
   0% {
     transform: translateY(0) rotate(0deg);

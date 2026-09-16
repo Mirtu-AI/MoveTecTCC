@@ -7,6 +7,7 @@ interface Perfil {
   nome: string;
   apelidoStreak?: string | null;
   streakAtual?: number;
+  maiorStreak?: number; // <-- novo
 }
 
 interface HistoricoTreino {
@@ -152,6 +153,11 @@ export default function TelaFoguinho() {
         <p className="foguinho-texto">
           Sequência atual: {perfil?.streakAtual || 0} dia{(perfil?.streakAtual || 0) === 1 ? "" : "s"}
         </p>
+        {(perfil?.maiorStreak || 0) > 0 && (
+          <p className="foguinho-recorde">
+            🏆 Recorde: {perfil?.maiorStreak} dia{(perfil?.maiorStreak || 0) === 1 ? "" : "s"}
+          </p>
+        )}
 
         <div className="foguinho-calendario">
           <div className="foguinho-calendario-topo">

@@ -9,6 +9,12 @@ interface ExercicioItem {
   exercicio: { nome: string; tempoEstimado: number | null } | null;
 }
 
+interface Feedback {
+  reacao: string;
+  comentario: string | null;
+  dadoEm: string;
+}
+
 interface Atividade {
   titulo: string;
   midiaUrl: string | null;
@@ -18,6 +24,7 @@ interface Atividade {
   permiteArquivoAlternativo: boolean;
   arquivoAlternativoAluno: { nome: string } | null;
   exercicios: ExercicioItem[];
+  feedback?: Feedback | null;
 }
 
 export default function DetalhesAtividadeAluno() {
@@ -183,6 +190,26 @@ export default function DetalhesAtividadeAluno() {
             />
           </div>
         </div>
+
+        {atividadeFinalizada && (
+          <div className={`detalhes-atividade-aluno-feedback-card ${atividade.feedback ? "recebido" : "aguardando"}`}>
+            {atividade.feedback ? (
+              <>
+                <span className="detalhes-atividade-aluno-feedback-emoji">{atividade.feedback.reacao}</span>
+                <span className="detalhes-atividade-aluno-feedback-titulo">Seu professor avaliou sua atividade!</span>
+                {atividade.feedback.comentario && (
+                  <p className="detalhes-atividade-aluno-feedback-comentario">
+                    "{atividade.feedback.comentario}"
+                  </p>
+                )}
+              </>
+            ) : (
+              <p className="detalhes-atividade-aluno-feedback-texto-aguardando">
+                ⏳ Atividade enviada! Seu professor ainda vai avaliar.
+              </p>
+            )}
+          </div>
+        )}
 
         <span className="detalhes-atividade-aluno-secao-titulo">Exercícios</span>
 

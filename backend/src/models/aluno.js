@@ -211,3 +211,37 @@ export async function atualizarPerfilSocial(db, id, { nomeSocial, descricao }) {
 
     return { sucesso: true };
 }
+
+export async function ocultarAviso(db, alunoId, avisoId) {
+    if (!ObjectId.isValid(avisoId)) {
+        return { sucesso: false, erro: 'ID de aviso inválido.' };
+    }
+
+    const colecao = db.collection(NOME_COLECAO);
+    const resultado = await colecao.updateOne(
+        { _id: new ObjectId(alunoId) },
+        { $addToSet: { avisosOcultosIds: new ObjectId(avisoId) } }
+    );
+
+    if (resultado.matchedCount === 0) {
+        return { sucesso: false, erro: 'Aluno não encontrado.' };
+    }
+    return { sucesso: true };
+}
+
+export async function atualizarConquistasFixadas(db, id, conquistaIds) {
+    if (!Array.isArray(conquistaIds) || conquistaIds.length > 3) {
+        return { sucesso: false, erro: 'Selecione no máximo 3 conquistas.' };
+    }
+
+    const colecao = db.collection(NOME_COLECAO);
+    const resultado = await colecao.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { conquistasFixadas: conquistaIds } }
+    );
+
+    if (resultado.matchedCount === 0) {
+        return { sucesso: false, erro: 'Aluno não encontrado.' };
+    }
+    return { sucesso: true };
+}

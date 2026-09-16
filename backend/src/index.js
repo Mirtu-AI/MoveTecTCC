@@ -42,7 +42,9 @@ import {
     redefinirSenhaAluno,
     atualizarApelidoStreak,
     atualizarFotoAluno,
-    atualizarPerfilSocial
+    atualizarPerfilSocial,
+    ocultarAviso,
+    atualizarConquistasFixadas
 } from './models/aluno.js';
 import {
     cadastrarExercicio,
@@ -68,6 +70,7 @@ import {
     enviarArquivoAlternativo,
     cancelarEnvioArquivoAlternativo,
     excluirAtividade,
+    darFeedbackAtividade,
 } from './models/atividade.js';
 import {
     cadastrarRotina,
@@ -77,6 +80,19 @@ import {
     excluirRotina,
     verificarEConcluirRotina,
 } from './models/rotina.js';
+import {
+    cadastrarAviso,
+    listarAvisosPorProfessor,
+    excluirAviso,
+    listarAvisosParaAluno,
+    buscarAvisoPorId,
+    atualizarAviso
+} from './models/aviso.js';
+import {
+    iniciarExecucaoTreino,
+    buscarExecucaoTreino,
+    alternarConclusaoExercicioTreino
+} from './models/execucaoTreino.js';
 
 
 dotenv.config();
@@ -134,6 +150,10 @@ async function main() {
         await db.collection('rotinas').createIndex({ professorId: 1 });
         await db.collection('rotinas').createIndex({ 'grupos.treinos': 1 });
         await db.collection('registrosRotina').createIndex({ alunoId: 1 });
+        await db.collection('avisos').createIndex({ professorId: 1 });
+        await db.collection('avisos').createIndex({ salaId: 1 });
+        await db.collection('registrosTreino').createIndex({ alunoId: 1, rotinaId: 1 });
+        await db.collection('execucoesTreino').createIndex({ alunoId: 1 });
         console.log('Índices garantidos');
     }
 
@@ -369,6 +389,66 @@ async function main() {
             });
         }
     });
+    app.post('/api/professor/avisos', autenticarProfessor, async (req, res) => {
+        try {
+            const resultado = await cadastrarAviso(db, req.professorId, req.body);
+            if (!resultado.sucesso) return res.status(400).send({ success: false, erros: resultado.erros });
+            res.status(201).send({ success: true, id: resultado.id });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao cadastrar aviso.' });
+        }
+    });
+
+    app.get('/api/professor/avisos', autenticarProfessor, async (req, res) => {
+        try {
+            const avisos = await listarAvisosPorProfessor(db, req.professorId);
+            res.send({ success: true, avisos });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao buscar avisos.' });
+        }
+    });
+
+    app.delete('/api/professor/avisos/:id', autenticarProfessor, async (req, res) => {
+        try {
+            const excluido = await excluirAviso(db, req.params.id, req.professorId);
+            if (!excluido) {
+                return res.status(404).send({ success: false, erro: 'Aviso não encontrado ou você não tem permissão para excluí-lo.' });
+            }
+            res.send({ success: true, body: 'Aviso excluído com sucesso.' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao excluir aviso.' });
+        }
+    });
+
+    app.get('/api/professor/avisos/:id', autenticarProfessor, async (req, res) => {
+        try {
+            const aviso = await buscarAvisoPorId(db, req.params.id);
+            if (!aviso) return res.status(404).send({ success: false, erro: 'Aviso não encontrado.' });
+
+            if (aviso.professorId.toString() !== req.professorId) {
+                return res.status(403).send({ success: false, erro: 'Você não tem acesso a esse aviso.' });
+            }
+
+            res.send({ success: true, aviso });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao buscar aviso.' });
+        }
+    });
+
+    app.put('/api/professor/avisos/:id', autenticarProfessor, async (req, res) => {
+        try {
+            const resultado = await atualizarAviso(db, req.params.id, req.professorId, req.body);
+            if (!resultado.sucesso) return res.status(400).send({ success: false, erros: resultado.erros });
+            res.send({ success: true, body: 'Aviso atualizado com sucesso.' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao atualizar aviso.' });
+        }
+    });
 
     // ---------- SALAS ----------
 
@@ -597,6 +677,104 @@ async function main() {
         } catch (err) {
             console.error(err);
             res.status(500).send({ success: false, erro: 'Erro ao atualizar perfil.' });
+        }
+    });
+
+    app.get('/api/aluno/avisos', autenticarAluno, async (req, res) => {
+        try {
+            const aluno = await buscarAlunoPorId(db, req.alunoId);
+            if (!aluno || !aluno.salaId) {
+                return res.send({ success: true, avisos: [] });
+            }
+
+            const sala = await buscarSalaPorId(db, aluno.salaId);
+            if (!sala) {
+                return res.send({ success: true, avisos: [] });
+            }
+
+            const avisos = await listarAvisosParaAluno(
+                db,
+                aluno.salaId,
+                sala.professorId,
+                aluno.avisosOcultosIds || []
+            );
+
+            res.send({ success: true, avisos });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao buscar avisos.' });
+        }
+    });
+
+    app.put('/api/aluno/avisos/:id/ocultar', autenticarAluno, async (req, res) => {
+        try {
+            const resultado = await ocultarAviso(db, req.alunoId, req.params.id);
+            if (!resultado.sucesso) return res.status(400).send({ success: false, erro: resultado.erro });
+            res.send({ success: true });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao ocultar aviso.' });
+        }
+    });
+
+    app.get('/api/aluno/treinos/:id', autenticarAluno, async (req, res) => {
+        try {
+            const treino = await buscarTreinoPorId(db, req.params.id);
+            if (!treino) return res.status(404).send({ success: false, erro: 'Treino não encontrado.' });
+            res.send({ success: true, treino });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao buscar treino.' });
+        }
+    });
+
+    app.put('/api/aluno/conquistas-fixadas', autenticarAluno, async (req, res) => {
+        try {
+            const { conquistaIds } = req.body;
+            const resultado = await atualizarConquistasFixadas(db, req.alunoId, conquistaIds);
+
+            if (!resultado.sucesso) {
+                return res.status(400).send({ success: false, erro: resultado.erro });
+            }
+
+            res.send({ success: true, body: 'Conquistas atualizadas com sucesso.' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao atualizar conquistas.' });
+        }
+    });
+
+    app.post('/api/aluno/treinos/:id/iniciar-execucao', autenticarAluno, async (req, res) => {
+        try {
+            const { rotinaId } = req.body;
+            const resultado = await iniciarExecucaoTreino(db, req.alunoId, req.params.id, rotinaId);
+            if (!resultado.sucesso) return res.status(400).send({ success: false, erro: resultado.erro });
+            res.status(201).send({ success: true, execucaoId: resultado.id });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao iniciar execução.' });
+        }
+    });
+
+    app.get('/api/aluno/execucoes-treino/:id', autenticarAluno, async (req, res) => {
+        try {
+            const execucao = await buscarExecucaoTreino(db, req.params.id, req.alunoId);
+            if (!execucao) return res.status(404).send({ success: false, erro: 'Execução não encontrada.' });
+            res.send({ success: true, execucao });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao buscar execução.' });
+        }
+    });
+
+    app.put('/api/aluno/execucoes-treino/:id/exercicios/:exercicioId', autenticarAluno, async (req, res) => {
+        try {
+            const resultado = await alternarConclusaoExercicioTreino(db, req.params.id, req.alunoId, req.params.exercicioId);
+            if (!resultado.sucesso) return res.status(400).send({ success: false, erro: resultado.erro });
+            res.send({ success: true, progresso: resultado.progresso, finalizada: resultado.finalizada });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao atualizar exercício.' });
         }
     });
 
@@ -1066,6 +1244,21 @@ async function main() {
         }
     });
 
+    app.put('/api/professor/atividades/:id/feedback', autenticarProfessor, async (req, res) => {
+        try {
+            const { reacao, comentario } = req.body;
+            const resultado = await darFeedbackAtividade(db, req.params.id, req.professorId, { reacao, comentario });
+
+            if (!resultado.sucesso) {
+                return res.status(400).send({ success: false, erro: resultado.erro });
+            }
+
+            res.send({ success: true, body: 'Feedback enviado com sucesso.' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao enviar feedback.' });
+        }
+    });
     // ---------- ROTINAS (professor) ----------
 
     app.post('/api/professor/rotinas', autenticarProfessor, async (req, res) => {
@@ -1144,6 +1337,22 @@ async function main() {
         } catch (err) {
             console.error(err);
             res.status(500).send({ success: false, erro: 'Erro ao buscar rotina.' });
+        }
+    });
+    app.post('/api/aluno/treinos/:id/concluir', autenticarAluno, async (req, res) => {
+        try {
+            const treino = await buscarTreinoPorId(db, req.params.id);
+            if (!treino) return res.status(404).send({ success: false, erro: 'Treino não encontrado.' });
+
+            const { rotinaId } = req.body; // <-- novo
+
+            const resultado = await registrarTreinoConcluido(db, req.alunoId, req.params.id, rotinaId);
+            await verificarEConcluirRotina(db, req.alunoId, req.params.id, rotinaId); // <-- passa o contexto
+
+            res.send({ success: true, streakAtual: resultado.streakAtual });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao registrar treino concluído.' });
         }
     });
 

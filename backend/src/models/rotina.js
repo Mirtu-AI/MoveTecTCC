@@ -136,49 +136,47 @@ function inicioDoDia(data) {
     return d;
 }
 
-export async function verificarEConcluirRotina(db, alunoId, treinoId) {
+export async function verificarEConcluirRotina(db, alunoId, treinoId, rotinaId) {
+    if (!rotinaId) return; // conclusão fora de contexto de rotina — nada a verificar
+
     const colecaoRotinas = db.collection(NOME_COLECAO);
     const colecaoRegistrosTreino = db.collection(NOME_COLECAO_REGISTROS_TREINO);
     const colecaoRegistrosRotina = db.collection(NOME_COLECAO_REGISTROS_ROTINA);
 
-    const treinoObjectId = new ObjectId(treinoId);
-
-    // Acha as rotinas que contêm esse treino em algum grupo
-    const rotinas = await colecaoRotinas.find({ 'grupos.treinos': treinoObjectId }).toArray();
-    if (rotinas.length === 0) return;
+    const rotina = await colecaoRotinas.findOne({ _id: new ObjectId(rotinaId) });
+    if (!rotina) return;
 
     const hoje = inicioDoDia(new Date());
     const amanha = new Date(hoje);
     amanha.setDate(amanha.getDate() + 1);
 
-    for (const rotina of rotinas) {
-        const idsUnicos = [...new Set(rotina.grupos.flatMap((g) => g.treinos.map((id) => id.toString())))];
+    const idsUnicos = [...new Set(rotina.grupos.flatMap((g) => g.treinos.map((id) => id.toString())))];
 
-        const registrosHoje = await colecaoRegistrosTreino
-            .find({
-                alunoId: new ObjectId(alunoId),
-                treinoId: { $in: idsUnicos.map((id) => new ObjectId(id)) },
-                concluidoEm: { $gte: hoje, $lt: amanha },
-            })
-            .toArray();
+    const registrosHoje = await colecaoRegistrosTreino
+        .find({
+            alunoId: new ObjectId(alunoId),
+            treinoId: { $in: idsUnicos.map((id) => new ObjectId(id)) },
+            rotinaId: new ObjectId(rotinaId), // <-- só conta o que foi feito NESSA rotina
+            concluidoEm: { $gte: hoje, $lt: amanha },
+        })
+        .toArray();
 
-        const idsConcluidosHoje = new Set(registrosHoje.map((r) => r.treinoId.toString()));
-        const rotinaCompleta = idsUnicos.every((id) => idsConcluidosHoje.has(id));
+    const idsConcluidosHoje = new Set(registrosHoje.map((r) => r.treinoId.toString()));
+    const rotinaCompleta = idsUnicos.every((id) => idsConcluidosHoje.has(id));
 
-        if (!rotinaCompleta) continue;
+    if (!rotinaCompleta) return;
 
-        const jaRegistrada = await colecaoRegistrosRotina.findOne({
+    const jaRegistrada = await colecaoRegistrosRotina.findOne({
+        alunoId: new ObjectId(alunoId),
+        rotinaId: rotina._id,
+        concluidaEm: { $gte: hoje, $lt: amanha },
+    });
+
+    if (!jaRegistrada) {
+        await colecaoRegistrosRotina.insertOne({
             alunoId: new ObjectId(alunoId),
             rotinaId: rotina._id,
-            concluidaEm: { $gte: hoje, $lt: amanha },
+            concluidaEm: new Date(),
         });
-
-        if (!jaRegistrada) {
-            await colecaoRegistrosRotina.insertOne({
-                alunoId: new ObjectId(alunoId),
-                rotinaId: rotina._id,
-                concluidaEm: new Date(),
-            });
-        }
     }
 }

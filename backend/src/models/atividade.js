@@ -4,6 +4,7 @@ const NOME_COLECAO = 'atividades';
 const NOME_COLECAO_EXERCICIOS = 'exercicios';
 
 const EXTENSOES_PERMITIDAS = ['.docx', '.pdf', '.pptx'];
+const REACOES_VALIDAS = ['🔥', '👏', '💪', '⭐', '🎯', '🚀'];
 
 function validarExercicios(exercicioIds) {
     return Array.isArray(exercicioIds) && exercicioIds.length > 0 && exercicioIds.every((id) => ObjectId.isValid(id));
@@ -332,4 +333,42 @@ export async function excluirAtividade(db, id, professorId) {
     });
 
     return resultado.deletedCount > 0;
+}
+
+export async function darFeedbackAtividade(db, atividadeId, professorId, { reacao, comentario }) {
+    if (!ObjectId.isValid(atividadeId)) {
+        return { sucesso: false, erro: 'ID inválido.' };
+    }
+    if (!REACOES_VALIDAS.includes(reacao)) {
+        return { sucesso: false, erro: 'Reação inválida.' };
+    }
+    if (comentario && comentario.length > 140) {
+        return { sucesso: false, erro: 'Comentário deve ter no máximo 140 caracteres.' };
+    }
+
+    const colecao = db.collection(NOME_COLECAO);
+    const atividade = await colecao.findOne({ _id: new ObjectId(atividadeId) });
+    if (!atividade) {
+        return { sucesso: false, erro: 'Atividade não encontrada.' };
+    }
+
+    // Novo: só permite feedback depois que o aluno entregou
+    if (atividade.status !== 'entregue') {
+        return { sucesso: false, erro: 'Só é possível dar feedback depois que o aluno enviar a atividade.' };
+    }
+
+    const resultado = await colecao.updateOne(
+        { _id: new ObjectId(atividadeId) },
+        {
+            $set: {
+                feedback: {
+                    reacao,
+                    comentario: comentario?.trim() || null,
+                    dadoEm: new Date(),
+                },
+            },
+        }
+    );
+
+    return { sucesso: true };
 }

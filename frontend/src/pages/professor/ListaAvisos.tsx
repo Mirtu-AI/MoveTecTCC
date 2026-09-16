@@ -1,39 +1,39 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import "./ListaRotinas.css";
+import "./ListaAvisos.css";
 import Logotipo from "../../assets/logo/Logo_MoveTec.png";
 import ModalConfirmacao from "../components/ModalConfirmacao";
 
-interface Rotina {
+interface Aviso {
   _id: string;
   titulo: string;
   descricao: string;
-  grupos: { nome: string; treinos: any[] }[];
+  data: string;
+  salaId: string | null;
 }
 
-export default function ListaRotinas() {
-  const [rotinas, setRotinas] = useState<Rotina[]>([]);
+export default function ListaAvisos() {
+  const [avisos, setAvisos] = useState<Aviso[]>([]);
   const [carregando, setCarregando] = useState(true);
-  const [busca, setBusca] = useState("");
 
-  const [rotinaSelecionada, setRotinaSelecionada] = useState<Rotina | null>(null);
+  const [avisoSelecionado, setAvisoSelecionado] = useState<Aviso | null>(null);
   const [modalExcluirAberto, setModalExcluirAberto] = useState(false);
   const [excluindo, setExcluindo] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    buscarRotinas();
+    buscarAvisos();
   }, []);
 
-  async function buscarRotinas() {
+  async function buscarAvisos() {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:3000/api/rotinas", {
+      const response = await axios.get("http://localhost:3000/api/professor/avisos", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setRotinas(response.data.rotinas);
+      setAvisos(response.data.avisos);
     } catch (err) {
       console.error(err);
     } finally {
@@ -41,25 +41,24 @@ export default function ListaRotinas() {
     }
   }
 
-  function abrirModalExcluir(e: React.MouseEvent, rotina: Rotina) {
+  function abrirModalExcluir(e: React.MouseEvent, aviso: Aviso) {
     e.stopPropagation();
-    setRotinaSelecionada(rotina);
+    setAvisoSelecionado(aviso);
     setModalExcluirAberto(true);
   }
 
   async function confirmarExclusao() {
-    if (!rotinaSelecionada) return;
+    if (!avisoSelecionado) return;
 
     setExcluindo(true);
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:3000/api/professor/rotinas/${rotinaSelecionada._id}`, {
+      await axios.delete(`http://localhost:3000/api/professor/avisos/${avisoSelecionado._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       setModalExcluirAberto(false);
-      setRotinaSelecionada(null);
-      buscarRotinas();
+      setAvisoSelecionado(null);
+      buscarAvisos();
     } catch (err) {
       console.error(err);
     } finally {
@@ -67,69 +66,61 @@ export default function ListaRotinas() {
     }
   }
 
-  const rotinasFiltradas = rotinas.filter((rotina) =>
-    rotina.titulo.toLowerCase().includes(busca.toLowerCase())
-  );
+  function formatarData(dataIso: string) {
+    return new Date(dataIso).toLocaleDateString("pt-BR", { timeZone: "UTC" });
+  }
 
   return (
-    <div className="lista-rotinas-page">
+    <div className="lista-avisos-page">
       <NavegacaoProfessor />
 
-      <div className="lista-rotinas-main">
-        <header className="lista-rotinas-header">
-          <h1>Rotinas</h1>
-          <button
-            type="button"
-            className="lista-rotinas-nova-btn"
-            onClick={() => navigate("/professor/rotinas/nova")}
-          >
-            + Nova rotina
+      <div className="lista-avisos-main">
+        <header className="lista-avisos-header">
+          <h1>Central de Avisos</h1>
+          <button type="button" className="lista-avisos-novo-btn" onClick={() => navigate("/professor/avisos/novo")}>
+            + Novo aviso
           </button>
         </header>
 
-        <main className="lista-rotinas-conteudo">
-          <div className="lista-rotinas-busca-container">
-            <input
-              type="text"
-              placeholder="Buscar rotina..."
-              value={busca}
-              onChange={(e) => setBusca(e.target.value)}
-              className="lista-rotinas-busca-input"
-            />
-          </div>
-
-          {carregando && <p className="lista-rotinas-mensagem">Carregando...</p>}
-
-          {!carregando && rotinas.length === 0 && (
-            <p className="lista-rotinas-mensagem">Nenhuma rotina cadastrada ainda.</p>
+        <main className="lista-avisos-conteudo">
+          {carregando && <p className="lista-avisos-mensagem">Carregando...</p>}
+          {!carregando && avisos.length === 0 && (
+            <p className="lista-avisos-mensagem">Nenhum aviso publicado ainda.</p>
           )}
 
-          {!carregando && rotinas.length > 0 && rotinasFiltradas.length === 0 && (
-            <p className="lista-rotinas-mensagem">Nenhuma rotina encontrada para "{busca}".</p>
-          )}
-
-          <div className="rotinas-lista">
-            {rotinasFiltradas.map((rotina) => (
+          <div className="avisos-lista">
+            {avisos.map((aviso) => (
               <div
-                key={rotina._id}
-                className="rotina-card"
-                onClick={() => navigate(`/professor/rotinas/${rotina._id}/editar`)}
+                key={aviso._id}
+                className="aviso-card"
+                onClick={() => navigate(`/professor/avisos/${aviso._id}/editar`)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    navigate(`/professor/avisos/${aviso._id}/editar`);
+                  }
+                }}
               >
-                <div className="rotina-card-topo">
-                  <h3>{rotina.titulo}</h3>
+                <div className="aviso-card-topo">
+                  <div>
+                    <h3>{aviso.titulo}</h3>
+                    <span className="aviso-card-data">{formatarData(aviso.data)}</span>
+                    <span className="aviso-card-destinatario">
+                      {aviso.salaId ? "Sala específica" : "Geral — todos os alunos"}
+                    </span>
+                  </div>
                   <button
                     type="button"
-                    className="rotina-excluir-btn"
-                    onClick={(e) => abrirModalExcluir(e, rotina)}
-                    aria-label="Excluir rotina"
+                    className="aviso-excluir-btn"
+                    onClick={(e) => abrirModalExcluir(e, aviso)}
+                    aria-label="Excluir aviso"
                   >
                     🗑
                   </button>
                 </div>
-                <p className="rotina-card-descricao">{rotina.descricao}</p>
-                <span className="rotina-card-grupos-contagem">
-                  {rotina.grupos.length} {rotina.grupos.length === 1 ? "grupo" : "grupos"}
-                </span>
+                <p className="aviso-card-descricao">{aviso.descricao}</p>
               </div>
             ))}
           </div>
@@ -138,15 +129,15 @@ export default function ListaRotinas() {
 
       <ModalConfirmacao
         aberto={modalExcluirAberto}
-        titulo="Excluir rotina?"
-        mensagem={`Tem certeza que deseja excluir "${rotinaSelecionada?.titulo}"? Essa ação não pode ser desfeita.`}
+        titulo="Excluir aviso?"
+        mensagem={`Tem certeza que deseja excluir "${avisoSelecionado?.titulo}"? Essa ação não pode ser desfeita.`}
         textoConfirmar="Excluir"
         tipo="perigo"
         carregando={excluindo}
         onConfirmar={confirmarExclusao}
         onCancelar={() => {
           setModalExcluirAberto(false);
-          setRotinaSelecionada(null);
+          setAvisoSelecionado(null);
         }}
       />
     </div>

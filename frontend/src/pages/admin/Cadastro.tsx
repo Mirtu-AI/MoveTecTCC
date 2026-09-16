@@ -61,25 +61,25 @@ export default function Cadastro() {
       <div className="login-card-split">
         {/* LADO DA ILUSTRAÇÃO E BRANDING (LOGOTIPO) */}
         <div className="login-image-side">
-          <div className="login-brand-wrapper">
+                    <div className="login-brand-wrapper">
             <img src={Logo} alt="Logotipo MoveTec" className="login-logo-img" />
-            
+
             <p className="login-brand-tagline">
-              O movimento transforma sua escolar.
+              Siga os passos para registrar um novo professor.
             </p>
 
             <div className="login-features-list">
               <div className="login-feature-item">
-                <span className="feature-emoji">❤️</span>
-                <span>Saúde & Energia</span>
+                <span className="feature-emoji">1️⃣</span>
+                <span>Informe o nome completo do professor</span>
               </div>
               <div className="login-feature-item">
-                <span className="feature-emoji">🧠</span>
-                <span>Foco nos Estudos</span>
+                <span className="feature-emoji">2️⃣</span>
+                <span>Cadastre o e-mail que ele vai usar pra fazer login</span>
               </div>
               <div className="login-feature-item">
-                <span className="feature-emoji">🤝</span>
-                <span>Desafios em Turma</span>
+                <span className="feature-emoji">3️⃣</span>
+                <span>Defina uma senha com no mínimo 6 caracteres</span>
               </div>
             </div>
           </div>

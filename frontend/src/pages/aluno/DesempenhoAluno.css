@@ -1,0 +1,435 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --movetec-laranja: #ff552e;
+  --movetec-laranja-hover: #e0441f;
+  --movetec-laranja-suave: #fff0ed;
+  --movetec-azul-escuro: #121929;
+  --movetec-azul-card: #1e293b;
+  --movetec-texto-principal: #1f2937;
+  --movetec-texto-secundario: #6b7280;
+  --movetec-fundo: #f8fafc;
+  --movetec-branco: #ffffff;
+  --movetec-borda: #e2e8f0;
+  --movetec-sucesso: #10b981;
+  --movetec-erro: #ef4444;
+}
+
+/* ESTRUTURA GERAL DA PÁGINA (DASHBOARD) */
+
+.historico-page {
+  min-height: 100vh;
+  background-color: var(--movetec-fundo);
+  background-image: radial-gradient(var(--movetec-borda) 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
+  background-position: 0 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--movetec-texto-principal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 20px 100px;
+}
+.historico-conteudo {
+  width: 100%;
+  max-width: 1100px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+}
+
+.historico-mensagem {
+  color: var(--movetec-texto-secundario);
+  margin-top: 60px;
+  font-size: 0.95rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* CABEÇALHO */
+.historico-header {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.historico-header h1 {
+  flex: 1;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--movetec-azul-escuro);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.historico-voltar {
+  background: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  color: var(--movetec-azul-escuro);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 10px 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(18, 25, 41, 0.04);
+  transition: all 0.2s ease;
+}
+
+.historico-voltar:hover {
+  background-color: var(--movetec-laranja-suave);
+  color: var(--movetec-laranja);
+  border-color: rgba(255, 85, 46, 0.3);
+}
+
+/* 1. CARDS DE RESUMO (TOPO DO DASHBOARD) */
+.historico-cards-resumo {
+  grid-column: span 12;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.historico-card-resumo {
+  background-color: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 18px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 4px 16px rgba(18, 25, 41, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.historico-card-resumo:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(18, 25, 41, 0.07);
+}
+
+.historico-card-numero {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--movetec-azul-escuro);
+  line-height: 1;
+}
+
+.historico-card-numero.positivo {
+  color: var(--movetec-sucesso);
+}
+
+.historico-card-numero.negativo {
+  color: var(--movetec-erro);
+}
+
+.historico-card-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--movetec-texto-secundario);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.historico-card-streak {
+  background: linear-gradient(135deg, #ffffff 0%, #fff6f3 100%);
+  border-color: rgba(255, 85, 46, 0.25);
+}
+
+/* ESTILO BASE DAS SEÇÕES (CARDS DO DASHBOARD) */
+.historico-secao {
+  background-color: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: 0 4px 20px rgba(18, 25, 41, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.historico-secao-titulo {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--movetec-azul-escuro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* 2. DISTRIBUIÇÃO DOS CARDS NO LAYOUT (GRID) */
+
+/* Gráfico Últimos 14 Dias: ocupa 7 colunas */
+.historico-conteudo > .historico-secao:nth-of-type(1) {
+  grid-column: span 7;
+}
+
+/* Gráfico Dias Mais Ativos: ocupa 5 colunas */
+.historico-conteudo > .historico-secao:nth-of-type(2) {
+  grid-column: span 5;
+}
+
+/* Calendário: ocupa 8 colunas */
+.historico-conteudo > .historico-secao:nth-of-type(3) {
+  grid-column: span 8;
+}
+
+/* Conquistas: ocupa 4 colunas */
+.historico-conteudo > .historico-secao:nth-of-type(4) {
+  grid-column: span 4;
+}
+
+/* 3. GRÁFICOS DE BARRAS */
+.historico-grafico-barras {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 160px;
+  gap: 8px;
+  padding-top: 16px;
+}
+
+.historico-barra-coluna {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.historico-barra-trilha {
+  flex: 1;
+  width: 100%;
+  max-width: 28px;
+  background-color: var(--movetec-fundo);
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  position: relative;
+}
+
+.historico-barra {
+  width: 100%;
+  background-color: var(--movetec-borda);
+  border-radius: 12px 12px 0 0;
+  transition: height 0.4s ease-out;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 4px;
+}
+
+.historico-barra.ativa {
+  background-color: var(--movetec-azul-escuro);
+}
+
+.historico-barra.destaque {
+  background-color: var(--movetec-laranja);
+}
+
+.historico-barra-valor {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--movetec-branco);
+}
+
+.historico-barra-label {
+  margin-top: 8px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--movetec-texto-secundario);
+}
+
+/* 4. CALENDÁRIO COMPACTO & ELEGANTE */
+.historico-calendario-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.historico-calendario-total {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--movetec-laranja);
+  background-color: var(--movetec-laranja-suave);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.historico-calendario {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: var(--movetec-fundo);
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--movetec-borda);
+}
+
+.historico-calendario-navegacao-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.historico-mes-nome {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--movetec-azul-escuro);
+  text-transform: capitalize;
+}
+
+.historico-calendario-navegacao {
+  display: flex;
+  gap: 6px;
+}
+
+.historico-calendario-navegacao button {
+  background: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 8px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: var(--movetec-azul-escuro);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.historico-calendario-navegacao button:hover {
+  background-color: var(--movetec-laranja);
+  color: var(--movetec-branco);
+  border-color: var(--movetec-laranja);
+}
+
+.historico-calendario-grade {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  text-align: center;
+}
+
+.historico-calendario-cabecalho span {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--movetec-texto-secundario);
+}
+
+.historico-dia-vazio {
+  height: 36px;
+}
+
+.historico-dia {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--movetec-branco);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--movetec-texto-principal);
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.historico-dia-hoje {
+  border-color: var(--movetec-azul-escuro);
+  font-weight: 800;
+}
+
+.historico-dia-treino {
+  background-color: var(--movetec-laranja);
+  color: var(--movetec-branco);
+  font-weight: 700;
+  box-shadow: 0 3px 8px rgba(255, 85, 46, 0.3);
+}
+
+/* 5. CONQUISTAS EM GRADE */
+.historico-conquistas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  gap: 12px;
+  align-content: start;
+}
+
+.historico-medalha-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  background-color: var(--movetec-fundo);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 50%;
+  opacity: 0.35;
+  filter: grayscale(100%);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.historico-medalha-wrap.desbloqueada {
+  opacity: 1;
+  filter: grayscale(0%);
+  background-color: var(--movetec-laranja-suave);
+  border-color: rgba(255, 85, 46, 0.4);
+}
+
+.historico-medalha-wrap:hover {
+  transform: scale(1.08);
+}
+
+.historico-medalha {
+  font-size: 1.3rem;
+}
+
+.historico-medalha-tooltip {
+  position: absolute;
+  bottom: 115%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--movetec-azul-escuro);
+  color: var(--movetec-branco);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.historico-medalha-wrap:hover .historico-medalha-tooltip {
+  opacity: 1;
+}
+
+/* RESPONSIVIDADE (DISPOSITIVOS MENORES / TABLETS / MOBILE) */
+@media (max-width: 992px) {
+  .historico-conteudo > .historico-secao:nth-of-type(1),
+  .historico-conteudo > .historico-secao:nth-of-type(2),
+  .historico-conteudo > .historico-secao:nth-of-type(3),
+  .historico-conteudo > .historico-secao:nth-of-type(4) {
+    grid-column: span 12;
+  }
+}
+
+@media (max-width: 576px) {
+  .historico-cards-resumo {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .historico-grafico-barras {
+    height: 130px;
+  }
+}

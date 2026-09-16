@@ -3,44 +3,42 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./ExecutarAtividade.css";
 
-interface ExercicioDetalhe {
-  nome: string;
-  midiaUrl: string | null;
-  tempoEstimado: number | null;
-}
-
 interface ExercicioItem {
   exercicioId: string;
   concluido: boolean;
-  exercicio: ExercicioDetalhe | null;
+  exercicio: { nome: string; midiaUrl: string | null; tempoEstimado: number | null } | null;
 }
-
-interface Atividade {
-  titulo: string;
+interface Dados {
   exercicios: ExercicioItem[];
 }
+interface Props {
+  tipo: "atividade" | "treino";
+}
 
-export default function ExecutarAtividade() {
+export default function ExecutarExercicios({ tipo }: Props) {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [atividade, setAtividade] = useState<Atividade | null>(null);
+  const [dados, setDados] = useState<Dados | null>(null);
   const [carregando, setCarregando] = useState(true);
   const [indiceAtual, setIndiceAtual] = useState(0);
   const [tempoRestante, setTempoRestante] = useState(0);
   const [avancando, setAvancando] = useState(false);
 
+  const baseUrl =
+    tipo === "atividade"
+      ? `http://localhost:3000/api/aluno/atividades/${id}`
+      : `http://localhost:3000/api/aluno/execucoes-treino/${id}`;
+
   useEffect(() => {
-    buscarAtividade();
+    buscarDados();
   }, [id]);
 
-  async function buscarAtividade() {
+  async function buscarDados() {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`http://localhost:3000/api/aluno/atividades/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setAtividade(response.data.atividade || null);
+      const response = await axios.get(baseUrl, { headers: { Authorization: `Bearer ${token}` } });
+      setDados((tipo === "atividade" ? response.data.atividade : response.data.execucao) || null);
     } catch (err) {
       console.error(err);
     } finally {
@@ -48,9 +46,9 @@ export default function ExecutarAtividade() {
     }
   }
 
-  const exercicioAtual = atividade?.exercicios[indiceAtual];
+  const exercicioAtual = dados?.exercicios[indiceAtual];
   const tempoTotal = exercicioAtual?.exercicio?.tempoEstimado ?? 0;
-  const ultimoExercicio = atividade ? indiceAtual === atividade.exercicios.length - 1 : false;
+  const ultimoExercicio = dados ? indiceAtual === dados.exercicios.length - 1 : false;
 
   useEffect(() => {
     if (!exercicioAtual) return;
@@ -59,9 +57,7 @@ export default function ExecutarAtividade() {
 
   useEffect(() => {
     if (tempoRestante <= 0) return;
-    const intervalo = setInterval(() => {
-      setTempoRestante((atual) => (atual > 0 ? atual - 1 : 0));
-    }, 1000);
+    const intervalo = setInterval(() => setTempoRestante((a) => (a > 0 ? a - 1 : 0)), 1000);
     return () => clearInterval(intervalo);
   }, [tempoRestante > 0, indiceAtual]);
 
@@ -72,28 +68,28 @@ export default function ExecutarAtividade() {
   }
 
   function voltar() {
-    setIndiceAtual((atual) => Math.max(0, atual - 1));
+    setIndiceAtual((a) => Math.max(0, a - 1));
   }
 
   async function confirmar() {
-    if (!atividade || !exercicioAtual || avancando) return;
+    if (!dados || !exercicioAtual || avancando) return;
 
     setAvancando(true);
     try {
       if (!exercicioAtual.concluido) {
         const token = localStorage.getItem("token");
         await axios.put(
-          `http://localhost:3000/api/aluno/atividades/${id}/exercicios/${exercicioAtual.exercicioId}`,
+          `${baseUrl}/exercicios/${exercicioAtual.exercicioId}`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
       }
 
       if (ultimoExercicio) {
-        navigate(`/aluno/atividades/${id}/parabens`);
+        navigate(`${tipo === "atividade" ? "/aluno/atividades" : "/aluno/execucoes-treino"}/${id}/parabens`);
       } else {
-        setIndiceAtual((atual) => atual + 1);
-        await buscarAtividade();
+        setIndiceAtual((a) => a + 1);
+        await buscarDados();
       }
     } catch (err) {
       console.error(err);
@@ -102,13 +98,8 @@ export default function ExecutarAtividade() {
     }
   }
 
-  if (carregando) {
-    return <p className="executar-atividade-mensagem">Carregando...</p>;
-  }
-
-  if (!atividade || !exercicioAtual) {
-    return <p className="executar-atividade-mensagem">Atividade não encontrada.</p>;
-  }
+  if (carregando) return <p className="executar-atividade-mensagem">Carregando...</p>;
+  if (!dados || !exercicioAtual) return <p className="executar-atividade-mensagem">Não encontrado.</p>;
 
   const progressoAnel = tempoTotal > 0 ? (tempoRestante / tempoTotal) * 100 : 100;
   const circunferencia = 2 * Math.PI * 54;
@@ -117,11 +108,7 @@ export default function ExecutarAtividade() {
   return (
     <div className="executar-atividade-page">
       <header className="executar-atividade-header">
-        <button
-          className="executar-atividade-voltar-topo"
-          onClick={() => navigate(-1)}
-          aria-label="Sair da execução"
-        >
+        <button className="executar-atividade-voltar-topo" onClick={() => navigate(-1)} aria-label="Sair">
           ←
         </button>
         <h1>{exercicioAtual.exercicio?.nome || "Exercício"}</h1>
@@ -134,26 +121,15 @@ export default function ExecutarAtividade() {
             {tempoTotal > 0 && (
               <circle
                 className="executar-atividade-anel-progresso"
-                cx="60"
-                cy="60"
-                r="54"
+                cx="60" cy="60" r="54"
                 strokeDasharray={circunferencia}
                 strokeDashoffset={offset}
               />
             )}
           </svg>
-
           <div className="executar-atividade-midia">
             {exercicioAtual.exercicio?.midiaUrl ? (
-              <a
-                href={exercicioAtual.exercicio.midiaUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="executar-atividade-midia-play"
-                aria-label="Abrir mídia"
-              >
-                ▶
-              </a>
+              <a href={exercicioAtual.exercicio.midiaUrl} target="_blank" rel="noopener noreferrer" className="executar-atividade-midia-play">▶</a>
             ) : (
               <span className="executar-atividade-midia-placeholder">🖼️</span>
             )}
@@ -161,30 +137,11 @@ export default function ExecutarAtividade() {
         </div>
 
         <h2 className="executar-atividade-nome">{exercicioAtual.exercicio?.nome}</h2>
-
-        {tempoTotal > 0 && (
-          <span className="executar-atividade-tempo">{formatarTempo(tempoRestante)}</span>
-        )}
+        {tempoTotal > 0 && <span className="executar-atividade-tempo">{formatarTempo(tempoRestante)}</span>}
 
         <div className="executar-atividade-controles">
-          <button
-            type="button"
-            className="executar-atividade-controle-btn"
-            onClick={voltar}
-            disabled={indiceAtual === 0}
-            aria-label="Exercício anterior"
-          >
-            «
-          </button>
-          <button
-            type="button"
-            className="executar-atividade-controle-btn confirmar"
-            onClick={confirmar}
-            disabled={avancando}
-            aria-label={ultimoExercicio ? "Finalizar exercícios" : "Próximo exercício"}
-          >
-            ✓
-          </button>
+          <button type="button" className="executar-atividade-controle-btn" onClick={voltar} disabled={indiceAtual === 0}>«</button>
+          <button type="button" className="executar-atividade-controle-btn confirmar" onClick={confirmar} disabled={avancando}>✓</button>
         </div>
       </main>
     </div>

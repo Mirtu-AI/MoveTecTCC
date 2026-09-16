@@ -200,7 +200,7 @@ function NavegacaoProfessor() {
 
   const menuItens = [
     { rota: "/dashboard", icone: "📊", rotulo: "Salas" },
-    { rota: "/professor/comunidades", icone: "👥", rotulo: "Comunidades" },
+    { rota: "/professor/avisos", icone: "📢", rotulo: "Avisos" },
     { rota: "/professor/rotinas", icone: "🏃", rotulo: "Rotinas" },
     { rota: "/professor/treinos", icone: "🏋️‍♂️", rotulo: "Treinos" },
     { rota: "/professor/exercicios", icone: "🏋️‍♂️", rotulo: "Exercicios" },

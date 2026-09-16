@@ -246,6 +246,13 @@
   background-color: var(--movetec-branco);
 }
 
+.foguinho-recorde {
+  font-size: 0.85em;
+  color: #b35900;
+  font-weight: 600;
+  margin-top: -8px;
+}
+
 /* MEDIA QUERIES */
 @media (min-width: 900px) {
   .foguinho-header,

@@ -168,17 +168,19 @@
   color: #065f46;
 }
 
-.detalhes-rotina-item-check {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  background-color: var(--movetec-sucesso);
-  color: var(--movetec-branco);
-  border-radius: 50%;
-  font-size: 0.8rem;
-  font-weight: bold;
+.detalhes-rotina-item-contador {
+  font-size: 0.75em;
+  font-weight: 700;
+  color: #b35900;
+  background: #fff4e6;
+  border: 1px solid orange;
+  border-radius: 999px;
+  padding: 2px 8px;
+  margin-left: auto;
+}
+
+.detalhes-rotina-item.com-repeticoes {
+  border-color: rgba(242, 101, 34, 0.3); /* leve destaque, sem parecer "bloqueado" */
 }
 
 /* DESKTOPS / TELAS MAIORES */

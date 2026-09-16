@@ -8,26 +8,37 @@ interface ExercicioItem {
   exercicio: { tempoEstimado: number | null } | null;
 }
 
-interface Atividade {
-  titulo: string;
+interface Dados {
+  titulo?: string;
   exercicios: ExercicioItem[];
+  rotinaId?: string | null;
 }
 
-export default function ParabensAtividade() {
+interface Props {
+  tipo: "atividade" | "treino";
+}
+
+export default function ParabensAtividade({ tipo }: Props) {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [atividade, setAtividade] = useState<Atividade | null>(null);
+  const [dados, setDados] = useState<Dados | null>(null);
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
-    async function buscarAtividade() {
+    async function buscarDados() {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(`http://localhost:3000/api/aluno/atividades/${id}`, {
+        const baseUrl =
+          tipo === "atividade"
+            ? `http://localhost:3000/api/aluno/atividades/${id}`
+            : `http://localhost:3000/api/aluno/execucoes-treino/${id}`;
+
+        const response = await axios.get(baseUrl, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setAtividade(response.data.atividade || null);
+
+        setDados((tipo === "atividade" ? response.data.atividade : response.data.execucao) || null);
       } catch (err) {
         console.error(err);
       } finally {
@@ -35,13 +46,12 @@ export default function ParabensAtividade() {
       }
     }
 
-    buscarAtividade();
-  }, [id]);
+    buscarDados();
+  }, [id, tipo]);
 
   // Efeito para disparar confetes assim que os dados carregarem
   useEffect(() => {
-    if (!carregando && atividade) {
-      // Disparo inicial
+    if (!carregando && dados) {
       confetti({
         particleCount: 80,
         spread: 70,
@@ -49,7 +59,6 @@ export default function ParabensAtividade() {
         colors: ["#ff5722", "#22c55e", "#ffffff", "#ffb703"],
       });
 
-      // Segundo disparo para reforçar a sensação de festa
       const timeout = setTimeout(() => {
         confetti({
           particleCount: 50,
@@ -69,7 +78,7 @@ export default function ParabensAtividade() {
 
       return () => clearTimeout(timeout);
     }
-  }, [carregando, atividade]);
+  }, [carregando, dados]);
 
   function formatarTempoTotal(segundosTotal: number) {
     const min = Math.floor(segundosTotal / 60);
@@ -82,12 +91,12 @@ export default function ParabensAtividade() {
     return <p className="parabens-atividade-mensagem">Carregando...</p>;
   }
 
-  if (!atividade) {
-    return <p className="parabens-atividade-mensagem">Atividade não encontrada.</p>;
+  if (!dados) {
+    return <p className="parabens-atividade-mensagem">Não encontrado.</p>;
   }
 
-  const totalExercicios = atividade.exercicios.length;
-  const tempoTotal = atividade.exercicios.reduce(
+  const totalExercicios = dados.exercicios.length;
+  const tempoTotal = dados.exercicios.reduce(
     (soma, item) => soma + (item.exercicio?.tempoEstimado || 0),
     0
   );
@@ -99,7 +108,9 @@ export default function ParabensAtividade() {
           <div className="parabens-atividade-check">✓</div>
         </div>
 
-        <h1 className="parabens-atividade-titulo">Atividade Concluída!</h1>
+        <h1 className="parabens-atividade-titulo">
+          {tipo === "atividade" ? "Atividade Concluída!" : "Treino Concluído!"}
+        </h1>
         <p className="parabens-atividade-subtitulo">Excelente trabalho, meta batida! 🔥</p>
 
         <div className="parabens-atividade-resumo">
@@ -116,9 +127,17 @@ export default function ParabensAtividade() {
         <button
           type="button"
           className="parabens-atividade-finalizar-btn"
-          onClick={() => navigate(`/aluno/atividades/${id}`)}
+          onClick={() =>
+            navigate(
+              tipo === "atividade"
+                ? `/aluno/atividades/${id}`
+                : dados.rotinaId
+                ? `/aluno/rotinas/${dados.rotinaId}`
+                : "/aluno"
+            )
+          }
         >
-          ✓ Voltar para Detalhes
+          ✓ {tipo === "atividade" ? "Voltar para Detalhes" : dados.rotinaId ? "Voltar para a Rotina" : "Voltar para o Início"}
         </button>
       </main>
     </div>

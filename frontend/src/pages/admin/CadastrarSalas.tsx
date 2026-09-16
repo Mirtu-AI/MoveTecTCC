@@ -106,23 +106,25 @@ export default function CadastrarSala() {
         <div className="login-image-side">
           <div className="login-brand-wrapper">
             <img src={Logo} alt="Logotipo MoveTec" className="login-logo-img" />
-            
+
             <p className="login-brand-tagline">
-              O movimento transforma sua rotina escolar.
+              {id
+                ? "Ajuste os dados da turma sempre que precisar."
+                : "Siga os passos para cadastrar uma nova turma."}
             </p>
 
             <div className="login-features-list">
               <div className="login-feature-item">
-                <span className="feature-emoji">❤️</span>
-                <span>Saúde & Energia</span>
+                <span className="feature-emoji">1️⃣</span>
+                <span>Dê um nome claro à sala, como "3º A Informática"</span>
               </div>
               <div className="login-feature-item">
-                <span className="feature-emoji">🧠</span>
-                <span>Foco nos Estudos</span>
+                <span className="feature-emoji">2️⃣</span>
+                <span>Escolha o professor responsável pela turma</span>
               </div>
               <div className="login-feature-item">
-                <span className="feature-emoji">🤝</span>
-                <span>Desafios em Turma</span>
+                <span className="feature-emoji">3️⃣</span>
+                <span>Sem professor definido ainda? Deixe em "Nenhum" e atribua depois</span>
               </div>
             </div>
           </div>

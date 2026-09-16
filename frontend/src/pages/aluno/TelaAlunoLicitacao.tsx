@@ -11,6 +11,12 @@ interface Perfil {
   nomeSocial?: string | null;
 }
 
+interface Feedback {
+  reacao: string;
+  comentario: string | null;
+  dadoEm: string;
+}
+
 interface ExercicioPopulado {
   exercicio: { nome: string } | null;
 }
@@ -22,6 +28,7 @@ interface AtividadeProposta {
   dataEntrega: string;
   progresso: number;
   exercicios: ExercicioPopulado[];
+  feedback?: Feedback | null;
 }
 
 interface Treino {
@@ -48,6 +55,13 @@ interface Rotina {
   grupos: GrupoRotina[];
 }
 
+interface Aviso {
+  _id: string;
+  titulo: string;
+  descricao: string;
+  data: string;
+}
+
 export default function TelaAlunoLicitacao() {
   const navigate = useNavigate();
 
@@ -59,7 +73,7 @@ export default function TelaAlunoLicitacao() {
   const [busca, setBusca] = useState("");
   const [carregando, setCarregando] = useState(true);
   const [streakAnimando, setStreakAnimando] = useState(false);
-  const [treinoConcluindo, setTreinoConcluindo] = useState<string | null>(null);
+  const [avisos, setAvisos] = useState<Aviso[]>([]);
 
   useEffect(() => {
     carregarDados();
@@ -71,12 +85,13 @@ export default function TelaAlunoLicitacao() {
       const token = localStorage.getItem("token");
       const cabecalho = { headers: { Authorization: `Bearer ${token}` } };
 
-      const [respPerfil, respAtividades, respRotinas, respEspecificas, respHistorico] = await Promise.all([
+      const [respPerfil, respAtividades, respRotinas, respEspecificas, respHistorico, respAvisos] = await Promise.all([
         axios.get("http://localhost:3000/api/aluno/perfil", cabecalho),
         axios.get("http://localhost:3000/api/aluno/atividades", cabecalho),
         axios.get("http://localhost:3000/api/aluno/rotinas", cabecalho),
         axios.get("http://localhost:3000/api/aluno/treinos?tipo=especifica", cabecalho),
         axios.get("http://localhost:3000/api/aluno/historico", cabecalho).catch(() => ({ data: { historico: [] } })),
+        axios.get("http://localhost:3000/api/aluno/avisos", cabecalho).catch(() => ({ data: { avisos: [] } })),
       ]);
 
       setPerfil(respPerfil.data.aluno || null);
@@ -84,6 +99,7 @@ export default function TelaAlunoLicitacao() {
       setRotinas(respRotinas.data.rotinas || []);
       setEspecificas(respEspecificas.data.treinos || []);
       setHistorico(respHistorico.data.historico || []);
+      setAvisos(respAvisos.data.avisos || []);
 
       setStreakAnimando(true);
       setTimeout(() => setStreakAnimando(false), 900);
@@ -91,36 +107,6 @@ export default function TelaAlunoLicitacao() {
       console.error(err);
     } finally {
       setCarregando(false);
-    }
-  }
-
-  async function concluirTreino(treinoId: string) {
-    if (treinoConcluindo) return;
-
-    setTreinoConcluindo(treinoId);
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `http://localhost:3000/api/aluno/treinos/${treinoId}/concluir`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      setPerfil((atual) =>
-        atual ? { ...atual, streakAtual: response.data.streakAtual } : atual
-      );
-
-      setHistorico((prev) => [
-        ...prev,
-        { treinoId, dataConclusao: new Date().toISOString() }
-      ]);
-
-      setStreakAnimando(true);
-      setTimeout(() => setStreakAnimando(false), 900);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setTreinoConcluindo(null);
     }
   }
 
@@ -207,6 +193,10 @@ export default function TelaAlunoLicitacao() {
     t.titulo.toLowerCase().includes(busca.toLowerCase())
   );
 
+  const ultimaComFeedback = [...atividades]
+    .filter((a) => a.feedback)
+    .sort((a, b) => new Date(b.feedback!.dadoEm).getTime() - new Date(a.feedback!.dadoEm).getTime())[0];
+
   if (carregando) {
     return <p className="aluno-home-mensagem">Carregando...</p>;
   }
@@ -222,7 +212,19 @@ export default function TelaAlunoLicitacao() {
     return entrega < hoje;
   }
 
-
+  async function esconderAviso(avisoId: string) {
+    setAvisos((atual) => atual.filter((a) => a._id !== avisoId)); // otimista
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `http://localhost:3000/api/aluno/avisos/${avisoId}/ocultar`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   return (
     <div className="aluno-home-page">
@@ -272,6 +274,27 @@ export default function TelaAlunoLicitacao() {
               className="aluno-home-busca-input"
             />
           </div>
+
+          {avisos.length > 0 && (
+            <div className="aluno-home-avisos">
+              {avisos.map((aviso) => (
+                <div key={aviso._id} className="aluno-home-aviso-banner">
+                  <div className="aluno-home-aviso-conteudo">
+                    <strong>{aviso.titulo}</strong>
+                    <p>{aviso.descricao}</p>
+                  </div>
+                  <button
+                    type="button"
+                    className="aluno-home-aviso-fechar"
+                    onClick={() => esconderAviso(aviso._id)}
+                    aria-label="Esconder aviso"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
 
           {atividades.length > 0 && (
             <section className="aluno-home-secao">
@@ -376,8 +399,7 @@ export default function TelaAlunoLicitacao() {
                   type="button"
                   key={treino._id}
                   className="aluno-home-treino-card"
-                  onClick={() => concluirTreino(treino._id)}
-                  disabled={treinoConcluindo === treino._id}
+                  onClick={() => navigate(`/aluno/treinos-especificos/${treino._id}`)}
                 >
                   <span className="aluno-home-treino-icone">🏋️</span>
                   <span className="aluno-home-treino-nome">{treino.titulo}</span>
@@ -457,6 +479,30 @@ export default function TelaAlunoLicitacao() {
             <h4 className="aluno-widget-destaque-titulo">{proximoFoco}</h4>
             <p className="aluno-widget-destaque-desc">Recomendado para a sua rotina atual.</p>
           </div>
+
+          {ultimaComFeedback && (
+            <div
+              className="aluno-widget-card destaque-feedback"
+              onClick={() => navigate(`/aluno/atividades/${ultimaComFeedback._id}`)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  navigate(`/aluno/atividades/${ultimaComFeedback._id}`);
+                }
+              }}
+            >
+              <span className="aluno-widget-tag">Feedback do professor</span>
+              <div className="aluno-widget-feedback-corpo">
+                <span className="aluno-widget-feedback-emoji">{ultimaComFeedback.feedback!.reacao}</span>
+                <h4 className="aluno-widget-destaque-titulo">{ultimaComFeedback.titulo}</h4>
+              </div>
+              {ultimaComFeedback.feedback!.comentario && (
+                <p className="aluno-widget-destaque-desc">"{ultimaComFeedback.feedback!.comentario}"</p>
+              )}
+            </div>
+          )}
         </aside>
       </div>
     </div>

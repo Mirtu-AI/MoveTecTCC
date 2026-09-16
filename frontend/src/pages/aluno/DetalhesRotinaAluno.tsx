@@ -19,6 +19,7 @@ interface Rotina {
 interface HistoricoTreino {
   treinoId: string;
   dataConclusao: string;
+  rotinaId: string | null;
 }
 
 export default function DetalhesRotinaAluno() {
@@ -28,7 +29,6 @@ export default function DetalhesRotinaAluno() {
   const [rotina, setRotina] = useState<Rotina | null>(null);
   const [historico, setHistorico] = useState<HistoricoTreino[]>([]);
   const [carregando, setCarregando] = useState(true);
-  const [concluindo, setConcluindo] = useState<string | null>(null);
 
   useEffect(() => {
     carregarDados();
@@ -53,30 +53,14 @@ export default function DetalhesRotinaAluno() {
     }
   }
 
-  function foiFeitoHoje(treinoId: string) {
+  function vezesFeitoHoje(treinoId: string) {
     const hoje = new Date().toDateString();
-    return historico.some(
-      (h) => h.treinoId === treinoId && new Date(h.dataConclusao).toDateString() === hoje
-    );
-  }
-
-  async function concluirTreino(treinoId: string) {
-    if (concluindo) return;
-
-    setConcluindo(treinoId);
-    try {
-      const token = localStorage.getItem("token");
-      await axios.post(
-        `http://localhost:3000/api/aluno/treinos/${treinoId}/concluir`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setHistorico((prev) => [...prev, { treinoId, dataConclusao: new Date().toISOString() }]);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setConcluindo(null);
-    }
+    return historico.filter(
+      (h) =>
+        h.treinoId === treinoId &&
+        h.rotinaId === id &&
+        new Date(h.dataConclusao).toDateString() === hoje
+    ).length;
   }
 
   if (carregando) return <p className="detalhes-rotina-mensagem">Carregando...</p>;
@@ -85,7 +69,7 @@ export default function DetalhesRotinaAluno() {
   return (
     <div className="detalhes-rotina-page">
       <header className="detalhes-rotina-header">
-        <button className="detalhes-rotina-voltar" onClick={() => navigate(-1)} aria-label="Voltar">
+        <button className="detalhes-rotina-voltar" onClick={() => navigate("/aluno")} aria-label="Voltar">
           ←
         </button>
         <h1>{rotina.titulo}</h1>
@@ -98,20 +82,21 @@ export default function DetalhesRotinaAluno() {
 
             <div className="detalhes-rotina-grupo-lista">
               {grupo.treinos.map((item) => {
-                const feito = foiFeitoHoje(item.treinoId);
+                const vezes = vezesFeitoHoje(item.treinoId);
                 return (
                   <button
                     type="button"
                     key={item.treinoId}
-                    className={`detalhes-rotina-item ${feito ? "feito" : ""}`}
-                    onClick={() => concluirTreino(item.treinoId)}
-                    disabled={concluindo === item.treinoId}
+                    className={`detalhes-rotina-item ${vezes > 0 ? "com-repeticoes" : ""}`}
+                    onClick={() => navigate(`/aluno/rotinas/${id}/treinos/${item.treinoId}`)}
                   >
                     <span className="detalhes-rotina-item-icone">🏋️</span>
                     <span className="detalhes-rotina-item-nome">
                       {item.treino?.titulo || "Treino removido"}
                     </span>
-                    {feito && <span className="detalhes-rotina-item-check">✓</span>}
+                    {vezes > 0 && (
+                      <span className="detalhes-rotina-item-contador">{vezes}x hoje</span>
+                    )}
                   </button>
                 );
               })}
