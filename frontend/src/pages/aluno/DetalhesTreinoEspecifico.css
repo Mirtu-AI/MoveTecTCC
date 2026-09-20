@@ -1,15 +1,21 @@
-/* ==========================================================================
-   DETALHES DO TREINO ESPECÍFICO (ALUNO) - IDENTIDADE MOVETEC
-   ========================================================================== */
-
 * {
   box-sizing: border-box;
+}
+
+:root {
+  --laranja-move: #f26522;
+  --laranja-move-dark: #d85418;
+  --azul-marinho: #0f172a;
+  --cinza-texto: #64748b;
+  --papel-branco: #f8fafc;
+  --papel-linha: #e2e8f0;
+  --branco: #ffffff;
 }
 
 .detalhes-treino-especifico-page {
   min-height: 100vh;
   background-color: var(--papel-branco);
-  /* Textura de caderno */
+  /* Textura de caderno MoveTec */
   background-image:
     linear-gradient(var(--papel-linha) 1px, transparent 1px),
     linear-gradient(90deg, var(--papel-linha) 1px, transparent 1px);
@@ -18,11 +24,37 @@
 }
 
 .detalhes-treino-especifico-mensagem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   color: var(--cinza-texto);
-  margin-top: 60px;
+  padding-top: 80px;
   font-family: 'Urbanist', sans-serif;
   font-size: 0.95rem;
+}
+
+.detalhes-treino-especifico-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--papel-linha);
+  border-top-color: var(--laranja-move);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 12px;
+}
+
+.detalhes-treino-especifico-voltar-btn {
+  margin-top: 16px;
+  background-color: var(--azul-marinho);
+  color: var(--branco);
+  border: none;
+  border-radius: 999px;
+  padding: 8px 20px;
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 /* HEADER */
@@ -87,7 +119,10 @@
   margin-bottom: 20px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
-  font-size: 2.4rem;
+}
+
+.detalhes-treino-especifico-icone-midia {
+  font-size: 2.8rem;
 }
 
 .detalhes-treino-especifico-midia img {
@@ -109,16 +144,31 @@
   line-height: 1.5;
 }
 
-/* TÍTULO DE SEÇÃO */
+/* CABEÇALHO DE SEÇÃO */
+.detalhes-treino-especifico-secao-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
 .detalhes-treino-especifico-secao-titulo {
-  display: block;
   font-family: 'Urbanist', sans-serif;
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--azul-marinho);
-  margin-bottom: 10px;
+}
+
+.detalhes-treino-especifico-badge {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: rgba(242, 101, 34, 0.1);
+  color: var(--laranja-move);
+  padding: 2px 10px;
+  border-radius: 999px;
 }
 
 /* LISTA DE EXERCÍCIOS */
@@ -169,7 +219,7 @@
   flex-shrink: 0;
 }
 
-/* BOTAO COMEÇAR */
+/* BOTÃO COMEÇAR */
 .detalhes-treino-especifico-comecar-btn {
   width: 100%;
   padding: 14px;
@@ -186,8 +236,8 @@
 }
 
 .detalhes-treino-especifico-comecar-btn:hover:not(:disabled) {
-  background-color: #d85418;
-  border-color: #d85418;
+  background-color: var(--laranja-move-dark);
+  border-color: var(--laranja-move-dark);
   transform: translateY(-1px);
 }
 
@@ -195,6 +245,12 @@
   opacity: 0.65;
   cursor: not-allowed;
   transform: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 480px) {

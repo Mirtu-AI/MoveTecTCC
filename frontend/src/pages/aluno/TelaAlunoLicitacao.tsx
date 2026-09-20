@@ -62,6 +62,18 @@ interface Aviso {
   data: string;
 }
 
+interface Meta {
+  _id: string;
+  titulo: string;
+  tipo: "tempo" | "atividades";
+  valorAlvo: number;
+  valorAtual: number;
+  percentual: number;
+  concluida: boolean;
+}
+
+
+
 export default function TelaAlunoLicitacao() {
   const navigate = useNavigate();
 
@@ -74,6 +86,7 @@ export default function TelaAlunoLicitacao() {
   const [carregando, setCarregando] = useState(true);
   const [streakAnimando, setStreakAnimando] = useState(false);
   const [avisos, setAvisos] = useState<Aviso[]>([]);
+  const [metas, setMetas] = useState<Meta[]>([]);
 
   useEffect(() => {
     carregarDados();
@@ -85,13 +98,14 @@ export default function TelaAlunoLicitacao() {
       const token = localStorage.getItem("token");
       const cabecalho = { headers: { Authorization: `Bearer ${token}` } };
 
-      const [respPerfil, respAtividades, respRotinas, respEspecificas, respHistorico, respAvisos] = await Promise.all([
+      const [respPerfil, respAtividades, respRotinas, respEspecificas, respHistorico, respAvisos, respMetas] = await Promise.all([
         axios.get("http://localhost:3000/api/aluno/perfil", cabecalho),
         axios.get("http://localhost:3000/api/aluno/atividades", cabecalho),
         axios.get("http://localhost:3000/api/aluno/rotinas", cabecalho),
         axios.get("http://localhost:3000/api/aluno/treinos?tipo=especifica", cabecalho),
         axios.get("http://localhost:3000/api/aluno/historico", cabecalho).catch(() => ({ data: { historico: [] } })),
         axios.get("http://localhost:3000/api/aluno/avisos", cabecalho).catch(() => ({ data: { avisos: [] } })),
+        axios.get("http://localhost:3000/api/aluno/metas", cabecalho).catch(() => ({ data: { metas: [] } })),
       ]);
 
       setPerfil(respPerfil.data.aluno || null);
@@ -100,6 +114,7 @@ export default function TelaAlunoLicitacao() {
       setEspecificas(respEspecificas.data.treinos || []);
       setHistorico(respHistorico.data.historico || []);
       setAvisos(respAvisos.data.avisos || []);
+      setMetas(respMetas.data.metas || [])
 
       setStreakAnimando(true);
       setTimeout(() => setStreakAnimando(false), 900);
@@ -196,6 +211,8 @@ export default function TelaAlunoLicitacao() {
   const ultimaComFeedback = [...atividades]
     .filter((a) => a.feedback)
     .sort((a, b) => new Date(b.feedback!.dadoEm).getTime() - new Date(a.feedback!.dadoEm).getTime())[0];
+
+  const metaAtiva = metas.find((m) => !m.concluida);
 
   if (carregando) {
     return <p className="aluno-home-mensagem">Carregando...</p>;
@@ -473,6 +490,21 @@ export default function TelaAlunoLicitacao() {
               </div>
             )}
           </div>
+
+          {metaAtiva && (
+            <div
+              className="aluno-widget-card"
+              onClick={() => navigate("/aluno/metas")}
+              role="button"
+              tabIndex={0}
+            >
+              <h3 className="aluno-widget-titulo">Sua Meta</h3>
+              <p className="aluno-widget-subtexto">{metaAtiva.titulo}</p>
+              <div className="aluno-home-atividade-progresso-trilha" style={{ marginTop: "8px" }}>
+                <div className="aluno-home-atividade-progresso-barra" style={{ width: `${metaAtiva.percentual}%` }} />
+              </div>
+            </div>
+          )}
 
           <div className="aluno-widget-card destaque-laranja">
             <span className="aluno-widget-tag">Próximo Foco</span>

@@ -59,13 +59,38 @@ export default function DetalhesTreinoEspecificaAluno() {
     }
   }
 
-  if (carregando) return <p className="detalhes-treino-especifico-mensagem">Carregando...</p>;
-  if (!treino) return <p className="detalhes-treino-especifico-mensagem">Treino não encontrado.</p>;
+  if (carregando) {
+    return (
+      <div className="detalhes-treino-especifico-page">
+        <div className="detalhes-treino-especifico-mensagem">
+          <div className="detalhes-treino-especifico-spinner" />
+          <p>Carregando treino...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!treino) {
+    return (
+      <div className="detalhes-treino-especifico-page">
+        <div className="detalhes-treino-especifico-mensagem">
+          <p>Treino não encontrado.</p>
+          <button className="detalhes-treino-especifico-voltar-btn" onClick={() => navigate(-1)}>
+            Voltar
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="detalhes-treino-especifico-page">
       <header className="detalhes-treino-especifico-header">
-        <button className="detalhes-treino-especifico-voltar" onClick={() => navigate(-1)} aria-label="Voltar">
+        <button
+          className="detalhes-treino-especifico-voltar"
+          onClick={() => navigate(-1)}
+          aria-label="Voltar"
+        >
           ←
         </button>
         <h1>{treino.titulo}</h1>
@@ -73,12 +98,24 @@ export default function DetalhesTreinoEspecificaAluno() {
 
       <main className="detalhes-treino-especifico-conteudo">
         <div className="detalhes-treino-especifico-midia">
-          {treino.midiaUrl ? <img src={treino.midiaUrl} alt="" /> : <span>🏋️</span>}
+          {treino.midiaUrl ? (
+            <img src={treino.midiaUrl} alt={treino.titulo} />
+          ) : (
+            <span className="detalhes-treino-especifico-icone-midia">🏋️</span>
+          )}
         </div>
 
-        <p className="detalhes-treino-especifico-descricao">{treino.descricao}</p>
+        {treino.descricao && (
+          <p className="detalhes-treino-especifico-descricao">{treino.descricao}</p>
+        )}
 
-        <span className="detalhes-treino-especifico-secao-titulo">Exercícios</span>
+        <div className="detalhes-treino-especifico-secao-header">
+          <span className="detalhes-treino-especifico-secao-titulo">Exercícios</span>
+          <span className="detalhes-treino-especifico-badge">
+            {treino.exercicios.length} {treino.exercicios.length === 1 ? "item" : "itens"}
+          </span>
+        </div>
+
         <div className="detalhes-treino-especifico-lista">
           {treino.exercicios.map((item, idx) => (
             <div key={idx} className="detalhes-treino-especifico-item">
@@ -86,7 +123,7 @@ export default function DetalhesTreinoEspecificaAluno() {
                 {item.exercicio?.nome || "Exercício removido"}
               </span>
               <span className="detalhes-treino-especifico-item-detalhe">
-                {item.series} x {item.repeticoes}
+                {item.series ? `${item.series}x` : ""} {item.repeticoes ? `${item.repeticoes}` : ""}
               </span>
             </div>
           ))}
@@ -98,7 +135,7 @@ export default function DetalhesTreinoEspecificaAluno() {
           onClick={comecar}
           disabled={iniciando}
         >
-          ✓ {iniciando ? "Iniciando..." : "Começar"}
+          {iniciando ? "Iniciando..." : "✓ Começar"}
         </button>
       </main>
     </div>

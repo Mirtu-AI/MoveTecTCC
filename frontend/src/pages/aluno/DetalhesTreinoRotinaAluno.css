@@ -1,14 +1,93 @@
-.detalhes-treino-rotina-midia {
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --movetec-laranja: #ff552e;
+  --movetec-laranja-hover: #e0441f;
+  --movetec-laranja-suave: #fff0ed;
+  --movetec-azul-escuro: #121929;
+  --movetec-texto-principal: #1f2937;
+  --movetec-texto-secundario: #6b7280;
+  --movetec-fundo: #f8fafc;
+  --movetec-branco: #ffffff;
+  --movetec-borda: #e2e8f0;
+  --movetec-verde: #10b981;
+}
+
+.detalhes-treino-rotina-page {
+  min-height: 100vh;
+  background-color: var(--movetec-fundo);
+  background-image: radial-gradient(var(--movetec-borda) 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--movetec-texto-principal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 20px 100px;
+}
+
+/* Header MoveTec */
+.detalhes-treino-rotina-header {
   width: 100%;
-  height: 160px;
+  max-width: 520px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.detalhes-treino-rotina-header h1 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--movetec-azul-escuro);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.detalhes-treino-rotina-voltar {
+  background: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  color: var(--movetec-azul-escuro);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 10px 16px;
   border-radius: 12px;
-  background: #f0f0f0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5em;
+  box-shadow: 0 2px 8px rgba(18, 25, 41, 0.04);
+  transition: all 0.2s ease;
+}
+
+.detalhes-treino-rotina-voltar:hover {
+  background-color: var(--movetec-laranja-suave);
+  color: var(--movetec-laranja);
+  border-color: rgba(255, 85, 46, 0.3);
+}
+
+/* Conteúdo Principal */
+.detalhes-treino-rotina-conteudo {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Banner de Mídia */
+.detalhes-treino-rotina-midia {
+  width: 100%;
+  height: 180px;
+  border-radius: 20px;
+  background: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(18, 25, 41, 0.04);
 }
 
 .detalhes-treino-rotina-midia img {
@@ -17,63 +96,220 @@
   object-fit: cover;
 }
 
+.detalhes-treino-rotina-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--movetec-laranja-suave);
+}
+
+.detalhes-treino-rotina-icone-placeholder {
+  font-size: 3rem;
+}
+
+/* Caixa de Descrição */
 .detalhes-treino-rotina-descricao-box {
-  background: #f5f5f5;
-  border-radius: 10px;
-  padding: 10px 14px;
-  font-size: 0.9em;
-  margin-bottom: 16px;
+  background: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(18, 25, 41, 0.03);
+}
+
+.detalhes-treino-rotina-descricao-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--movetec-laranja);
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.detalhes-treino-rotina-descricao-box p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--movetec-texto-principal);
+  line-height: 1.5;
+}
+
+/* Título de Seção */
+.detalhes-treino-rotina-secao-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
 }
 
 .detalhes-treino-rotina-secao-titulo {
-  display: block;
+  font-size: 1rem;
   font-weight: 700;
-  font-size: 0.8em;
-  color: #888;
-  margin-bottom: 8px;
+  color: var(--movetec-azul-escuro);
+}
+
+.detalhes-treino-rotina-badge-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: var(--movetec-laranja-suave);
+  color: var(--movetec-laranja);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+/* Lista de Exercícios */
+.detalhes-treino-rotina-exercicios-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .detalhes-treino-rotina-exercicio-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
-  padding: 10px 0;
-  border-bottom: 1px solid #eee;
-  background: none;
-  border-left: none;
-  border-right: none;
-  border-top: none;
+  padding: 14px 16px;
+  background: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 16px;
   text-align: left;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(18, 25, 41, 0.02);
+  transition: all 0.2s ease;
+}
+
+.detalhes-treino-rotina-exercicio-item:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 85, 46, 0.3);
+  box-shadow: 0 4px 12px rgba(18, 25, 41, 0.06);
+}
+
+.detalhes-treino-rotina-exercicio-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background-color: var(--movetec-fundo);
+  color: var(--movetec-azul-escuro);
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--movetec-borda);
+  flex-shrink: 0;
+}
+
+.detalhes-treino-rotina-exercicio-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .detalhes-treino-rotina-exercicio-nome {
-  flex: 1;
+  font-size: 0.95rem;
   font-weight: 600;
+  color: var(--movetec-azul-escuro);
+}
+
+.detalhes-treino-rotina-exercicio-detalhes {
+  font-size: 0.8rem;
+  color: var(--movetec-texto-secundario);
+}
+
+.detalhes-treino-rotina-exercicio-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .detalhes-treino-rotina-exercicio-tempo {
-  font-size: 0.8em;
-  color: #888;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--movetec-texto-secundario);
 }
 
+.detalhes-treino-rotina-seta {
+  color: var(--movetec-laranja);
+  font-weight: 700;
+}
+
+/* Botão de Iniciar */
 .detalhes-treino-rotina-comecar-wrap {
   position: relative;
-  margin-top: 24px;
+  margin-top: 12px;
 }
 
 .detalhes-treino-rotina-comecar-btn {
   width: 100%;
-  padding: 14px;
-  background: orange;
-  color: #fff;
+  padding: 16px;
+  background-color: var(--movetec-laranja);
+  color: var(--movetec-branco);
   border: none;
-  border-radius: 999px;
+  border-radius: 16px;
+  font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
+  box-shadow: 0 4px 14px rgba(255, 85, 46, 0.3);
+  transition: all 0.2s ease;
+}
+
+.detalhes-treino-rotina-comecar-btn:hover:not(:disabled) {
+  background-color: var(--movetec-laranja-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 85, 46, 0.4);
 }
 
 .detalhes-treino-rotina-comecar-btn:disabled {
-  opacity: 0.7;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* States Vazio / Carregando */
+.detalhes-treino-rotina-carregando {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--movetec-texto-secundario);
+}
+
+.detalhes-treino-rotina-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--movetec-borda);
+  border-top-color: var(--movetec-laranja);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.detalhes-treino-rotina-vazio-card {
+  background: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 20px;
+  padding: 32px;
+  text-align: center;
+  max-width: 400px;
+  margin-top: 60px;
+}
+
+.detalhes-treino-rotina-voltar-btn {
+  margin-top: 16px;
+  background-color: var(--movetec-azul-escuro);
+  color: var(--movetec-branco);
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

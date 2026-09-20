@@ -77,12 +77,21 @@ export default function TelaFoguinho() {
     }
   }
 
+
   // Marca em quais dias (ano-mês-dia) o aluno concluiu algum treino
   const diasComTreino = useMemo(() => {
     const set = new Set<string>();
     historico.forEach((h) => {
+      if (!h.dataConclusao) return;
+
       const data = new Date(h.dataConclusao);
-      set.add(`${data.getFullYear()}-${data.getMonth()}-${data.getDate()}`);
+
+      // Converte para a data local garantindo alinhamento
+      const ano = data.getFullYear();
+      const mes = data.getMonth();
+      const dia = data.getDate();
+
+      set.add(`${ano}-${mes}-${dia}`);
     });
     return set;
   }, [historico]);
@@ -148,16 +157,19 @@ export default function TelaFoguinho() {
       </header>
 
       <main className="foguinho-conteudo">
-        <div className="foguinho-icone-grande">🔥</div>
-
-        <p className="foguinho-texto">
-          Sequência atual: {perfil?.streakAtual || 0} dia{(perfil?.streakAtual || 0) === 1 ? "" : "s"}
-        </p>
-        {(perfil?.maiorStreak || 0) > 0 && (
-          <p className="foguinho-recorde">
-            🏆 Recorde: {perfil?.maiorStreak} dia{(perfil?.maiorStreak || 0) === 1 ? "" : "s"}
+        <div className="foguinho-card-destaque">
+          <div className="foguinho-icone-wrapper">
+            <span className="foguinho-icone-grande">🔥</span>
+          </div>
+          <p className="foguinho-texto">
+            Sequência atual: <strong>{perfil?.streakAtual || 0}</strong> dia{(perfil?.streakAtual || 0) === 1 ? "" : "s"}
           </p>
-        )}
+          {(perfil?.maiorStreak || 0) > 0 && (
+            <p className="foguinho-recorde">
+              🏆 Recorde: <strong>{perfil?.maiorStreak}</strong> dia{(perfil?.maiorStreak || 0) === 1 ? "" : "s"}
+            </p>
+          )}
+        </div>
 
         <div className="foguinho-calendario">
           <div className="foguinho-calendario-topo">

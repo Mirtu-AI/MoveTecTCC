@@ -37,6 +37,7 @@ import DesempenhoAluno from "./pages/aluno/DesempenhoAluno";
 import HistoriaAluno from "./pages/aluno/HistoricoAluno";
 import DetalhesTreinoEspecificaAluno from "./pages/aluno/DetalhesTreinoEspecifico";
 import DetalhesTreinoRotinaAluno from "./pages/aluno/DetalhesTreinoRotinaAluno";
+import MetasAluno from "./pages/aluno/MetasAluno";
 
 import RotaProtegida from "./pages/components/RotaProtegida";
 import RotaPublica from "./pages/components/RotaPublica";
@@ -122,9 +123,9 @@ function App() {
         <Route
           path="/aluno/atividades/:id/parabens"
           element={
-          <RotaProtegida tipoPermitido="aluno">
-            <ParabensExercicios tipo="atividade" />
-          </RotaProtegida>}
+            <RotaProtegida tipoPermitido="aluno">
+              <ParabensExercicios tipo="atividade" />
+            </RotaProtegida>}
         />
         <Route
           path="/aluno/execucoes-treino/:id/executar"
@@ -137,7 +138,7 @@ function App() {
           path="/aluno/execucoes-treino/:id/parabens"
           element={
             <RotaProtegida tipoPermitido="aluno">
-                <ParabensExercicios tipo="treino" />
+              <ParabensExercicios tipo="treino" />
             </RotaProtegida>}
         />
         <Route
@@ -183,6 +184,15 @@ function App() {
           element={
             <RotaProtegida tipoPermitido="aluno">
               <DetalhesTreinoEspecificaAluno />
+            </RotaProtegida>
+          }
+        />
+
+        <Route
+          path="/aluno/metas"
+          element={
+            <RotaProtegida tipoPermitido="aluno">
+              <MetasAluno />
             </RotaProtegida>
           }
         />

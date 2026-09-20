@@ -93,6 +93,12 @@ import {
     buscarExecucaoTreino,
     alternarConclusaoExercicioTreino
 } from './models/execucaoTreino.js';
+import {
+    cadastrarMeta,
+    listarMetasPorAluno,
+    excluirMeta
+} from './models/meta.js';
+
 
 
 dotenv.config();
@@ -154,6 +160,7 @@ async function main() {
         await db.collection('avisos').createIndex({ salaId: 1 });
         await db.collection('registrosTreino').createIndex({ alunoId: 1, rotinaId: 1 });
         await db.collection('execucoesTreino').createIndex({ alunoId: 1 });
+        await db.collection('metas').createIndex({ alunoId: 1 });
         console.log('Índices garantidos');
     }
 
@@ -775,6 +782,38 @@ async function main() {
         } catch (err) {
             console.error(err);
             res.status(500).send({ success: false, erro: 'Erro ao atualizar exercício.' });
+        }
+    });
+
+    app.post('/api/aluno/metas', autenticarAluno, async (req, res) => {
+        try {
+            const resultado = await cadastrarMeta(db, req.alunoId, req.body);
+            if (!resultado.sucesso) return res.status(400).send({ success: false, erros: resultado.erros });
+            res.status(201).send({ success: true, id: resultado.id });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao cadastrar meta.' });
+        }
+    });
+
+    app.get('/api/aluno/metas', autenticarAluno, async (req, res) => {
+        try {
+            const metas = await listarMetasPorAluno(db, req.alunoId);
+            res.send({ success: true, metas });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao buscar metas.' });
+        }
+    });
+
+    app.delete('/api/aluno/metas/:id', autenticarAluno, async (req, res) => {
+        try {
+            const excluido = await excluirMeta(db, req.params.id, req.alunoId);
+            if (!excluido) return res.status(404).send({ success: false, erro: 'Meta não encontrada.' });
+            res.send({ success: true, body: 'Meta excluída com sucesso.' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao excluir meta.' });
         }
     });
 

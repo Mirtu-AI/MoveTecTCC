@@ -23,8 +23,8 @@ export default function DetalhesTreinoRotinaAluno() {
 
   const [treino, setTreino] = useState<Treino | null>(null);
   const [carregando, setCarregando] = useState(true);
-  const [concluindo, setConcluindo] = useState(false);
-  const [mostrarConfete, setMostrarConfete] = useState(false);
+  const [concluindo] = useState(false);
+  const [mostrarConfete] = useState(false);
 
   useEffect(() => {
     buscarTreino();
@@ -45,7 +45,7 @@ export default function DetalhesTreinoRotinaAluno() {
   }
 
   function formatarTempo(segundos: number | null) {
-    if (!segundos) return "Tempo";
+    if (!segundos) return "--";
     const min = Math.floor(segundos / 60);
     const seg = segundos % 60;
     return min > 0 ? `${min}min ${seg > 0 ? seg + "s" : ""}` : `${seg}s`;
@@ -66,11 +66,25 @@ export default function DetalhesTreinoRotinaAluno() {
   }
 
   if (carregando) {
-    return <p className="detalhes-treino-rotina-mensagem">Carregando...</p>;
+    return (
+      <div className="detalhes-treino-rotina-carregando">
+        <div className="detalhes-treino-rotina-spinner" />
+        <p>Carregando detalhes do treino...</p>
+      </div>
+    );
   }
 
   if (!treino) {
-    return <p className="detalhes-treino-rotina-mensagem">Treino não encontrado.</p>;
+    return (
+      <div className="detalhes-treino-rotina-page">
+        <div className="detalhes-treino-rotina-vazio-card">
+          <p>Treino não encontrado ou indisponível.</p>
+          <button className="detalhes-treino-rotina-voltar-btn" onClick={() => navigate(-1)}>
+            Voltar
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -87,35 +101,67 @@ export default function DetalhesTreinoRotinaAluno() {
       </header>
 
       <main className="detalhes-treino-rotina-conteudo">
+        {/* Banner de Mídia */}
         <div className="detalhes-treino-rotina-midia">
-          {treino.midiaUrl ? <img src={treino.midiaUrl} alt="" /> : <span>🖼️</span>}
+          {treino.midiaUrl ? (
+            <img src={treino.midiaUrl} alt={treino.titulo} />
+          ) : (
+            <div className="detalhes-treino-rotina-placeholder">
+              <span className="detalhes-treino-rotina-icone-placeholder">🏋️‍♂️</span>
+            </div>
+          )}
         </div>
 
+        {/* Descrição */}
         {treino.descricao && (
-          <div className="detalhes-treino-rotina-descricao-box">{treino.descricao}</div>
+          <div className="detalhes-treino-rotina-descricao-box">
+            <span className="detalhes-treino-rotina-descricao-label">Orientação:</span>
+            <p>{treino.descricao}</p>
+          </div>
         )}
 
-        <span className="detalhes-treino-rotina-secao-titulo">Exercícios</span>
+        {/* Lista de Exercícios */}
+        <div className="detalhes-treino-rotina-secao-header">
+          <span className="detalhes-treino-rotina-secao-titulo">Exercícios do Treino</span>
+          <span className="detalhes-treino-rotina-badge-count">
+            {treino.exercicios.length} {treino.exercicios.length === 1 ? "exercício" : "exercícios"}
+          </span>
+        </div>
 
         <div className="detalhes-treino-rotina-exercicios-lista">
-          {treino.exercicios.map((item) => (
+          {treino.exercicios.map((item, index) => (
             <button
               type="button"
-              key={item.exercicioId}
+              key={item.exercicioId || index}
               className="detalhes-treino-rotina-exercicio-item"
               onClick={() => navigate(`/aluno/exercicios/${item.exercicioId}`)}
             >
-              <span className="detalhes-treino-rotina-exercicio-icone">🖼️</span>
-              <span className="detalhes-treino-rotina-exercicio-nome">
-                {item.exercicio?.nome || "Exercício removido"}
-              </span>
-              <span className="detalhes-treino-rotina-exercicio-tempo">
-                {formatarTempo(item.exercicio?.tempoEstimado ?? null)}
-              </span>
+              <div className="detalhes-treino-rotina-exercicio-badge">
+                {index + 1}
+              </div>
+              
+              <div className="detalhes-treino-rotina-exercicio-info">
+                <span className="detalhes-treino-rotina-exercicio-nome">
+                  {item.exercicio?.nome || "Exercício não especificado"}
+                </span>
+                <span className="detalhes-treino-rotina-exercicio-detalhes">
+                  {item.series ? `${item.series} séries` : ""}
+                  {item.series && item.repeticoes ? " • " : ""}
+                  {item.repeticoes ? `${item.repeticoes} reps` : ""}
+                </span>
+              </div>
+
+              <div className="detalhes-treino-rotina-exercicio-meta">
+                <span className="detalhes-treino-rotina-exercicio-tempo">
+                  ⏱️ {formatarTempo(item.exercicio?.tempoEstimado ?? null)}
+                </span>
+                <span className="detalhes-treino-rotina-seta">→</span>
+              </div>
             </button>
           ))}
         </div>
 
+        {/* Ação de Início */}
         <div className="detalhes-treino-rotina-comecar-wrap">
           <button
             type="button"
@@ -123,7 +169,7 @@ export default function DetalhesTreinoRotinaAluno() {
             onClick={comecar}
             disabled={concluindo}
           >
-            ✓ {concluindo ? "Concluindo..." : "Começar"}
+            {concluindo ? "Iniciando..." : "🚀 Começar Treino"}
           </button>
 
           {mostrarConfete && (
@@ -134,7 +180,7 @@ export default function DetalhesTreinoRotinaAluno() {
                   className="detalhes-treino-rotina-confete-peca"
                   style={{
                     left: `${i * 6.5}%`,
-                    backgroundColor: i % 2 === 0 ? "orange" : "#22c55e",
+                    backgroundColor: i % 2 === 0 ? "#ff552e" : "#10b981",
                     animationDelay: `${i * 0.04}s`,
                   }}
                 />
