@@ -1,5 +1,8 @@
 import crypto from 'crypto';
 import { ObjectId } from 'mongodb';
+import {
+    adicionarAlunoNaComunidadeGeral
+} from './comunidade.js'
 
 const NOME_COLECAO = 'alunos';
 const TIPOS_IMAGEM_PERMITIDOS = ['image/jpeg', 'image/png', 'image/webp'];
@@ -44,6 +47,8 @@ export async function cadastrarAluno(db, salaId, dados) {
     };
 
     const resultado = await colecao.insertOne(aluno);
+
+    await adicionarAlunoNaComunidadeGeral(db, salaId, resultado.insertedId);
 
     return { sucesso: true, id: resultado.insertedId };
 }

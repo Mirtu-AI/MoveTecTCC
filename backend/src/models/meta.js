@@ -141,3 +141,28 @@ export async function excluirMeta(db, id, alunoId) {
     const resultado = await colecao.deleteOne({ _id: new ObjectId(id), alunoId: new ObjectId(alunoId) });
     return resultado.deletedCount > 0;
 }
+
+export async function atualizarMeta(db, id, alunoId, dados) {
+    if (!ObjectId.isValid(id)) return { sucesso: false, erros: ['ID inválido.'] };
+
+    const erros = validarDados(dados);
+    if (erros.length > 0) return { sucesso: false, erros };
+
+    const colecao = db.collection(NOME_COLECAO);
+    const resultado = await colecao.updateOne(
+        { _id: new ObjectId(id), alunoId: new ObjectId(alunoId) },
+        {
+            $set: {
+                titulo: dados.titulo,
+                tipo: dados.tipo,
+                valorAlvo: Number(dados.valorAlvo),
+                prazo: new Date(dados.prazo),
+            },
+        }
+    );
+
+    if (resultado.matchedCount === 0) {
+        return { sucesso: false, erros: ['Meta não encontrada ou você não tem permissão para editá-la.'] };
+    }
+    return { sucesso: true };
+}

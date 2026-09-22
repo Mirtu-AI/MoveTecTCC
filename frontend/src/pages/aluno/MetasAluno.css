@@ -1,103 +1,116 @@
+/* ==========================================================================
+   MINHAS METAS (ALUNO) - IDENTIDADE VISUAL MOVETEC
+   ========================================================================== */
+
 * {
   box-sizing: border-box;
 }
 
 :root {
-  --movetec-laranja: #ff552e;
-  --movetec-laranja-hover: #e0441f;
-  --movetec-laranja-suave: #fff0ed;
-  --movetec-azul-escuro: #121929;
-  --movetec-texto-principal: #1f2937;
-  --movetec-texto-secundario: #6b7280;
-  --movetec-fundo: #f8fafc;
-  --movetec-branco: #ffffff;
-  --movetec-borda: #e2e8f0;
-  --movetec-verde: #10b981;
-  --movetec-verde-suave: #ecfdf5;
+  --laranja-move: #f26522;
+  --laranja-move-dark: #d85418;
+  --azul-marinho: #0f172a;
+  --cinza-texto: #64748b;
+  --papel-branco: #f8fafc;
+  --papel-linha: #e2e8f0;
+  --branco: #ffffff;
+  --verde-sucesso: #10b981;
+  --verde-fundo: rgba(16, 185, 129, 0.08);
 }
 
 .metas-page {
   min-height: 100vh;
-  background-color: var(--movetec-fundo);
-  background-image: radial-gradient(var(--movetec-borda) 1.5px, transparent 1.5px);
-  background-size: 20px 20px;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  color: var(--movetec-texto-principal);
+  background-color: var(--papel-branco);
+  /* Textura de caderno MoveTec */
+  background-image:
+    linear-gradient(var(--papel-linha) 1px, transparent 1px),
+    linear-gradient(90deg, var(--papel-linha) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+  font-family: 'Urbanist', sans-serif;
+  color: var(--azul-marinho);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px 20px 100px;
+  padding: 0 0 40px;
 }
 
+/* HEADER */
 .metas-header {
   width: 100%;
-  max-width: 520px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
+  padding: 18px 24px;
+  background-color: var(--branco);
+  border-bottom: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
   margin-bottom: 24px;
 }
 
 .metas-header h1 {
-  font-size: 1.35rem;
-  font-weight: 800;
-  color: var(--movetec-azul-escuro);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--azul-marinho);
   margin: 0;
-  letter-spacing: -0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .metas-voltar {
-  background: var(--movetec-branco);
-  border: 1px solid var(--movetec-borda);
-  color: var(--movetec-azul-escuro);
-  font-size: 1.1rem;
+  background: none;
+  border: 2px solid var(--papel-linha);
+  color: var(--azul-marinho);
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
-  padding: 10px 16px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(18, 25, 41, 0.04);
+  padding: 6px 14px;
+  border-radius: 999px;
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .metas-voltar:hover {
-  background-color: var(--movetec-laranja-suave);
-  color: var(--movetec-laranja);
-  border-color: rgba(255, 85, 46, 0.3);
+  background-color: var(--laranja-move);
+  border-color: var(--laranja-move);
+  color: var(--branco);
 }
 
+/* CONTEÚDO */
 .metas-conteudo {
   width: 100%;
   max-width: 520px;
+  padding: 0 16px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 }
 
-/* Cards e Seções MoveTec */
+/* SEÇÕES & CARDS MOVETEC */
 .metas-secao {
-  background: var(--movetec-branco);
-  border: 1px solid var(--movetec-borda);
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: 0 4px 12px rgba(18, 25, 41, 0.04);
+  background-color: var(--branco);
+  border: 1.5px solid var(--papel-linha);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
 }
 
 .metas-secao-titulo {
-  font-size: 1.05rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
   font-weight: 700;
-  color: var(--movetec-azul-escuro);
+  color: var(--azul-marinho);
   margin-top: 0;
-  margin-bottom: 20px;
-  letter-spacing: -0.01em;
+  margin-bottom: 16px;
 }
 
-/* Formulário MoveTec */
+/* FORMULÁRIO */
 .metas-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 .metas-campo-grupo {
@@ -108,9 +121,12 @@
 }
 
 .metas-campo-grupo label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--movetec-texto-secundario);
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--azul-marinho);
 }
 
 .metas-form-linha {
@@ -121,22 +137,23 @@
 .metas-input {
   width: 100%;
   padding: 12px 14px;
-  border: 1px solid var(--movetec-borda);
+  border: 1.5px solid var(--papel-linha);
   border-radius: 12px;
+  font-family: 'Urbanist', sans-serif;
   font-size: 0.95rem;
-  color: var(--movetec-azul-escuro);
-  background-color: var(--movetec-fundo);
+  color: var(--azul-marinho);
+  background-color: var(--papel-branco);
   outline: none;
   transition: all 0.2s ease;
 }
 
 .metas-input:focus {
-  border-color: var(--movetec-laranja);
-  background-color: var(--movetec-branco);
-  box-shadow: 0 0 0 3px rgba(255, 85, 46, 0.12);
+  border-color: var(--laranja-move);
+  background-color: var(--branco);
+  box-shadow: 0 0 0 3px rgba(242, 101, 34, 0.12);
 }
 
-/* Seletor de Tipo (Radios em Card) */
+/* OPÇÕES DE TIPO (RADIO BUTTONS CUSTOMIZADOS) */
 .metas-tipo-opcoes {
   display: flex;
   gap: 10px;
@@ -148,14 +165,15 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: 1.5px solid var(--movetec-borda);
-  background-color: var(--movetec-fundo);
+  border: 1.5px solid var(--papel-linha);
+  background-color: var(--papel-branco);
   border-radius: 12px;
-  padding: 12px;
+  padding: 10px;
   cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--movetec-texto-secundario);
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--cinza-texto);
   transition: all 0.2s ease;
 }
 
@@ -164,65 +182,98 @@
 }
 
 .metas-tipo-opcao.selecionada {
-  border-color: var(--movetec-laranja);
-  background-color: var(--movetec-laranja-suave);
-  color: var(--movetec-laranja);
+  border-color: var(--laranja-move);
+  background-color: rgba(242, 101, 34, 0.08);
+  color: var(--laranja-move);
 }
 
-/* Botão Estilo MoveTec */
+/* BOTÕES DO FORMULÁRIO */
+.metas-form-botoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
 .metas-salvar-btn {
-  background-color: var(--movetec-laranja);
-  color: var(--movetec-branco);
-  border: none;
-  border-radius: 12px;
-  padding: 14px;
+  flex: 1;
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  border: 1.5px solid var(--laranja-move);
+  border-radius: 999px;
+  padding: 12px;
+  font-family: 'Urbanist', sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
-  margin-top: 8px;
-  box-shadow: 0 4px 12px rgba(255, 85, 46, 0.25);
+  box-shadow: 0 4px 12px rgba(242, 101, 34, 0.25);
   transition: all 0.2s ease;
 }
 
 .metas-salvar-btn:hover:not(:disabled) {
-  background-color: var(--movetec-laranja-hover);
+  background-color: var(--laranja-move-dark);
+  border-color: var(--laranja-move-dark);
   transform: translateY(-1px);
 }
 
 .metas-salvar-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.65;
   cursor: not-allowed;
+  transform: none;
+}
+
+.metas-cancelar-btn {
+  background-color: transparent;
+  color: var(--cinza-texto);
+  border: 1.5px solid var(--papel-linha);
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.metas-cancelar-btn:hover:not(:disabled) {
+  background-color: var(--papel-linha);
+  color: var(--azul-marinho);
 }
 
 .metas-erro {
   color: #ef4444;
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
   margin: 0;
 }
 
 .metas-mensagem-vazio {
-  color: var(--movetec-texto-secundario);
+  color: var(--cinza-texto);
   font-size: 0.9rem;
   margin: 0;
   font-style: italic;
 }
 
-/* Lista de Cards de Meta */
+/* LISTA DE METAS */
 .metas-lista {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .metas-card {
-  border: 1px solid var(--movetec-borda);
+  border: 1.5px solid var(--papel-linha);
   border-radius: 14px;
-  padding: 16px;
-  background-color: var(--movetec-fundo);
+  padding: 14px 16px;
+  background-color: var(--papel-branco);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.metas-card:hover {
+  border-color: rgba(242, 101, 34, 0.3);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
 }
 
 .metas-card-topo {
@@ -235,34 +286,50 @@
 .metas-card-info-principal {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  overflow: hidden;
 }
 
 .metas-card-icone {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  flex-shrink: 0;
 }
 
 .metas-card-titulo {
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--movetec-azul-escuro);
+  font-weight: 700;
+  color: var(--azul-marinho);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
+.metas-card-acoes {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.metas-item-editar,
 .metas-item-excluir {
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 1.1rem;
-  opacity: 0.5;
+  font-size: 1rem;
+  opacity: 0.6;
   transition: opacity 0.2s;
   padding: 4px;
+  border-radius: 6px;
 }
 
+.metas-item-editar:hover,
 .metas-item-excluir:hover {
   opacity: 1;
+  background-color: var(--papel-linha);
 }
 
-/* Barra de Progresso MoveTec */
+/* TRILHA E BARRA DE PROGRESSO */
 .metas-progresso-container {
   display: flex;
   flex-direction: column;
@@ -270,7 +337,7 @@
 }
 
 .metas-item-progresso-trilha {
-  background-color: var(--movetec-borda);
+  background-color: var(--papel-linha);
   border-radius: 999px;
   height: 8px;
   width: 100%;
@@ -278,7 +345,7 @@
 }
 
 .metas-item-progresso-barra {
-  background-color: var(--movetec-laranja);
+  background-color: var(--laranja-move);
   height: 100%;
   border-radius: 999px;
   transition: width 0.3s ease;
@@ -288,35 +355,36 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.8rem;
-  color: var(--movetec-texto-secundario);
-  font-weight: 500;
+  color: var(--cinza-texto);
+  font-weight: 600;
 }
 
 .metas-porcentagem {
   font-weight: 700;
-  color: var(--movetec-laranja);
+  color: var(--laranja-move);
 }
 
-/* Meta Atingida */
+/* METAS ATINGIDAS */
 .metas-card-atingida {
-  background-color: var(--movetec-verde-suave);
-  border-color: rgba(16, 185, 129, 0.2);
+  background-color: var(--verde-fundo);
+  border-color: rgba(16, 185, 129, 0.3);
 }
 
 .metas-badge-check {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  background-color: var(--movetec-verde);
-  color: var(--movetec-branco);
+  background-color: var(--verde-sucesso);
+  color: var(--branco);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 800;
+  flex-shrink: 0;
 }
 
-/* Loading State */
+/* CARREGANDO / SPINNER */
 .metas-carregando {
   min-height: 100vh;
   display: flex;
@@ -324,14 +392,17 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  color: var(--movetec-texto-secundario);
+  color: var(--cinza-texto);
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.95rem;
+  background-color: var(--papel-branco);
 }
 
 .metas-spinner {
   width: 32px;
   height: 32px;
-  border: 3px solid var(--movetec-borda);
-  border-top-color: var(--movetec-laranja);
+  border: 3px solid var(--papel-linha);
+  border-top-color: var(--laranja-move);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -339,5 +410,25 @@
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+/* RESPONSIVIDADE MOBILE */
+@media (max-width: 480px) {
+  .metas-header {
+    padding: 14px 16px;
+  }
+
+  .metas-conteudo {
+    padding: 0 12px;
+  }
+
+  .metas-secao {
+    padding: 16px;
+  }
+
+  .metas-form-linha {
+    flex-direction: column;
+    gap: 14px;
   }
 }

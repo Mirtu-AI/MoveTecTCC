@@ -38,6 +38,12 @@ import HistoriaAluno from "./pages/aluno/HistoricoAluno";
 import DetalhesTreinoEspecificaAluno from "./pages/aluno/DetalhesTreinoEspecifico";
 import DetalhesTreinoRotinaAluno from "./pages/aluno/DetalhesTreinoRotinaAluno";
 import MetasAluno from "./pages/aluno/MetasAluno";
+import AnexarVideoAtividade from "./pages/aluno/AnexarVideoAtividade";
+import ListaComunidades from "./pages/aluno/ListaComunidades";
+import CriarComunidade from "./pages/aluno/CriarComunidades";
+import DetalhesComunidade from "./pages/aluno/DetalhesComunidade";
+import ListaComunidadesProfessor from "./pages/professor/ListaComunidadesProfessor";
+import CriarComunidadeProfessor from "./pages/professor/CriarComunidadeProfessor";
 
 import RotaProtegida from "./pages/components/RotaProtegida";
 import RotaPublica from "./pages/components/RotaPublica";
@@ -196,6 +202,29 @@ function App() {
             </RotaProtegida>
           }
         />
+
+        <Route
+          path="/aluno/atividades/:id/anexar-video"
+          element={
+            <RotaProtegida tipoPermitido="aluno">
+              <AnexarVideoAtividade />
+            </RotaProtegida>
+          }
+        />
+
+        <Route
+          path="/aluno/comunidades"
+          element={<RotaProtegida tipoPermitido="aluno"><ListaComunidades /></RotaProtegida>}
+        />
+        <Route
+          path="/aluno/comunidades/nova"
+          element={<RotaProtegida tipoPermitido="aluno"><CriarComunidade /></RotaProtegida>}
+        />
+
+        <Route
+          path="/aluno/comunidades/:id"
+          element={<RotaProtegida tipoPermitido="aluno"><DetalhesComunidade /></RotaProtegida>}
+        />
         {/* Rotas Protegidas - Professor */}
         < Route
           path="/dashboard"
@@ -334,6 +363,19 @@ function App() {
               <CadastrarAviso />
             </RotaProtegida>
           }
+        />
+
+        <Route
+          path="/professor/comunidade"
+          element={<RotaProtegida tipoPermitido="professor"><ListaComunidadesProfessor /></RotaProtegida>}
+        />
+        <Route
+          path="/professor/comunidades/nova"
+          element={<RotaProtegida tipoPermitido="professor"><CriarComunidadeProfessor /></RotaProtegida>}
+        />
+        <Route
+          path="/professor/comunidades/:id"
+          element={<RotaProtegida tipoPermitido="professor"><DetalhesComunidade /></RotaProtegida>}
         />
         {/* Rotas Protegidas - Admin */}
         <Route

@@ -1,0 +1,225 @@
+/* ==========================================================================
+   ANEXAR VÍDEO DE ATIVIDADE - IDENTIDADE VISUAL MOVETEC
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --laranja-move: #f26522;
+  --laranja-move-dark: #d85418;
+  --azul-marinho: #0f172a;
+  --cinza-texto: #64748b;
+  --papel-branco: #f8fafc;
+  --papel-linha: #e2e8f0;
+  --branco: #ffffff;
+}
+
+.anexar-video-page {
+  min-height: 100vh;
+  background-color: var(--papel-branco);
+  /* Textura de caderno MoveTec */
+  background-image:
+    linear-gradient(var(--papel-linha) 1px, transparent 1px),
+    linear-gradient(90deg, var(--papel-linha) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+  font-family: 'Urbanist', sans-serif;
+  color: var(--azul-marinho);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 40px;
+}
+
+/* HEADER */
+.anexar-video-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 24px;
+  background-color: var(--branco);
+  border-bottom: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  margin-bottom: 24px;
+}
+
+.anexar-video-header h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--azul-marinho);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.anexar-video-voltar {
+  background: none;
+  border: 2px solid var(--papel-linha);
+  color: var(--azul-marinho);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.anexar-video-voltar:hover {
+  background-color: var(--laranja-move);
+  border-color: var(--laranja-move);
+  color: var(--branco);
+}
+
+/* CONTEÚDO */
+.anexar-video-conteudo {
+  width: 100%;
+  max-width: 520px;
+  padding: 0 16px;
+}
+
+.anexar-video-card {
+  background-color: var(--branco);
+  border: 1.5px solid var(--papel-linha);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  display: flex;
+  flex-direction: column;
+}
+
+.anexar-video-instrucao {
+  font-size: 0.92rem;
+  color: var(--cinza-texto);
+  line-height: 1.5;
+  margin: 0 0 20px;
+}
+
+.anexar-video-instrucao strong {
+  color: var(--azul-marinho);
+}
+
+/* ÁREA DE UPLOAD */
+.anexar-video-upload-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 180px;
+  border: 2px dashed var(--papel-linha);
+  background-color: var(--papel-branco);
+  border-radius: 14px;
+  cursor: pointer;
+  color: var(--cinza-texto);
+  text-align: center;
+  padding: 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.anexar-video-upload-box:hover {
+  border-color: var(--laranja-move);
+  color: var(--laranja-move);
+  background-color: rgba(242, 101, 34, 0.04);
+}
+
+.anexar-video-upload-icone {
+  font-size: 2rem;
+}
+
+.anexar-video-preview {
+  width: 100%;
+  border-radius: 14px;
+  border: 1.5px solid var(--papel-linha);
+  background-color: #000000;
+  max-height: 280px;
+  object-fit: contain;
+}
+
+.anexar-video-input {
+  display: none;
+}
+
+/* INFORMAÇÕES DO VÍDEO SELECIONADO */
+.anexar-video-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  padding: 10px 14px;
+  background-color: var(--papel-branco);
+  border: 1.5px solid var(--papel-linha);
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--azul-marinho);
+}
+
+.anexar-video-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: rgba(242, 101, 34, 0.1);
+  color: var(--laranja-move);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+/* ERRO */
+.anexar-video-erro {
+  color: #ef4444;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 12px 0 0;
+}
+
+/* BOTÃO DE ENVIAR */
+.anexar-video-enviar-btn {
+  width: 100%;
+  padding: 14px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  border: 1.5px solid var(--laranja-move);
+  border-radius: 999px;
+  cursor: pointer;
+  margin-top: 20px;
+  box-shadow: 0 4px 14px rgba(242, 101, 34, 0.3);
+  transition: all 0.2s ease;
+}
+
+.anexar-video-enviar-btn:hover:not(:disabled) {
+  background-color: var(--laranja-move-dark);
+  border-color: var(--laranja-move-dark);
+  transform: translateY(-1px);
+}
+
+.anexar-video-enviar-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 480px) {
+  .anexar-video-header {
+    padding: 14px 16px;
+  }
+
+  .anexar-video-conteudo {
+    padding: 0 12px;
+  }
+
+  .anexar-video-card {
+    padding: 16px;
+  }
+}

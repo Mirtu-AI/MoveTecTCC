@@ -86,7 +86,11 @@ export default function ExecutarExercicios({ tipo }: Props) {
       }
 
       if (ultimoExercicio) {
-        navigate(`${tipo === "atividade" ? "/aluno/atividades" : "/aluno/execucoes-treino"}/${id}/parabens`);
+        if (tipo === "atividade") {
+          navigate(`/aluno/atividades/${id}/anexar-video`);
+        } else {
+          navigate(`/aluno/execucoes-treino/${id}/parabens`);
+        }
       } else {
         setIndiceAtual((a) => a + 1);
         await buscarDados();

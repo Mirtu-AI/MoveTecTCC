@@ -5,6 +5,10 @@ const NOME_COLECAO_EXERCICIOS = 'exercicios';
 
 const EXTENSOES_PERMITIDAS = ['.docx', '.pdf', '.pptx'];
 const REACOES_VALIDAS = ['🔥', '👏', '💪', '⭐', '🎯', '🚀'];
+const TIPOS_VIDEO_PERMITIDOS = ['video/mp4', 'video/webm', 'video/quicktime'];
+const DURACAO_MINIMA_VIDEO = 5;
+const DURACAO_MAXIMA_VIDEO = 15;
+const TAMANHO_MAXIMO_VIDEO = 15 * 1024 * 1024; // 15MB em base64
 
 function validarExercicios(exercicioIds) {
     return Array.isArray(exercicioIds) && exercicioIds.length > 0 && exercicioIds.every((id) => ObjectId.isValid(id));
@@ -97,7 +101,11 @@ export async function atualizarAtividade(db, id, professorId, dados) {
                 status: 'andamento',
                 dataEntrega: new Date(dados.dataEntrega),
                 permiteArquivoAlternativo: Boolean(dados.permiteArquivoAlternativo),
+                videoComprovacao: null,        // <-- novo: limpa vídeo de uma entrega anterior
+                arquivoAlternativoAluno: null,  // <-- novo: limpa arquivo de uma entrega anterior
+                feedback: null,                 // <-- novo: limpa feedback de uma entrega anterior
             },
+            $unset: { entregueEm: '' },        // <-- novo: remove a data de entrega antiga
         }
     );
 
@@ -186,6 +194,7 @@ export async function buscarAtividadePorId(db, id) {
     const atividade = resultado[0];
     return { ...atividade, progresso: calcularProgresso(atividade.exercicios) };
 }
+
 export async function alternarConclusaoExercicio(db, atividadeId, alunoId, exercicioId) {
     if (!ObjectId.isValid(atividadeId) || !ObjectId.isValid(exercicioId)) {
         return { sucesso: false, erro: 'ID inválido.' };
@@ -208,22 +217,17 @@ export async function alternarConclusaoExercicio(db, atividadeId, alunoId, exerc
     );
 
     const todosConcluidos = novosExercicios.every((item) => item.concluido);
-    const novoStatus = todosConcluidos ? 'entregue' : 'andamento';
 
-    const camposParaAtualizar = { exercicios: novosExercicios, status: novoStatus };
-    if (novoStatus === 'entregue') {
-        camposParaAtualizar.entregueEm = new Date();
-    }
-
+    // Não marca mais 'entregue' aqui — agora depende do vídeo de comprovação
     await colecao.updateOne(
         { _id: new ObjectId(atividadeId) },
-        { $set: camposParaAtualizar }
+        { $set: { exercicios: novosExercicios } }
     );
 
     return {
         sucesso: true,
         progresso: calcularProgresso(novosExercicios),
-        status: novoStatus,
+        exerciciosCompletos: todosConcluidos,
     };
 }
 
@@ -318,6 +322,57 @@ export async function cancelarEnvioArquivoAlternativo(db, id, alunoId) {
     await colecao.updateOne(
         { _id: new ObjectId(id) },
         { $set: { arquivoAlternativoAluno: null, status: 'andamento' }, $unset: { entregueEm: '' } }
+    );
+
+    return { sucesso: true };
+}
+
+export async function enviarVideoComprovacao(db, atividadeId, alunoId, videoBase64, nomeArquivo, duracaoSegundos) {
+    if (!ObjectId.isValid(atividadeId)) {
+        return { sucesso: false, erro: 'ID inválido.' };
+    }
+    if (!videoBase64 || typeof videoBase64 !== 'string' || !videoBase64.startsWith('data:video/')) {
+        return { sucesso: false, erro: 'Formato de vídeo inválido.' };
+    }
+
+    const tipoDeclarado = videoBase64.substring(5, videoBase64.indexOf(';'));
+    if (!TIPOS_VIDEO_PERMITIDOS.includes(tipoDeclarado)) {
+        return { sucesso: false, erro: 'Envie um vídeo .mp4, .webm ou .mov.' };
+    }
+    if (videoBase64.length > TAMANHO_MAXIMO_VIDEO) {
+        return { sucesso: false, erro: 'Vídeo muito grande. Grave um vídeo mais curto.' };
+    }
+    if (!duracaoSegundos || duracaoSegundos < DURACAO_MINIMA_VIDEO || duracaoSegundos > DURACAO_MAXIMA_VIDEO) {
+        return {
+            sucesso: false,
+            erro: `O vídeo precisa ter entre ${DURACAO_MINIMA_VIDEO} e ${DURACAO_MAXIMA_VIDEO} segundos.`,
+        };
+    }
+
+    const colecao = db.collection(NOME_COLECAO);
+
+    const atividade = await colecao.findOne({ _id: new ObjectId(atividadeId) });
+    if (!atividade) {
+        return { sucesso: false, erro: 'Atividade não encontrada.' };
+    }
+    if (atividade.alunoId.toString() !== alunoId.toString()) {
+        return { sucesso: false, erro: 'Você não tem acesso a essa atividade.' };
+    }
+
+    const todosConcluidos = atividade.exercicios.every((item) => item.concluido);
+    if (!todosConcluidos) {
+        return { sucesso: false, erro: 'Conclua todos os exercícios antes de enviar o vídeo.' };
+    }
+
+    await colecao.updateOne(
+        { _id: new ObjectId(atividadeId) },
+        {
+            $set: {
+                videoComprovacao: { arquivo: videoBase64, nome: nomeArquivo, duracaoSegundos },
+                status: 'entregue',
+                entregueEm: new Date(),
+            },
+        }
     );
 
     return { sucesso: true };

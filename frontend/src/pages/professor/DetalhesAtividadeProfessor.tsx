@@ -13,6 +13,12 @@ interface ArquivoAlternativo {
   arquivo: string;
 }
 
+interface VideoComprovacao {
+  nome: string;
+  arquivo: string;
+  duracaoSegundos: number;
+}
+
 interface Atividade {
   titulo: string;
   descricao: string;
@@ -22,6 +28,7 @@ interface Atividade {
   progresso: number;
   permiteArquivoAlternativo: boolean;
   arquivoAlternativoAluno: ArquivoAlternativo | null;
+  videoComprovacao?: VideoComprovacao | null;
   exercicios: ExercicioItem[];
 }
 
@@ -32,6 +39,7 @@ export default function DetalhesAtividadeProfessor() {
   const [atividade, setAtividade] = useState<Atividade | null>(null);
   const [carregando, setCarregando] = useState(true);
   const [excluindo, setExcluindo] = useState(false);
+
 
   function prazoAindaValido(dataEntregaIso: string) {
     return new Date(dataEntregaIso) >= new Date();
@@ -169,6 +177,19 @@ export default function DetalhesAtividadeProfessor() {
             >
               📎 {atividade.arquivoAlternativoAluno.nome}
             </a>
+          </div>
+        )}
+
+        {atividade.videoComprovacao && (
+          <div className="detalhes-atividade-secao">
+            <span className="detalhes-atividade-label">
+              Vídeo de comprovação ({atividade.videoComprovacao.duracaoSegundos}s)
+            </span>
+            <video
+              src={atividade.videoComprovacao.arquivo}
+              controls
+              style={{ width: "100%", borderRadius: 12 }}
+            />
           </div>
         )}
       </main>

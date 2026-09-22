@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import crypto from 'crypto';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { MongoClient } from 'mongodb';
@@ -19,6 +21,7 @@ import { buscarAdmPorEmail } from './models/admGeral.js';
 import { autenticarAdm } from './middlewares/autenticarAdm.js';
 import { autenticarProfessor } from './middlewares/autenticarProfessor.js';
 import { autenticarAluno } from './middlewares/autenticarAluno.js';
+import { autenticarUsuario } from './middlewares/autenticarUsuario.js';
 import { calcularDesempenho } from './models/desempenho.js';
 import { registrarTreinoConcluido, listarHistoricoPorAluno } from './models/registroTreino.js';
 import { iniciarExecucao } from './models/execucaoAtividade.js';
@@ -71,6 +74,7 @@ import {
     cancelarEnvioArquivoAlternativo,
     excluirAtividade,
     darFeedbackAtividade,
+    enviarVideoComprovacao
 } from './models/atividade.js';
 import {
     cadastrarRotina,
@@ -96,8 +100,26 @@ import {
 import {
     cadastrarMeta,
     listarMetasPorAluno,
-    excluirMeta
+    excluirMeta,
+    atualizarMeta
 } from './models/meta.js';
+import {
+    cadastrarComunidadeTematica,
+    entrarComunidade,
+    sairComunidade,
+    listarComunidadesTematicas,
+    listarComunidadesDoAluno,
+    buscarComunidadePorId,
+    excluirComunidadeTematica,
+    cadastrarComunidadeGeral,
+    podeAcessarComunidade,
+    listarComunidadesDoProfessor
+} from './models/comunidade.js';
+import {
+    cadastrarMensagem,
+    listarMensagensPorComunidade,
+    popularAutores
+} from './models/mensagem.js';
 
 
 
@@ -161,6 +183,10 @@ async function main() {
         await db.collection('registrosTreino').createIndex({ alunoId: 1, rotinaId: 1 });
         await db.collection('execucoesTreino').createIndex({ alunoId: 1 });
         await db.collection('metas').createIndex({ alunoId: 1 });
+        await db.collection('comunidades').createIndex({ tipo: 1, salaId: 1 });
+        await db.collection('comunidades').createIndex({ tipo: 1 });
+        await db.collection('comunidades').createIndex({ 'membros.id': 1 });
+        await db.collection('mensagens').createIndex({ comunidadeId: 1, enviadaEm: 1 });
         console.log('Índices garantidos');
     }
 
@@ -457,6 +483,63 @@ async function main() {
         }
     });
 
+    app.post('/api/professor/comunidades', autenticarProfessor, async (req, res) => {
+        try {
+            const resultado = await cadastrarComunidadeTematica(db, req.professorId, 'professor', req.body);
+            if (!resultado.sucesso) return res.status(400).send({ success: false, erros: resultado.erros });
+            res.status(201).send({ success: true, id: resultado.id });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao criar comunidade.' });
+        }
+    });
+
+    app.delete('/api/comunidades/:id', autenticarUsuario, async (req, res) => {
+        try {
+            const excluido = await excluirComunidadeTematica(db, req.params.id, req.usuarioId);
+            if (!excluido) return res.status(404).send({ success: false, erro: 'Comunidade não encontrada ou sem permissão.' });
+            res.send({ success: true });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao excluir comunidade.' });
+        }
+    });
+
+    app.get('/api/comunidades/:id/mensagens', autenticarUsuario, async (req, res) => {
+        try {
+            const autorizado = await podeAcessarComunidade(db, req.params.id, req.usuarioId, req.usuarioTipo);
+            if (!autorizado) return res.status(403).send({ success: false, erro: 'Você não tem acesso a essa comunidade.' });
+
+            const mensagens = await listarMensagensPorComunidade(db, req.params.id);
+            const populadas = await popularAutores(db, mensagens);
+            res.send({ success: true, mensagens: populadas });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao buscar mensagens.' });
+        }
+    });
+
+    app.get('/api/professor/comunidades', autenticarProfessor, async (req, res) => {
+        try {
+            const dados = await listarComunidadesDoProfessor(db, req.professorId);
+            res.send({ success: true, ...dados });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao buscar comunidades.' });
+        }
+    });
+
+    app.post('/api/professor/comunidades/:id/entrar', autenticarProfessor, async (req, res) => {
+        try {
+            const resultado = await entrarComunidade(db, req.params.id, req.professorId, 'professor');
+            if (!resultado.sucesso) return res.status(400).send({ success: false, erro: resultado.erro });
+            res.send({ success: true });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao entrar na comunidade.' });
+        }
+    });
+
     // ---------- SALAS ----------
 
     app.post('/api/salas', autenticarAdm, async (req, res) => {
@@ -465,6 +548,11 @@ async function main() {
             if (!resultado.sucesso) {
                 return res.status(400).send({ success: false, erros: resultado.erros });
             }
+
+            if (req.body.professorId) {
+                await cadastrarComunidadeGeral(db, resultado.id, req.body.professorId, req.body.nome); // <-- passa req.body.nome
+            }
+
             res.status(201).send({ success: true, id: resultado.id });
         } catch (err) {
             console.error(err);
@@ -814,6 +902,82 @@ async function main() {
         } catch (err) {
             console.error(err);
             res.status(500).send({ success: false, erro: 'Erro ao excluir meta.' });
+        }
+    });
+
+    app.put('/api/aluno/metas/:id', autenticarAluno, async (req, res) => {
+        try {
+            const resultado = await atualizarMeta(db, req.params.id, req.alunoId, req.body);
+            if (!resultado.sucesso) return res.status(400).send({ success: false, erros: resultado.erros });
+            res.send({ success: true, body: 'Meta atualizada com sucesso.' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao atualizar meta.' });
+        }
+    });
+
+    app.get('/api/aluno/comunidades', autenticarAluno, async (req, res) => {
+        try {
+            const aluno = await buscarAlunoPorId(db, req.alunoId);
+            const dados = await listarComunidadesDoAluno(db, req.alunoId, aluno?.salaId);
+            res.send({ success: true, ...dados });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao buscar comunidades.' });
+        }
+    });
+
+    app.get('/api/comunidades/tematicas', autenticarUsuario, async (req, res) => { // trocou autenticarAluno por autenticarUsuario
+        try {
+            const comunidades = await listarComunidadesTematicas(db);
+            res.send({ success: true, comunidades });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao buscar comunidades temáticas.' });
+        }
+    });
+
+    app.post('/api/aluno/comunidades', autenticarAluno, async (req, res) => {
+        try {
+            const resultado = await cadastrarComunidadeTematica(db, req.alunoId, 'aluno', req.body);
+            if (!resultado.sucesso) return res.status(400).send({ success: false, erros: resultado.erros });
+            res.status(201).send({ success: true, id: resultado.id });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao criar comunidade.' });
+        }
+    });
+
+    app.post('/api/aluno/comunidades/:id/entrar', autenticarAluno, async (req, res) => {
+        try {
+            const resultado = await entrarComunidade(db, req.params.id, req.alunoId, 'aluno');
+            if (!resultado.sucesso) return res.status(400).send({ success: false, erro: resultado.erro });
+            res.send({ success: true });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao entrar na comunidade.' });
+        }
+    });
+
+    app.post('/api/aluno/comunidades/:id/sair', autenticarAluno, async (req, res) => {
+        try {
+            const resultado = await sairComunidade(db, req.params.id, req.alunoId);
+            if (!resultado.sucesso) return res.status(400).send({ success: false, erro: resultado.erro });
+            res.send({ success: true });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao sair da comunidade.' });
+        }
+    });
+
+    app.get('/api/aluno/comunidades/:id', autenticarAluno, async (req, res) => {
+        try {
+            const comunidade = await buscarComunidadePorId(db, req.params.id);
+            if (!comunidade) return res.status(404).send({ success: false, erro: 'Comunidade não encontrada.' });
+            res.send({ success: true, comunidade });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao buscar comunidade.' });
         }
     });
 
@@ -1298,6 +1462,19 @@ async function main() {
             res.status(500).send({ success: false, erro: 'Erro ao enviar feedback.' });
         }
     });
+
+    // a rota em si
+    app.put('/api/aluno/atividades/:id/video-comprovacao', autenticarAluno, async (req, res) => {
+        try {
+            const { video, nomeArquivo, duracaoSegundos } = req.body;
+            const resultado = await enviarVideoComprovacao(db, req.params.id, req.alunoId, video, nomeArquivo, duracaoSegundos);
+            if (!resultado.sucesso) return res.status(400).send({ success: false, erro: resultado.erro });
+            res.send({ success: true, body: 'Vídeo enviado com sucesso.' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao enviar vídeo.' });
+        }
+    });
     // ---------- ROTINAS (professor) ----------
 
     app.post('/api/professor/rotinas', autenticarProfessor, async (req, res) => {
@@ -1488,7 +1665,76 @@ async function main() {
         }
     });
 
-    app.listen(port, () => {
+    const server = createServer(app);
+
+    const io = new Server(server, {
+        cors: { origin: 'http://localhost:5173' }, // ajusta pra URL do seu frontend
+    });
+
+    io.use((socket, next) => {
+        const token = socket.handshake.auth?.token;
+        if (!token) return next(new Error('Token não fornecido.'));
+
+        try {
+            const payload = jwt.verify(token, process.env.JWT_SEGREDO);
+            socket.userId = payload.id;
+            socket.userTipo = payload.tipo; // 'aluno' | 'professor'
+            next();
+        } catch (err) {
+            next(new Error('Token inválido.'));
+        }
+    });
+
+    io.on('connection', (socket) => {
+        socket.on('entrar-comunidade', async (comunidadeId, callback) => {
+            try {
+                const autorizado = await podeAcessarComunidade(db, comunidadeId, socket.userId, socket.userTipo);
+                if (!autorizado) {
+                    return callback?.({ sucesso: false, erro: 'Você não tem acesso a essa comunidade.' });
+                }
+
+                socket.join(comunidadeId);
+                callback?.({ sucesso: true });
+            } catch (err) {
+                console.error(err);
+                callback?.({ sucesso: false, erro: 'Erro ao entrar na comunidade.' });
+            }
+        });
+
+        socket.on('sair-comunidade', (comunidadeId) => {
+            socket.leave(comunidadeId);
+        });
+
+        socket.on('enviar-mensagem', async ({ comunidadeId, texto }, callback) => {
+            try {
+                if (!texto || !texto.trim()) {
+                    return callback?.({ sucesso: false, erro: 'Mensagem vazia.' });
+                }
+
+                const autorizado = await podeAcessarComunidade(db, comunidadeId, socket.userId, socket.userTipo);
+                if (!autorizado) {
+                    return callback?.({ sucesso: false, erro: 'Você não tem acesso a essa comunidade.' });
+                }
+
+                const mensagem = await cadastrarMensagem(db, comunidadeId, socket.userId, socket.userTipo, texto);
+                const [mensagemComAutor] = await popularAutores(db, [
+                    { ...mensagem, autorId: mensagem.autorId.toString() },
+                ]);
+
+                io.to(comunidadeId).emit('nova-mensagem', {
+                    ...mensagemComAutor,
+                    _id: mensagem._id.toString(),
+                });
+
+                callback?.({ sucesso: true });
+            } catch (err) {
+                console.error(err);
+                callback?.({ sucesso: false, erro: 'Erro ao enviar mensagem.' });
+            }
+        });
+    });
+
+    server.listen(port, () => {
         console.log(`Server rodando em: http://${hostname}:${port}`);
     });
 }

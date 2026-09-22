@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./MetasAluno.css";
+import ModalConfirmacao from "../components/ModalConfirmacao";
 
 interface Meta {
   _id: string;
@@ -20,12 +21,17 @@ export default function MetasAluno() {
   const [metas, setMetas] = useState<Meta[]>([]);
   const [carregando, setCarregando] = useState(true);
 
+  const [metaEditandoId, setMetaEditandoId] = useState<string | null>(null);
   const [titulo, setTitulo] = useState("");
   const [tipo, setTipo] = useState<"tempo" | "atividades">("atividades");
   const [valorAlvo, setValorAlvo] = useState("");
   const [prazo, setPrazo] = useState("");
   const [erro, setErro] = useState("");
   const [salvando, setSalvando] = useState(false);
+
+  const [metaSelecionada, setMetaSelecionada] = useState<Meta | null>(null);
+  const [modalExcluirAberto, setModalExcluirAberto] = useState(false);
+  const [excluindo, setExcluindo] = useState(false);
 
   useEffect(() => {
     buscarMetas();
@@ -45,6 +51,33 @@ export default function MetasAluno() {
     }
   }
 
+  function paraInputDate(dataIso: string) {
+    const d = new Date(dataIso);
+    const ano = d.getUTCFullYear();
+    const mes = String(d.getUTCMonth() + 1).padStart(2, "0");
+    const dia = String(d.getUTCDate()).padStart(2, "0");
+    return `${ano}-${mes}-${dia}`;
+  }
+
+  function iniciarEdicao(meta: Meta) {
+    setMetaEditandoId(meta._id);
+    setTitulo(meta.titulo);
+    setTipo(meta.tipo);
+    setValorAlvo(String(meta.valorAlvo));
+    setPrazo(paraInputDate(meta.prazo));
+    setErro("");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function cancelarEdicao() {
+    setMetaEditandoId(null);
+    setTitulo("");
+    setTipo("atividades");
+    setValorAlvo("");
+    setPrazo("");
+    setErro("");
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErro("");
@@ -57,31 +90,46 @@ export default function MetasAluno() {
     setSalvando(true);
     try {
       const token = localStorage.getItem("token");
-      await axios.post(
-        "http://localhost:3000/api/aluno/metas",
-        { titulo, tipo, valorAlvo: Number(valorAlvo), prazo },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setTitulo("");
-      setValorAlvo("");
-      setPrazo("");
+      const cabecalho = { headers: { Authorization: `Bearer ${token}` } };
+      const dados = { titulo, tipo, valorAlvo: Number(valorAlvo), prazo };
+
+      if (metaEditandoId) {
+        await axios.put(`http://localhost:3000/api/aluno/metas/${metaEditandoId}`, dados, cabecalho);
+      } else {
+        await axios.post("http://localhost:3000/api/aluno/metas", dados, cabecalho);
+      }
+
+      cancelarEdicao();
       await buscarMetas();
     } catch (err: any) {
-      setErro(err.response?.data?.erros?.[0] || "Não foi possível criar a meta.");
+      setErro(err.response?.data?.erros?.[0] || "Não foi possível salvar a meta.");
     } finally {
       setSalvando(false);
     }
   }
 
-  async function excluirMeta(id: string) {
+  function abrirModalExcluir(meta: Meta) {
+    setMetaSelecionada(meta);
+    setModalExcluirAberto(true);
+  }
+
+  async function confirmarExclusao() {
+    if (!metaSelecionada) return;
+
+    setExcluindo(true);
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:3000/api/aluno/metas/${id}`, {
+      await axios.delete(`http://localhost:3000/api/aluno/metas/${metaSelecionada._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setMetas((atual) => atual.filter((m) => m._id !== id));
+      setMetas((atual) => atual.filter((m) => m._id !== metaSelecionada._id));
+      if (metaEditandoId === metaSelecionada._id) cancelarEdicao();
+      setModalExcluirAberto(false);
+      setMetaSelecionada(null);
     } catch (err) {
       console.error(err);
+    } finally {
+      setExcluindo(false);
     }
   }
 
@@ -111,9 +159,9 @@ export default function MetasAluno() {
       </header>
 
       <main className="metas-conteudo">
-        {/* Bloco 1: Formulário de Nova Meta */}
+        {/* Bloco 1: Formulário de Nova Meta / Edição */}
         <section className="metas-secao">
-          <h2 className="metas-secao-titulo">Definir nova meta</h2>
+          <h2 className="metas-secao-titulo">{metaEditandoId ? "Editar meta" : "Definir nova meta"}</h2>
 
           <form onSubmit={handleSubmit} className="metas-form">
             <div className="metas-campo-grupo">
@@ -180,9 +228,16 @@ export default function MetasAluno() {
 
             {erro && <p className="metas-erro">{erro}</p>}
 
-            <button type="submit" className="metas-salvar-btn" disabled={salvando}>
-              {salvando ? "Criando..." : "+ Criar meta"}
-            </button>
+            <div className="metas-form-botoes">
+              <button type="submit" className="metas-salvar-btn" disabled={salvando}>
+                {salvando ? "Salvando..." : metaEditandoId ? "✓ Salvar alterações" : "+ Criar meta"}
+              </button>
+              {metaEditandoId && (
+                <button type="button" className="metas-cancelar-btn" onClick={cancelarEdicao} disabled={salvando}>
+                  Cancelar
+                </button>
+              )}
+            </div>
           </form>
         </section>
 
@@ -200,15 +255,26 @@ export default function MetasAluno() {
                       <span className="metas-card-icone">{meta.tipo === "tempo" ? "⏱️" : "🏋️"}</span>
                       <span className="metas-card-titulo">{meta.titulo}</span>
                     </div>
-                    <button
-                      type="button"
-                      className="metas-item-excluir"
-                      onClick={() => excluirMeta(meta._id)}
-                      aria-label="Excluir meta"
-                      title="Excluir meta"
-                    >
-                      🗑️
-                    </button>
+                    <div className="metas-card-acoes">
+                      <button
+                        type="button"
+                        className="metas-item-editar"
+                        onClick={() => iniciarEdicao(meta)}
+                        aria-label="Editar meta"
+                        title="Editar meta"
+                      >
+                        ✏️
+                      </button>
+                      <button
+                        type="button"
+                        className="metas-item-excluir"
+                        onClick={() => abrirModalExcluir(meta)}
+                        aria-label="Excluir meta"
+                        title="Excluir meta"
+                      >
+                        🗑️
+                      </button>
+                    </div>
                   </div>
 
                   <div className="metas-progresso-container">
@@ -248,7 +314,7 @@ export default function MetasAluno() {
                     <button
                       type="button"
                       className="metas-item-excluir"
-                      onClick={() => excluirMeta(meta._id)}
+                      onClick={() => abrirModalExcluir(meta)}
                       aria-label="Excluir meta"
                       title="Excluir meta"
                     >
@@ -261,6 +327,20 @@ export default function MetasAluno() {
           )}
         </section>
       </main>
+
+      <ModalConfirmacao
+        aberto={modalExcluirAberto}
+        titulo="Excluir meta?"
+        mensagem={`Tem certeza que deseja excluir "${metaSelecionada?.titulo}"? Essa ação não pode ser desfeita.`}
+        textoConfirmar="Excluir"
+        tipo="perigo"
+        carregando={excluindo}
+        onConfirmar={confirmarExclusao}
+        onCancelar={() => {
+          setModalExcluirAberto(false);
+          setMetaSelecionada(null);
+        }}
+      />
     </div>
   );
 }
