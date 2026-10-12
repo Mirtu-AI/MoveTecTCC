@@ -389,3 +389,74 @@
     transform: scale(1.08);
   }
 }
+
+
+.detalhes-aluno-objetivo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detalhes-aluno-desempenho-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.detalhes-aluno-desemp-card {
+  background: #f5f5f5;
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detalhes-aluno-desemp-card.positivo {
+  background: #e8f5e9;
+}
+
+.detalhes-aluno-desemp-card.negativo {
+  background: #fce4ec;
+}
+
+.detalhes-aluno-desemp-numero {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.detalhes-aluno-desemp-card.positivo .detalhes-aluno-desemp-numero {
+  color: #2e7d32;
+}
+
+.detalhes-aluno-desemp-card.negativo .detalhes-aluno-desemp-numero {
+  color: #c62828;
+}
+
+.detalhes-aluno-desemp-label {
+  font-size: 0.78rem;
+  color: #666;
+}
+
+.detalhes-aluno-conquistas {
+  margin-top: 8px;
+}
+
+.detalhes-aluno-conquistas-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.detalhes-aluno-conquista-badge {
+  background: #fff3e0;
+  border: 1px solid #ffcc80;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 0.82rem;
+  color: #e65100;
+}

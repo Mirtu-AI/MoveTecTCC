@@ -160,16 +160,29 @@ export default function ListaTreinos() {
                 <p className="treino-card-descricao">{treino.descricao}</p>
 
                 <div className="treino-card-exercicios">
-                  {treino.exercicios.map((item, indice) => (
-                    <div key={indice} className="treino-exercicio-linha">
-                      <span className="treino-exercicio-nome">
-                        {item.exercicio?.nome || "Exercício removido"}
-                      </span>
-                      <span className="treino-exercicio-detalhe">
-                        {item.series} x {item.repeticoes}
-                      </span>
-                    </div>
-                  ))}
+                  {treino.exercicios.map((item: any, indice) => {
+                    const partes = [];
+                    if (item.series && item.repeticoes) partes.push(`${item.series}x ${item.repeticoes}`);
+                    else if (item.series) partes.push(`${item.series} séries`);
+                    else if (item.repeticoes) partes.push(`${item.repeticoes} reps`);
+
+                    if (item.distancia) partes.push(`🏃 ${item.distancia}`);
+                    if (item.tempo) partes.push(`⏱️ ${item.tempo}`);
+                    if (item.descanso) partes.push(`⏸️ ${item.descanso}`);
+                    if (item.carga) partes.push(`⚖️ ${item.carga}`);
+                    if (item.notas && partes.length === 0) partes.push(`💡 ${item.notas}`);
+
+                    return (
+                      <div key={indice} className="treino-exercicio-linha">
+                        <span className="treino-exercicio-nome">
+                          {item.exercicio?.nome || "Exercício removido"}
+                        </span>
+                        <span className="treino-exercicio-detalhe">
+                          {partes.length > 0 ? partes.join(" • ") : "Configurado"}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             ))}

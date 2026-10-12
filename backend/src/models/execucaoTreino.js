@@ -17,7 +17,18 @@ export async function iniciarExecucaoTreino(db, alunoId, treinoId, rotinaId) {
         alunoId: new ObjectId(alunoId),
         treinoId: new ObjectId(treinoId),
         rotinaId: rotinaId && ObjectId.isValid(rotinaId) ? new ObjectId(rotinaId) : null,
-        exercicios: treino.exercicios.map((ex) => ({ exercicioId: ex.exercicioId, concluido: false })),
+        exercicios: treino.exercicios.map((ex) => ({
+            exercicioId: ex.exercicioId,
+            formatoMedida: ex.formatoMedida || 'repeticoes',
+            series: ex.series || '',
+            repeticoes: ex.repeticoes || '',
+            tempo: ex.tempo || '',
+            distancia: ex.distancia || '',
+            descanso: ex.descanso || '',
+            carga: ex.carga || '',
+            notas: ex.notas || '',
+            concluido: false,
+        })),
         finalizada: false,
         criadaEm: new Date(),
     });
@@ -30,17 +41,32 @@ async function popularExecucao(db, execucao) {
     const ids = execucao.exercicios.map((e) => e.exercicioId);
     const exerciciosEncontrados = await db.collection(NOME_COLECAO_EXERCICIOS).find({ _id: { $in: ids } }).toArray();
     const mapa = new Map(exerciciosEncontrados.map((e) => [e._id.toString(), e]));
+    const mapaTreinoEx = new Map(
+        (treino?.exercicios || []).map((tEx) => [tEx.exercicioId.toString(), tEx])
+    );
 
     return {
         _id: execucao._id.toString(),
         titulo: treino?.titulo || 'Treino removido',
         rotinaId: execucao.rotinaId ? execucao.rotinaId.toString() : null,
         finalizada: execucao.finalizada,
-        exercicios: execucao.exercicios.map((item) => ({
-            exercicioId: item.exercicioId.toString(),
-            concluido: item.concluido,
-            exercicio: mapa.get(item.exercicioId.toString()) || null,
-        })),
+        exercicios: execucao.exercicios.map((item) => {
+            const idStr = item.exercicioId.toString();
+            const fallbackTreino = mapaTreinoEx.get(idStr) || {};
+            return {
+                exercicioId: idStr,
+                concluido: item.concluido,
+                formatoMedida: item.formatoMedida || fallbackTreino.formatoMedida || 'repeticoes',
+                series: item.series ?? fallbackTreino.series ?? '',
+                repeticoes: item.repeticoes ?? fallbackTreino.repeticoes ?? '',
+                tempo: item.tempo ?? fallbackTreino.tempo ?? '',
+                distancia: item.distancia ?? fallbackTreino.distancia ?? '',
+                descanso: item.descanso ?? fallbackTreino.descanso ?? '',
+                carga: item.carga ?? fallbackTreino.carga ?? '',
+                notas: item.notas ?? fallbackTreino.notas ?? '',
+                exercicio: mapa.get(idStr) || null,
+            };
+        }),
     };
 }
 

@@ -1,0 +1,60 @@
+.primeiro-acesso-objetivos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.primeiro-acesso-objetivo-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  color: #333;
+}
+
+.primeiro-acesso-objetivo-btn:hover:not(:disabled) {
+  border-color: #ff6b35;
+  background: #fff5f2;
+  transform: translateX(4px);
+}
+
+.primeiro-acesso-objetivo-btn.selecionado {
+  border-color: #ff6b35;
+  background: #fff5f2;
+  color: #ff6b35;
+}
+
+.primeiro-acesso-objetivo-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.primeiro-acesso-objetivo-emoji {
+  font-size: 1.5rem;
+  min-width: 30px;
+  text-align: center;
+}
+
+.primeiro-acesso-pular-btn {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 8px;
+  text-decoration: underline;
+  margin-top: 4px;
+}
+
+.primeiro-acesso-pular-btn:hover {
+  color: #666;
+}

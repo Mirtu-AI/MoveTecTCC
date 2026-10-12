@@ -117,16 +117,29 @@ export default function DetalhesTreinoEspecificaAluno() {
         </div>
 
         <div className="detalhes-treino-especifico-lista">
-          {treino.exercicios.map((item, idx) => (
-            <div key={idx} className="detalhes-treino-especifico-item">
-              <span className="detalhes-treino-especifico-item-nome">
-                {item.exercicio?.nome || "Exercício removido"}
-              </span>
-              <span className="detalhes-treino-especifico-item-detalhe">
-                {item.series ? `${item.series}x` : ""} {item.repeticoes ? `${item.repeticoes}` : ""}
-              </span>
-            </div>
-          ))}
+          {treino.exercicios.map((item: any, idx) => {
+            const partes = [];
+            if (item.series && item.repeticoes) partes.push(`${item.series}x ${item.repeticoes}`);
+            else if (item.series) partes.push(`${item.series} séries`);
+            else if (item.repeticoes) partes.push(`${item.repeticoes} reps`);
+
+            if (item.distancia) partes.push(`🏃 ${item.distancia}`);
+            if (item.tempo) partes.push(`⏱️ ${item.tempo}`);
+            if (item.descanso) partes.push(`⏸️ Descanso: ${item.descanso}`);
+            if (item.carga) partes.push(`⚖️ Carga: ${item.carga}`);
+            if (item.notas) partes.push(`💡 ${item.notas}`);
+
+            return (
+              <div key={idx} className="detalhes-treino-especifico-item">
+                <span className="detalhes-treino-especifico-item-nome">
+                  {item.exercicio?.nome || "Exercício removido"}
+                </span>
+                <span className="detalhes-treino-especifico-item-detalhe">
+                  {partes.length > 0 ? partes.join(" • ") : "Sem orientações específicas"}
+                </span>
+              </div>
+            );
+          })}
         </div>
 
         <button

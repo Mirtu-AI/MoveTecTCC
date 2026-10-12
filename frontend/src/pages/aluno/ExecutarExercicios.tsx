@@ -6,13 +6,45 @@ import "./ExecutarAtividade.css";
 interface ExercicioItem {
   exercicioId: string;
   concluido: boolean;
-  exercicio: { nome: string; midiaUrl: string | null; tempoEstimado: number | null } | null;
+  formatoMedida?: string;
+  series?: string;
+  repeticoes?: string;
+  tempo?: string;
+  distancia?: string;
+  descanso?: string;
+  carga?: string;
+  notas?: string;
+  exercicio: {
+    nome: string;
+    midiaUrl: string | null;
+    tempoEstimado: number | null;
+    orientacoes?: string;
+    adaptacoes?: string;
+  } | null;
 }
+
 interface Dados {
+  titulo?: string;
   exercicios: ExercicioItem[];
 }
+
 interface Props {
   tipo: "atividade" | "treino";
+}
+
+function extrairSegundosDoTexto(texto?: string | null): number | null {
+  if (!texto) return null;
+  const limpo = texto.toLowerCase().trim();
+  const matchMin = limpo.match(/(\d+)\s*(min|m(?!s|e))/);
+  if (matchMin) {
+    return parseInt(matchMin[1], 10) * 60;
+  }
+  const matchSeg = limpo.match(/(\d+)/);
+  if (matchSeg) {
+    const valor = parseInt(matchSeg[1], 10);
+    return valor > 0 ? valor : null;
+  }
+  return null;
 }
 
 export default function ExecutarExercicios({ tipo }: Props) {
@@ -22,8 +54,14 @@ export default function ExecutarExercicios({ tipo }: Props) {
   const [dados, setDados] = useState<Dados | null>(null);
   const [carregando, setCarregando] = useState(true);
   const [indiceAtual, setIndiceAtual] = useState(0);
-  const [tempoRestante, setTempoRestante] = useState(0);
   const [avancando, setAvancando] = useState(false);
+
+  // Mapa de séries concluídas: chave = `${exercicioIdx}-${serieIdx}`
+  const [seriesFeitas, setSeriesFeitas] = useState<Record<string, boolean>>({});
+
+  // Cronômetro embutido na linha da série
+  const [timerAtivoChave, setTimerAtivoChave] = useState<string | null>(null);
+  const [temposRestantes, setTemposRestantes] = useState<Record<string, number>>({});
 
   const baseUrl =
     tipo === "atividade"
@@ -38,7 +76,30 @@ export default function ExecutarExercicios({ tipo }: Props) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(baseUrl, { headers: { Authorization: `Bearer ${token}` } });
-      setDados((tipo === "atividade" ? response.data.atividade : response.data.execucao) || null);
+      const recebido: Dados | null =
+        (tipo === "atividade" ? response.data.atividade : response.data.execucao) || null;
+      setDados(recebido);
+
+      if (recebido) {
+        const estadoInicialSeries: Record<string, boolean> = {};
+        const estadoInicialTempos: Record<string, number> = {};
+
+        recebido.exercicios.forEach((item, exIdx) => {
+          const qtdSeries = obterQuantidadeSeries(item);
+          const segs = obterSegundosExercicio(item);
+
+          for (let s = 0; s < qtdSeries; s++) {
+            const chave = `${exIdx}-${s}`;
+            estadoInicialSeries[chave] = Boolean(item.concluido);
+            if (segs > 0) {
+              estadoInicialTempos[chave] = segs;
+            }
+          }
+        });
+
+        setSeriesFeitas(estadoInicialSeries);
+        setTemposRestantes(estadoInicialTempos);
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -46,46 +107,140 @@ export default function ExecutarExercicios({ tipo }: Props) {
     }
   }
 
-  const exercicioAtual = dados?.exercicios[indiceAtual];
-  const tempoTotal = exercicioAtual?.exercicio?.tempoEstimado ?? 0;
-  const ultimoExercicio = dados ? indiceAtual === dados.exercicios.length - 1 : false;
+  function obterQuantidadeSeries(item: ExercicioItem): number {
+    if (!item.series) return 1;
+    const n = parseInt(item.series, 10);
+    return !isNaN(n) && n > 0 && n <= 20 ? n : 1;
+  }
 
-  useEffect(() => {
-    if (!exercicioAtual) return;
-    setTempoRestante(exercicioAtual.exercicio?.tempoEstimado ?? 0);
-  }, [indiceAtual, exercicioAtual]);
+  function obterSegundosExercicio(item: ExercicioItem): number {
+    const doTreino = extrairSegundosDoTexto(item.tempo);
+    if (doTreino) return doTreino;
+    return item.exercicio?.tempoEstimado ?? 0;
+  }
 
+  // Para o cronômetro ao trocar de exercício
   useEffect(() => {
-    if (tempoRestante <= 0) return;
-    const intervalo = setInterval(() => setTempoRestante((a) => (a > 0 ? a - 1 : 0)), 1000);
+    setTimerAtivoChave(null);
+  }, [indiceAtual]);
+
+  // Tick do cronômetro ativo
+  useEffect(() => {
+    if (!timerAtivoChave) return;
+
+    const intervalo = setInterval(() => {
+      setTemposRestantes((atual) => {
+        const restante = atual[timerAtivoChave] ?? 0;
+        if (restante <= 1) {
+          setTimerAtivoChave(null);
+          const [exIdxStr, sIdxStr] = timerAtivoChave.split("-");
+          marcarSerieAutomatica(parseInt(exIdxStr, 10), parseInt(sIdxStr, 10));
+          return { ...atual, [timerAtivoChave]: 0 };
+        }
+        return { ...atual, [timerAtivoChave]: restante - 1 };
+      });
+    }, 1000);
+
     return () => clearInterval(intervalo);
-  }, [tempoRestante > 0, indiceAtual]);
+  }, [timerAtivoChave, dados]);
+
+  function marcarSerieAutomatica(exIdx: number, sIdx: number) {
+    const chave = `${exIdx}-${sIdx}`;
+    setSeriesFeitas((prev) => ({ ...prev, [chave]: true }));
+  }
+
+  function alternarSerie(exIdx: number, sIdx: number) {
+    const chave = `${exIdx}-${sIdx}`;
+    const novoValor = !seriesFeitas[chave];
+
+    if (timerAtivoChave === chave && novoValor) {
+      setTimerAtivoChave(null);
+    }
+
+    setSeriesFeitas((prev) => ({ ...prev, [chave]: novoValor }));
+  }
+
+  function alternarTimer(exIdx: number, sIdx: number, segundosPadrao: number) {
+    const chave = `${exIdx}-${sIdx}`;
+    if (timerAtivoChave === chave) {
+      setTimerAtivoChave(null);
+    } else {
+      const atual = temposRestantes[chave] ?? segundosPadrao;
+      if (atual <= 0) {
+        setTemposRestantes((prev) => ({ ...prev, [chave]: segundosPadrao }));
+      }
+      setTimerAtivoChave(chave);
+    }
+  }
 
   function formatarTempo(segundos: number) {
     const min = Math.floor(segundos / 60);
     const seg = segundos % 60;
-    return `${String(min).padStart(2, "0")}:${String(seg).padStart(2, "0")}s`;
+    return `${String(min).padStart(2, "0")}:${String(seg).padStart(2, "0")}`;
   }
 
-  function voltar() {
-    setIndiceAtual((a) => Math.max(0, a - 1));
+  function obterDescricaoSerie(item: ExercicioItem): string {
+    const partes: string[] = [];
+    if (item.repeticoes) partes.push(`${item.repeticoes} reps`);
+    if (item.tempo) partes.push(`${item.tempo}`);
+    if (item.distancia) partes.push(`${item.distancia}`);
+    if (item.carga) partes.push(`${item.carga}`);
+
+    if (partes.length === 0) {
+      if (item.exercicio?.tempoEstimado) {
+        return `${item.exercicio.tempoEstimado}s`;
+      }
+      return "Executar movimento";
+    }
+    return partes.join(" • ");
   }
 
-  async function confirmar() {
-    if (!dados || !exercicioAtual || avancando) return;
+  function voltarExercicio() {
+    if (indiceAtual > 0) {
+      setIndiceAtual((a) => a - 1);
+    }
+  }
+
+  async function avancarOuFinalizar() {
+    if (!dados || avancando) return;
+    const item = dados.exercicios[indiceAtual];
+    if (!item) return;
 
     setAvancando(true);
+    setTimerAtivoChave(null);
+
     try {
-      if (!exercicioAtual.concluido) {
+      // Marca todas as séries deste exercício como feitas visualmente
+      const qtd = obterQuantidadeSeries(item);
+      setSeriesFeitas((prev) => {
+        const copia = { ...prev };
+        for (let s = 0; s < qtd; s++) {
+          copia[`${indiceAtual}-${s}`] = true;
+        }
+        return copia;
+      });
+
+      // Sincroniza este exercício com o backend
+      if (!item.concluido) {
         const token = localStorage.getItem("token");
         await axios.put(
-          `${baseUrl}/exercicios/${exercicioAtual.exercicioId}`,
+          `${baseUrl}/exercicios/${item.exercicioId}`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
+        setDados((atual) => {
+          if (!atual) return atual;
+          return {
+            ...atual,
+            exercicios: atual.exercicios.map((ex, i) =>
+              i === indiceAtual ? { ...ex, concluido: true } : ex
+            ),
+          };
+        });
       }
 
-      if (ultimoExercicio) {
+      const ultimo = indiceAtual === dados.exercicios.length - 1;
+      if (ultimo) {
         if (tipo === "atividade") {
           navigate(`/aluno/atividades/${id}/anexar-video`);
         } else {
@@ -93,7 +248,6 @@ export default function ExecutarExercicios({ tipo }: Props) {
         }
       } else {
         setIndiceAtual((a) => a + 1);
-        await buscarDados();
       }
     } catch (err) {
       console.error(err);
@@ -103,49 +257,174 @@ export default function ExecutarExercicios({ tipo }: Props) {
   }
 
   if (carregando) return <p className="executar-atividade-mensagem">Carregando...</p>;
-  if (!dados || !exercicioAtual) return <p className="executar-atividade-mensagem">Não encontrado.</p>;
+  if (!dados || !dados.exercicios[indiceAtual]) {
+    return <p className="executar-atividade-mensagem">Treino não encontrado.</p>;
+  }
 
-  const progressoAnel = tempoTotal > 0 ? (tempoRestante / tempoTotal) * 100 : 100;
-  const circunferencia = 2 * Math.PI * 54;
-  const offset = circunferencia * (1 - progressoAnel / 100);
+  const totalExercicios = dados.exercicios.length;
+  const itemAtual = dados.exercicios[indiceAtual];
+  const qtdSeries = obterQuantidadeSeries(itemAtual);
+  const segsExercicio = obterSegundosExercicio(itemAtual);
+  const descricaoSerie = obterDescricaoSerie(itemAtual);
+  const ultimoExercicio = indiceAtual === totalExercicios - 1;
+
+  const seriesDesteExercicioFeitas = Array.from({ length: qtdSeries }).filter(
+    (_, sIdx) => seriesFeitas[`${indiceAtual}-${sIdx}`]
+  ).length;
+  const exercicioAtualCompleto = seriesDesteExercicioFeitas === qtdSeries;
+
+  const progressoEtapas = Math.round(((indiceAtual + (exercicioAtualCompleto ? 1 : 0)) / totalExercicios) * 100);
 
   return (
     <div className="executar-atividade-page">
       <header className="executar-atividade-header">
-        <button className="executar-atividade-voltar-topo" onClick={() => navigate(-1)} aria-label="Sair">
+        <button
+          className="executar-atividade-voltar-topo"
+          onClick={() => navigate(-1)}
+          aria-label="Sair"
+        >
           ←
         </button>
-        <h1>{exercicioAtual.exercicio?.nome || "Exercício"}</h1>
+        <div className="executar-header-info">
+          <h1>{dados.titulo || "Execução"}</h1>
+          <span className="executar-header-sub">
+            Exercício {indiceAtual + 1} de {totalExercicios}
+          </span>
+        </div>
       </header>
 
-      <main className="executar-atividade-conteudo">
-        <div className="executar-atividade-midia-wrap">
-          <svg className="executar-atividade-anel" viewBox="0 0 120 120">
-            <circle className="executar-atividade-anel-trilha" cx="60" cy="60" r="54" />
-            {tempoTotal > 0 && (
-              <circle
-                className="executar-atividade-anel-progresso"
-                cx="60" cy="60" r="54"
-                strokeDasharray={circunferencia}
-                strokeDashoffset={offset}
-              />
+      {/* BARRA DE PROGRESSO NO TOPO */}
+      <div className="executar-progresso-barra-trilha">
+        <div
+          className="executar-progresso-barra-preenchimento"
+          style={{ width: `${progressoEtapas}%` }}
+        />
+      </div>
+
+      <main className="executar-checklist-container">
+        {/* INDICADOR DE ETAPAS (1, 2, 3...) */}
+        {totalExercicios > 1 && (
+          <div className="executar-etapas-pills">
+            {dados.exercicios.map((ex, idx) => {
+              const ativo = idx === indiceAtual;
+              const feito = ex.concluido || idx < indiceAtual;
+              return (
+                <button
+                  key={ex.exercicioId || idx}
+                  type="button"
+                  className={`executar-etapa-pill ${ativo ? "ativo" : ""} ${feito ? "feito" : ""}`}
+                  onClick={() => setIndiceAtual(idx)}
+                >
+                  {feito && !ativo ? "✓" : idx + 1}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* CARD DO EXERCÍCIO ATUAL */}
+        <div className={`executar-card-exercicio ${exercicioAtualCompleto ? "completo" : ""}`}>
+          <div className="executar-card-topo">
+            <div className="executar-card-titulo-wrap">
+              <span className="executar-card-numero">{indiceAtual + 1}</span>
+              <div>
+                <h2 className="executar-card-nome">
+                  {itemAtual.exercicio?.nome || "Exercício"}
+                </h2>
+                {itemAtual.descanso && (
+                  <span className="executar-card-descanso">
+                    ⏸ Descanso entre séries: {itemAtual.descanso}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {itemAtual.exercicio?.midiaUrl && (
+              <a
+                href={itemAtual.exercicio.midiaUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="executar-card-video-link"
+                title="Ver vídeo demonstrativo"
+              >
+                ▶ Vídeo
+              </a>
             )}
-          </svg>
-          <div className="executar-atividade-midia">
-            {exercicioAtual.exercicio?.midiaUrl ? (
-              <a href={exercicioAtual.exercicio.midiaUrl} target="_blank" rel="noopener noreferrer" className="executar-atividade-midia-play">▶</a>
-            ) : (
-              <span className="executar-atividade-midia-placeholder">🖼️</span>
-            )}
+          </div>
+
+          {itemAtual.notas && (
+            <p className="executar-card-nota">💡 {itemAtual.notas}</p>
+          )}
+
+          {/* CHECKLIST DAS SÉRIES DESTE EXERCÍCIO */}
+          <div className="executar-series-lista">
+            {Array.from({ length: qtdSeries }).map((_, sIdx) => {
+              const chave = `${indiceAtual}-${sIdx}`;
+              const feita = Boolean(seriesFeitas[chave]);
+              const tempoRestante = temposRestantes[chave] ?? segsExercicio;
+              const rodando = timerAtivoChave === chave;
+
+              return (
+                <div
+                  key={chave}
+                  className={`executar-serie-linha ${feita ? "feita" : ""} ${
+                    rodando ? "rodando" : ""
+                  }`}
+                >
+                  <button
+                    type="button"
+                    className="executar-serie-check-area"
+                    onClick={() => alternarSerie(indiceAtual, sIdx)}
+                  >
+                    <span className={`executar-checkbox ${feita ? "marcado" : ""}`}>
+                      {feita ? "✓" : ""}
+                    </span>
+                    <span className="executar-serie-label">
+                      {qtdSeries > 1 ? `${sIdx + 1}ª Série` : "Série única"}
+                    </span>
+                    <span className="executar-serie-meta">{descricaoSerie}</span>
+                  </button>
+
+                  {segsExercicio > 0 && !feita && (
+                    <button
+                      type="button"
+                      className={`executar-serie-timer-btn ${rodando ? "ativo" : ""}`}
+                      onClick={() => alternarTimer(indiceAtual, sIdx, segsExercicio)}
+                    >
+                      {rodando ? "⏸" : "▶"} {formatarTempo(tempoRestante)}
+                    </button>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        <h2 className="executar-atividade-nome">{exercicioAtual.exercicio?.nome}</h2>
-        {tempoTotal > 0 && <span className="executar-atividade-tempo">{formatarTempo(tempoRestante)}</span>}
+        {/* BOTÕES DE NAVEGAÇÃO ENTRE EXERCÍCIOS */}
+        <div className="executar-navegacao-rodape">
+          <button
+            type="button"
+            className="executar-btn-anterior"
+            onClick={voltarExercicio}
+            disabled={indiceAtual === 0 || avancando}
+          >
+            ← Anterior
+          </button>
 
-        <div className="executar-atividade-controles">
-          <button type="button" className="executar-atividade-controle-btn" onClick={voltar} disabled={indiceAtual === 0}>«</button>
-          <button type="button" className="executar-atividade-controle-btn confirmar" onClick={confirmar} disabled={avancando}>✓</button>
+          <button
+            type="button"
+            className={`executar-btn-proximo ${exercicioAtualCompleto ? "pronto" : ""}`}
+            onClick={avancarOuFinalizar}
+            disabled={avancando}
+          >
+            {avancando
+              ? "Salvando..."
+              : ultimoExercicio
+              ? "🎉 Finalizar Treino"
+              : exercicioAtualCompleto
+              ? "Próximo Exercício →"
+              : "Concluir e Avançar →"}
+          </button>
         </div>
       </main>
     </div>

@@ -476,3 +476,86 @@
     flex: 1;
   }
 }
+
+
+.perfil-campo-secao {
+  width: 100%;
+  max-width: 440px;
+  margin: 12px 0 16px;
+  background: #ffffff;
+  border: 1px solid var(--movetec-borda);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.perfil-campo-titulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--movetec-texto-secundario);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 6px;
+}
+
+.perfil-editar-btn {
+  background: none;
+  border: none;
+  color: #ff552e;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.perfil-campo-valor {
+  font-size: 0.95rem;
+  color: var(--movetec-texto-principal);
+  margin: 0;
+}
+
+.perfil-objetivo-opcoes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.perfil-objetivo-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.perfil-objetivo-btn:hover:not(:disabled) {
+  border-color: #ff6b35;
+  background: #fff5f2;
+}
+
+.perfil-objetivo-btn.selecionado {
+  border-color: #ff6b35;
+  background: #fff5f2;
+  color: #ff6b35;
+  font-weight: 600;
+}
+
+.perfil-cancelar-btn {
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 4px;
+  width: fit-content;
+}

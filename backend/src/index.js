@@ -47,7 +47,8 @@ import {
     atualizarFotoAluno,
     atualizarPerfilSocial,
     ocultarAviso,
-    atualizarConquistasFixadas
+    atualizarConquistasFixadas,
+    atualizarObjetivoAluno
 } from './models/aluno.js';
 import {
     cadastrarExercicio,
@@ -113,14 +114,22 @@ import {
     excluirComunidadeTematica,
     cadastrarComunidadeGeral,
     podeAcessarComunidade,
-    listarComunidadesDoProfessor
+    listarComunidadesDoProfessor,
+    atualizarComunidade,
+
 } from './models/comunidade.js';
 import {
     cadastrarMensagem,
     listarMensagensPorComunidade,
     popularAutores
 } from './models/mensagem.js';
-
+import {
+    cadastrarDesafio,
+    listarDesafiosPorComunidade,
+    aceitarDesafio,
+    concluirDesafio,
+    excluirDesafio,
+} from './models/desafio.js';
 
 
 dotenv.config();
@@ -187,6 +196,8 @@ async function main() {
         await db.collection('comunidades').createIndex({ tipo: 1 });
         await db.collection('comunidades').createIndex({ 'membros.id': 1 });
         await db.collection('mensagens').createIndex({ comunidadeId: 1, enviadaEm: 1 });
+        await db.collection('desafios').createIndex({ comunidadeId: 1, criadoEm: -1 });
+        await db.collection('desafios').createIndex({ comunidadeId: 1, criadorId: 1 });
         console.log('Índices garantidos');
     }
 
@@ -622,6 +633,27 @@ async function main() {
         }
     });
 
+    app.get('/api/professor/alunos/:id/desempenho', autenticarProfessor, async (req, res) => {
+        try {
+            const aluno = await buscarAlunoPorId(db, req.params.id);
+
+            if (!aluno) {
+                return res.status(404).send({ success: false, erro: 'Aluno não encontrado.' });
+            }
+
+            const sala = await buscarSalaPorId(db, aluno.salaId);
+            if (!sala || sala.professorId?.toString() !== req.professorId) {
+                return res.status(403).send({ success: false, erro: 'Você não tem acesso a esse aluno.' });
+            }
+
+            const desempenho = await calcularDesempenho(db, req.params.id);
+            res.send({ success: true, desempenho });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao buscar desempenho.' });
+        }
+    });
+
     app.get('/api/salas/:id', autenticarAdm, async (req, res) => {
         try {
             const sala = await buscarSalaPorId(db, req.params.id);
@@ -714,14 +746,21 @@ async function main() {
 
     app.post('/api/primeiro-acesso', async (req, res) => {
         try {
-            const { email, novaSenha } = req.body;
-            const resultado = await definirSenhaAluno(db, email, novaSenha);
+            const { email, novaSenha, objetivo } = req.body;
+            const resultado = await definirSenhaAluno(db, email, novaSenha, objetivo);
 
             if (!resultado.sucesso) {
                 return res.status(400).send({ success: false, erro: resultado.erro });
             }
 
-            res.send({ success: true, body: 'Senha definida com sucesso! Faça login.' });
+            const token = jwt.sign({ id: resultado.alunoId, tipo: 'aluno' }, process.env.JWT_SEGREDO, { expiresIn: '7d' });
+
+            res.send({
+                success: true,
+                token,
+                tipo: 'aluno',
+                body: 'Senha e objetivo definidos com sucesso!'
+            });
         } catch (err) {
             console.error(err);
             res.status(500).send({ success: false, erro: 'Erro ao definir senha.' });
@@ -839,6 +878,22 @@ async function main() {
         }
     });
 
+    app.put('/api/aluno/objetivo', autenticarAluno, async (req, res) => {
+        try {
+            const { objetivo } = req.body;
+            const resultado = await atualizarObjetivoAluno(db, req.alunoId, objetivo);
+
+            if (!resultado.sucesso) {
+                return res.status(400).send({ success: false, erro: resultado.erro });
+            }
+
+            res.send({ success: true, body: 'Objetivo atualizado com sucesso.' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao atualizar objetivo.' });
+        }
+    });
+
     app.post('/api/aluno/treinos/:id/iniciar-execucao', autenticarAluno, async (req, res) => {
         try {
             const { rotinaId } = req.body;
@@ -934,6 +989,31 @@ async function main() {
         } catch (err) {
             console.error(err);
             res.status(500).send({ success: false, erro: 'Erro ao buscar comunidades temáticas.' });
+        }
+    });
+
+    app.get('/api/comunidades/:id', autenticarUsuario, async (req, res) => {
+        try {
+            const autorizado = await podeAcessarComunidade(db, req.params.id, req.usuarioId, req.usuarioTipo);
+            if (!autorizado) return res.status(403).send({ success: false, erro: 'Você não tem acesso a essa comunidade.' });
+
+            const comunidade = await buscarComunidadePorId(db, req.params.id);
+            if (!comunidade) return res.status(404).send({ success: false, erro: 'Comunidade não encontrada.' });
+            res.send({ success: true, comunidade });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao buscar comunidade.' });
+        }
+    });
+
+    app.put('/api/comunidades/:id', autenticarUsuario, async (req, res) => {
+        try {
+            const resultado = await atualizarComunidade(db, req.params.id, req.usuarioId, req.body);
+            if (!resultado.sucesso) return res.status(400).send({ success: false, erros: resultado.erros });
+            res.send({ success: true, body: 'Comunidade atualizada com sucesso.' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao atualizar comunidade.' });
         }
     });
 
@@ -1375,7 +1455,9 @@ async function main() {
     app.get('/api/aluno/treinos', autenticarAluno, async (req, res) => {
         try {
             const apenasEspecificas = req.query.tipo === 'especifica';
-            const treinos = await listarTreinos(db, apenasEspecificas);
+            const aluno = await buscarAlunoPorId(db, req.alunoId);
+            const objetivo = aluno?.objetivo || null;
+            const treinos = await listarTreinos(db, apenasEspecificas, objetivo);
             res.send({ success: true, treinos });
         } catch (err) {
             console.error(err);
@@ -1537,7 +1619,9 @@ async function main() {
 
     app.get('/api/aluno/rotinas', autenticarAluno, async (req, res) => {
         try {
-            const rotinas = await listarRotinas(db);
+            const aluno = await buscarAlunoPorId(db, req.alunoId);
+            const objetivo = aluno?.objetivo || null;
+            const rotinas = await listarRotinas(db, objetivo);
             res.send({ success: true, rotinas });
         } catch (err) {
             console.error(err);
@@ -1569,6 +1653,74 @@ async function main() {
         } catch (err) {
             console.error(err);
             res.status(500).send({ success: false, erro: 'Erro ao registrar treino concluído.' });
+        }
+    });
+
+    // ---------- DESAFIOS ----------
+
+    app.get('/api/comunidades/:id/desafios', autenticarUsuario, async (req, res) => {
+        try {
+            const autorizado = await podeAcessarComunidade(db, req.params.id, req.usuarioId, req.usuarioTipo);
+            if (!autorizado) return res.status(403).send({ success: false, erro: 'Você não tem acesso a essa comunidade.' });
+
+            const desafios = await listarDesafiosPorComunidade(db, req.params.id, req.usuarioId);
+            res.send({ success: true, desafios });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao buscar desafios.' });
+        }
+    });
+
+    app.post('/api/comunidades/:id/desafios', autenticarUsuario, async (req, res) => {
+        try {
+            const autorizado = await podeAcessarComunidade(db, req.params.id, req.usuarioId, req.usuarioTipo);
+            if (!autorizado) return res.status(403).send({ success: false, erro: 'Você não tem acesso a essa comunidade.' });
+
+            const comunidade = await buscarComunidadePorId(db, req.params.id);
+            if (!comunidade) return res.status(404).send({ success: false, erro: 'Comunidade não encontrada.' });
+
+            const resultado = await cadastrarDesafio(
+                db, req.params.id, req.usuarioId, req.usuarioTipo, comunidade.tipo, req.body
+            );
+            if (!resultado.sucesso) return res.status(400).send({ success: false, erros: resultado.erros });
+
+            res.status(201).send({ success: true, id: resultado.id });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao criar desafio.' });
+        }
+    });
+
+    app.post('/api/desafios/:id/aceitar', autenticarUsuario, async (req, res) => {
+        try {
+            const resultado = await aceitarDesafio(db, req.params.id, req.usuarioId, req.usuarioTipo);
+            if (!resultado.sucesso) return res.status(400).send({ success: false, erro: resultado.erro });
+            res.send({ success: true });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao aceitar desafio.' });
+        }
+    });
+
+    app.post('/api/desafios/:id/concluir', autenticarUsuario, async (req, res) => {
+        try {
+            const resultado = await concluirDesafio(db, req.params.id, req.usuarioId);
+            if (!resultado.sucesso) return res.status(400).send({ success: false, erro: resultado.erro });
+            res.send({ success: true });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao concluir desafio.' });
+        }
+    });
+
+    app.delete('/api/desafios/:id', autenticarUsuario, async (req, res) => {
+        try {
+            const excluido = await excluirDesafio(db, req.params.id, req.usuarioId);
+            if (!excluido) return res.status(404).send({ success: false, erro: 'Desafio não encontrado ou sem permissão.' });
+            res.send({ success: true });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao excluir desafio.' });
         }
     });
 

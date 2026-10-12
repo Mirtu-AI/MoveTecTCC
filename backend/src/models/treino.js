@@ -9,17 +9,29 @@ function validarItensExercicios(itens) {
         return false;
     }
 
-    return itens.every((item) => item.exercicioId && item.series && item.repeticoes);
-}
+    return itens.every((item) => {
+        if (!item.exercicioId) return false;
+        const formato = item.formatoMedida || 'repeticoes';
+        const temSeries = item.series && String(item.series).trim().length > 0;
+        const temRepeticoes = item.repeticoes && String(item.repeticoes).trim().length > 0;
+        const temTempo = item.tempo && String(item.tempo).trim().length > 0;
+        const temDistancia = item.distancia && String(item.distancia).trim().length > 0;
+        const temNotas = item.notas && String(item.notas).trim().length > 0;
 
-// TIPOS_VALIDOS não é mais necessário, pode remover essa constante
+        if (formato === 'repeticoes') return temSeries && temRepeticoes;
+        if (formato === 'tempo') return temSeries && temTempo;
+        if (formato === 'distancia') return temDistancia || temTempo;
+        if (formato === 'livre') return temNotas || temTempo || temRepeticoes;
+        return temSeries || temRepeticoes || temTempo;
+    });
+}
 
 function validarDados({ titulo, descricao, exercicios }) {
     const erros = [];
     if (!titulo || titulo.trim().length < 2) erros.push('Título do treino inválido.');
     if (!descricao || descricao.trim().length < 5) erros.push('Descrição do treino inválida.');
     if (!validarItensExercicios(exercicios)) {
-        erros.push('Selecione ao menos um exercício e informe séries e repetições.');
+        erros.push('Preencha os campos obrigatórios do tipo de medida selecionado para cada exercício.');
     }
     return erros;
 }
@@ -34,6 +46,7 @@ export async function cadastrarTreino(db, professorId, dados) {
         descricao: dados.descricao,
         midiaUrl: dados.midiaUrl || null,
         especifica: Boolean(dados.especifica),
+        objetivos: Array.isArray(dados.objetivos) ? dados.objetivos : [],
         exercicios: montarItensExercicios(dados.exercicios),
         professorId: new ObjectId(professorId),
         criadoEm: new Date(),
@@ -57,6 +70,7 @@ export async function atualizarTreino(db, id, professorId, dados) {
                 midiaUrl: dados.midiaUrl || null,
                 exercicios: montarItensExercicios(dados.exercicios),
                 especifica: Boolean(dados.especifica),
+                objetivos: Array.isArray(dados.objetivos) ? dados.objetivos : [],
             },
         }
     );
@@ -68,14 +82,22 @@ export async function atualizarTreino(db, id, professorId, dados) {
 }
 
 // listarTreinos passa a filtrar só por "especifica" (usado pelo aluno)
-export async function listarTreinos(db, apenasEspecificas = false) {
+export async function listarTreinos(db, apenasEspecificas = false, objetivo = null) {
     const colecao = db.collection(NOME_COLECAO);
     const filtro = apenasEspecificas ? { especifica: true } : {};
 
     const pipeline = montarPipelinePopularExercicios(filtro);
     pipeline.splice(1, 0, { $sort: { criadoEm: -1 } });
 
-    return colecao.aggregate(pipeline).toArray();
+    const treinos = await colecao.aggregate(pipeline).toArray();
+
+    if (objetivo && objetivo !== 'sem-objetivo') {
+        return [
+            ...treinos.filter((t) => Array.isArray(t.objetivos) && t.objetivos.includes(objetivo)),
+            ...treinos.filter((t) => !Array.isArray(t.objetivos) || !t.objetivos.includes(objetivo)),
+        ];
+    }
+    return treinos;
 }
 
 function montarPipelinePopularExercicios(filtro) {
@@ -97,8 +119,14 @@ function montarPipelinePopularExercicios(filtro) {
                         as: 'item',
                         in: {
                             exercicioId: '$$item.exercicioId',
+                            formatoMedida: '$$item.formatoMedida',
                             series: '$$item.series',
                             repeticoes: '$$item.repeticoes',
+                            tempo: '$$item.tempo',
+                            distancia: '$$item.distancia',
+                            descanso: '$$item.descanso',
+                            carga: '$$item.carga',
+                            notas: '$$item.notas',
                             exercicio: {
                                 $arrayElemAt: [
                                     {
@@ -140,9 +168,18 @@ export async function excluirTreino(db, id) {
 }
 
 function montarItensExercicios(itens) {
-    return itens.map((item) => ({
-        exercicioId: new ObjectId(item.exercicioId),
-        series: item.series,
-        repeticoes: item.repeticoes,
-    }));
+    return itens.map((item) => {
+        const formato = item.formatoMedida || 'repeticoes';
+        return {
+            exercicioId: new ObjectId(item.exercicioId),
+            formatoMedida: formato,
+            series: (formato === 'repeticoes' || formato === 'tempo') && item.series ? String(item.series).trim() : '',
+            repeticoes: formato === 'repeticoes' && item.repeticoes ? String(item.repeticoes).trim() : '',
+            tempo: (formato === 'tempo' || formato === 'distancia' || formato === 'livre') && item.tempo ? String(item.tempo).trim() : '',
+            distancia: formato === 'distancia' && item.distancia ? String(item.distancia).trim() : '',
+            descanso: item.descanso ? String(item.descanso).trim() : '',
+            carga: (formato === 'repeticoes' || formato === 'tempo') && item.carga ? String(item.carga).trim() : '',
+            notas: item.notas ? String(item.notas).trim() : '',
+        };
+    });
 }

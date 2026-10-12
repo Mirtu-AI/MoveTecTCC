@@ -306,6 +306,27 @@
   box-shadow: 0 3px 8px rgba(255, 85, 46, 0.3);
 }
 
+.comunidade-professor-card-acoes {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.comunidade-professor-acao-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.6;
+  font-size: 1rem;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.comunidade-professor-acao-btn:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.05);
+}
+
 /* RESPONSIVIDADE (TABLETS E MOBILE) */
 @media (max-width: 992px) {
   .navegacao-professor {

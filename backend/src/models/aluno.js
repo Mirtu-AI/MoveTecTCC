@@ -74,7 +74,7 @@ export async function buscarAlunoPorEmail(db, email) {
     return colecao.findOne({ email });
 }
 
-export async function definirSenhaAluno(db, email, novaSenha) {
+export async function definirSenhaAluno(db, email, novaSenha, objetivo = null) {
     if (!novaSenha || novaSenha.length < 6) {
         return { sucesso: false, erro: 'Senha deve ter no mínimo 6 caracteres.' };
     }
@@ -90,12 +90,18 @@ export async function definirSenhaAluno(db, email, novaSenha) {
         return { sucesso: false, erro: 'Senha já definida. Faça login normalmente.' };
     }
 
+    const camposParaAtualizar = { senha: hashSenha(novaSenha) };
+    const OBJETIVOS_VALIDOS = ['perder-peso', 'ganhar-massa', 'melhorar-condicionamento', 'manter-ativo', 'sem-objetivo'];
+    if (objetivo && OBJETIVOS_VALIDOS.includes(objetivo)) {
+        camposParaAtualizar.objetivo = objetivo;
+    }
+
     await colecao.updateOne(
         { email },
-        { $set: { senha: hashSenha(novaSenha) } }
+        { $set: camposParaAtualizar }
     );
 
-    return { sucesso: true };
+    return { sucesso: true, alunoId: aluno._id };
 }
 
 export async function atualizarEmailAluno(db, id, novoEmail) {
@@ -243,6 +249,24 @@ export async function atualizarConquistasFixadas(db, id, conquistaIds) {
     const resultado = await colecao.updateOne(
         { _id: new ObjectId(id) },
         { $set: { conquistasFixadas: conquistaIds } }
+    );
+
+    if (resultado.matchedCount === 0) {
+        return { sucesso: false, erro: 'Aluno não encontrado.' };
+    }
+    return { sucesso: true };
+}
+
+export async function atualizarObjetivoAluno(db, id, objetivo) {
+    const OBJETIVOS_VALIDOS = ['perder-peso', 'ganhar-massa', 'melhorar-condicionamento', 'manter-ativo', 'sem-objetivo'];
+    if (!objetivo || !OBJETIVOS_VALIDOS.includes(objetivo)) {
+        return { sucesso: false, erro: 'Objetivo inválido.' };
+    }
+
+    const colecao = db.collection(NOME_COLECAO);
+    const resultado = await colecao.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { objetivo } }
     );
 
     if (resultado.matchedCount === 0) {

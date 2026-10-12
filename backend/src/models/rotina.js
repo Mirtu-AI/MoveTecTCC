@@ -41,6 +41,7 @@ export async function cadastrarRotina(db, professorId, dados) {
         titulo: dados.titulo,
         descricao: dados.descricao,
         midiaUrl: dados.midiaUrl || null,
+        objetivos: Array.isArray(dados.objetivos) ? dados.objetivos : [],
         grupos: montarGrupos(dados.grupos),
         professorId: new ObjectId(professorId),
         criadoEm: new Date(),
@@ -62,6 +63,7 @@ export async function atualizarRotina(db, id, professorId, dados) {
                 titulo: dados.titulo,
                 descricao: dados.descricao,
                 midiaUrl: dados.midiaUrl || null,
+                objetivos: Array.isArray(dados.objetivos) ? dados.objetivos : [],
                 grupos: montarGrupos(dados.grupos),
             },
         }
@@ -97,10 +99,18 @@ async function popularTreinosDaRotina(db, rotinas) {
     }));
 }
 
-export async function listarRotinas(db) {
+export async function listarRotinas(db, objetivo = null) {
     const colecao = db.collection(NOME_COLECAO);
     const rotinas = await colecao.find({}).sort({ criadoEm: -1 }).toArray();
-    return popularTreinosDaRotina(db, rotinas);
+    const populadas = await popularTreinosDaRotina(db, rotinas);
+
+    if (objetivo && objetivo !== 'sem-objetivo') {
+        return [
+            ...populadas.filter((r) => Array.isArray(r.objetivos) && r.objetivos.includes(objetivo)),
+            ...populadas.filter((r) => !Array.isArray(r.objetivos) || !r.objetivos.includes(objetivo)),
+        ];
+    }
+    return populadas;
 }
 
 export async function buscarRotinaPorId(db, id) {

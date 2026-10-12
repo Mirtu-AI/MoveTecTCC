@@ -169,13 +169,18 @@ export async function souMembro(db, comunidadeId, membroId) {
 
 export async function excluirComunidadeTematica(db, id, adminId) {
     if (!ObjectId.isValid(id)) return false;
+
     const colecao = db.collection(NOME_COLECAO);
     const resultado = await colecao.deleteOne({
         _id: new ObjectId(id),
         tipo: 'tematica',
         adminId: new ObjectId(adminId),
     });
-    return resultado.deletedCount > 0;
+
+    if (resultado.deletedCount === 0) return false;
+
+    await db.collection('mensagens').deleteMany({ comunidadeId: new ObjectId(id) });
+    return true;
 }
 
 export async function podeAcessarComunidade(db, comunidadeId, userId, userTipo) {
@@ -212,10 +217,29 @@ export async function listarComunidadesDoProfessor(db, professorId) {
         descricao: c.descricao,
         tipo: c.tipo,
         totalMembros: c.membros.length,
+        ehAdmin: c.adminId.toString() === professorId.toString(), // <-- novo
     });
 
     return {
-        gerais: gerais.map(mapear), // um professor pode ter várias salas, por isso é lista
+        gerais: gerais.map(mapear),
         tematicas: tematicas.map(mapear),
     };
+}
+
+export async function atualizarComunidade(db, id, usuarioId, dados) {
+    if (!ObjectId.isValid(id)) return { sucesso: false, erros: ['ID inválido.'] };
+
+    const erros = validarDadosTematica(dados); // mesma validação de nome/descrição
+    if (erros.length > 0) return { sucesso: false, erros };
+
+    const colecao = db.collection(NOME_COLECAO);
+    const resultado = await colecao.updateOne(
+        { _id: new ObjectId(id), adminId: new ObjectId(usuarioId) },
+        { $set: { nome: dados.nome.trim(), descricao: dados.descricao.trim() } }
+    );
+
+    if (resultado.matchedCount === 0) {
+        return { sucesso: false, erros: ['Comunidade não encontrada ou você não é o administrador.'] };
+    }
+    return { sucesso: true };
 }

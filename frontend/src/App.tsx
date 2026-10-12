@@ -377,6 +377,11 @@ function App() {
           path="/professor/comunidades/:id"
           element={<RotaProtegida tipoPermitido="professor"><DetalhesComunidade /></RotaProtegida>}
         />
+
+        <Route
+          path="/professor/comunidades/:id/editar"
+          element={<RotaProtegida tipoPermitido="professor"><CriarComunidadeProfessor /></RotaProtegida>}
+        />
         {/* Rotas Protegidas - Admin */}
         <Route
           path="/admin"

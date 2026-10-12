@@ -13,6 +13,14 @@ interface Grupo {
   treinosSelecionados: string[];
 }
 
+const OBJETIVOS_OPCOES = [
+  { valor: "perder-peso", label: "Perder peso" },
+  { valor: "ganhar-massa", label: "Ganhar massa muscular" },
+  { valor: "melhorar-condicionamento", label: "Melhorar condicionamento" },
+  { valor: "manter-ativo", label: "Manter-se ativo" },
+  { valor: "sem-objetivo", label: "Sem objetivo" },
+];
+
 export default function CadastrarRotina() {
   const { id } = useParams();
   const modoEdicao = Boolean(id);
@@ -23,10 +31,17 @@ export default function CadastrarRotina() {
   const [midiaUrl, setMidiaUrl] = useState("");
   const [catalogo, setCatalogo] = useState<TreinoCatalogo[]>([]);
   const [grupos, setGrupos] = useState<Grupo[]>([{ nome: "", treinosSelecionados: [] }]);
+  const [objetivos, setObjetivos] = useState<string[]>([]);
 
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [carregandoDados, setCarregandoDados] = useState(true);
+
+  function alternarObjetivo(valor: string) {
+    setObjetivos((atual) =>
+      atual.includes(valor) ? atual.filter((o) => o !== valor) : [...atual, valor]
+    );
+  }
 
   useEffect(() => {
     async function carregarDados() {
@@ -44,6 +59,7 @@ export default function CadastrarRotina() {
           setTitulo(rotina.titulo);
           setDescricao(rotina.descricao);
           setMidiaUrl(rotina.midiaUrl || "");
+          setObjetivos(rotina.objetivos || []);
           setGrupos(
             rotina.grupos.map((g: any) => ({
               nome: g.nome,
@@ -122,6 +138,7 @@ export default function CadastrarRotina() {
         titulo,
         descricao,
         midiaUrl,
+        objetivos,
         grupos: grupos.map((g) => ({ nome: g.nome, treinos: g.treinosSelecionados })),
       };
 
@@ -185,6 +202,20 @@ export default function CadastrarRotina() {
             value={midiaUrl}
             onChange={(e) => setMidiaUrl(e.target.value)}
           />
+
+          <label>Objetivos atendidos por esta rotina</label>
+          <div className="cadastrar-rotina-objetivos">
+            {OBJETIVOS_OPCOES.map((op) => (
+              <label key={op.valor} className="cadastrar-rotina-objetivo-item">
+                <input
+                  type="checkbox"
+                  checked={objetivos.includes(op.valor)}
+                  onChange={() => alternarObjetivo(op.valor)}
+                />
+                {op.label}
+              </label>
+            ))}
+          </div>
 
           {catalogo.length === 0 && (
             <p className="cadastrar-rotina-aviso-catalogo">

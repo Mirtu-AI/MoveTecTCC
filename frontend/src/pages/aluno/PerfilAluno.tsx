@@ -12,12 +12,21 @@ interface Aluno {
     email: string;
     foto?: string | null;
     conquistasFixadas?: string[]; // <-- novo
+    objetivo?: string | null;
 }
 interface Conquista {
     id: string;
     nome: string;
     desbloqueada: boolean;
 }
+
+const OBJETIVOS_OPCOES = [
+  { valor: 'perder-peso', label: 'Perder peso', emoji: '🔥' },
+  { valor: 'ganhar-massa', label: 'Ganhar massa muscular', emoji: '💪' },
+  { valor: 'melhorar-condicionamento', label: 'Melhorar condicionamento', emoji: '🏃' },
+  { valor: 'manter-ativo', label: 'Manter-se ativo', emoji: '😊' },
+  { valor: 'sem-objetivo', label: 'Sem objetivo definido', emoji: '❓' },
+];
 
 interface Desempenho {
     totalRealizadas: number;
@@ -42,11 +51,34 @@ export default function PerfilAluno() {
     const [descricaoInput, setDescricaoInput] = useState("");
     const [salvandoDescricao, setSalvandoDescricao] = useState(false);
 
+    const [editandoObjetivo, setEditandoObjetivo] = useState(false);
+    const [objetivoSelecionado, setObjetivoSelecionado] = useState('');
+    const [salvandoObjetivo, setSalvandoObjetivo] = useState(false);
+
     const [editandoConquistas, setEditandoConquistas] = useState(false);
     const [selecaoTemp, setSelecaoTemp] = useState<string[]>([]);
     const [salvandoConquistas, setSalvandoConquistas] = useState(false);
 
     const navigate = useNavigate();
+
+    async function salvarObjetivo(novoObjetivo: string) {
+      setSalvandoObjetivo(true);
+      try {
+        const token = localStorage.getItem('token');
+        await axios.put(
+          'http://localhost:3000/api/aluno/objetivo',
+          { objetivo: novoObjetivo },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setAluno((prev) => prev ? { ...prev, objetivo: novoObjetivo } : prev);
+        setObjetivoSelecionado(novoObjetivo);
+        setEditandoObjetivo(false);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setSalvandoObjetivo(false);
+      }
+    }
 
     useEffect(() => {
         async function buscarDados() {
@@ -61,8 +93,8 @@ export default function PerfilAluno() {
 
                 const dadosAluno = respAluno.data.aluno || null;
                 setAluno(dadosAluno);
+                setObjetivoSelecionado(dadosAluno?.objetivo || '');
                 setSelecaoTemp(dadosAluno?.conquistasFixadas || []);
-                setAluno(dadosAluno);
                 setNomeSocialInput(dadosAluno?.nomeSocial || dadosAluno?.nome || "");
                 setDescricaoInput(dadosAluno?.descricao || "");
                 setDesempenho(respDesempenho.data.desempenho || null);
@@ -273,6 +305,54 @@ export default function PerfilAluno() {
                                 {aluno.descricao || "Adicionar uma descrição..."} <span className="perfil-aluno-lapis">✏️</span>
                             </p>
                         )}
+
+                        {/* OBJETIVO */}
+                        <div className="perfil-campo-secao">
+                          <div className="perfil-campo-titulo">
+                            <span>Objetivo</span>
+                            {!editandoObjetivo && (
+                              <button
+                                type="button"
+                                className="perfil-editar-btn"
+                                onClick={() => setEditandoObjetivo(true)}
+                              >
+                                Editar
+                              </button>
+                            )}
+                          </div>
+
+                          {!editandoObjetivo ? (
+                            <p className="perfil-campo-valor">
+                              {OBJETIVOS_OPCOES.find((o) => o.valor === aluno?.objetivo)
+                                ? `${OBJETIVOS_OPCOES.find((o) => o.valor === aluno?.objetivo)!.emoji} ${OBJETIVOS_OPCOES.find((o) => o.valor === aluno?.objetivo)!.label}`
+                                : 'Não definido'}
+                            </p>
+                          ) : (
+                            <div className="perfil-objetivo-opcoes">
+                              {OBJETIVOS_OPCOES.map((op) => (
+                                <button
+                                  key={op.valor}
+                                  type="button"
+                                  className={`perfil-objetivo-btn ${
+                                    objetivoSelecionado === op.valor ? 'selecionado' : ''
+                                  }`}
+                                  onClick={() => salvarObjetivo(op.valor)}
+                                  disabled={salvandoObjetivo}
+                                >
+                                  <span>{op.emoji}</span>
+                                  <span>{op.label}</span>
+                                </button>
+                              ))}
+                              <button
+                                type="button"
+                                className="perfil-cancelar-btn"
+                                onClick={() => setEditandoObjetivo(false)}
+                              >
+                                Cancelar
+                              </button>
+                            </div>
+                          )}
+                        </div>
 
                         <div className="perfil-aluno-card-container">
                             <div className="perfil-aluno-secao">

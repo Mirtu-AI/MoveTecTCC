@@ -4,7 +4,7 @@ import Logotipo from "../../assets/logo/Logo_MoveTec.png";
 
 const ITENS = [
   { rota: "/aluno", icone: "🏠", rotulo: "Início" },
-  { rota: "/aluno/comunidades", icone: "", rotulo: "Comunidades" },
+  { rota: "/aluno/comunidades", icone: "💬", rotulo: "Comunidades" },
   { rota: "/aluno/perfil", icone: "👤", rotulo: "Perfil" },
 ];
 

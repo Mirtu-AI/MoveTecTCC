@@ -9,6 +9,7 @@ interface Perfil {
   foto?: string | null;
   streakAtual?: number;
   nomeSocial?: string | null;
+  objetivo?: string | null;
 }
 
 interface Feedback {
@@ -34,6 +35,7 @@ interface AtividadeProposta {
 interface Treino {
   _id: string;
   titulo: string;
+  objetivos?: string[];
 }
 
 interface HistoricoTreino {
@@ -53,6 +55,7 @@ interface Rotina {
   _id: string;
   titulo: string;
   grupos: GrupoRotina[];
+  objetivos?: string[];
 }
 
 interface Aviso {
@@ -201,12 +204,25 @@ export default function TelaAlunoLicitacao() {
     especificaPendente?.titulo ||
     "Tudo em dia por hoje! 🎉";
 
-  const rotinasFiltradas = rotinas.filter((t) =>
-    t.titulo.toLowerCase().includes(busca.toLowerCase())
-  );
-  const especificasFiltradas = especificas.filter((t) =>
-    t.titulo.toLowerCase().includes(busca.toLowerCase())
-  );
+  const rotinasFiltradas = rotinas
+    .filter((t) => t.titulo.toLowerCase().includes(busca.toLowerCase()))
+    .sort((a, b) => {
+      const obj = perfil?.objetivo;
+      if (!obj || obj === "sem-objetivo") return 0;
+      const aCompativel = a.objetivos?.includes(obj) ? 1 : 0;
+      const bCompativel = b.objetivos?.includes(obj) ? 1 : 0;
+      return bCompativel - aCompativel;
+    });
+
+  const especificasFiltradas = especificas
+    .filter((t) => t.titulo.toLowerCase().includes(busca.toLowerCase()))
+    .sort((a, b) => {
+      const obj = perfil?.objetivo;
+      if (!obj || obj === "sem-objetivo") return 0;
+      const aCompativel = a.objetivos?.includes(obj) ? 1 : 0;
+      const bCompativel = b.objetivos?.includes(obj) ? 1 : 0;
+      return bCompativel - aCompativel;
+    });
 
   const ultimaComFeedback = [...atividades]
     .filter((a) => a.feedback)

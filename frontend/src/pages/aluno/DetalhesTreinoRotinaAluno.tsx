@@ -145,9 +145,19 @@ export default function DetalhesTreinoRotinaAluno() {
                   {item.exercicio?.nome || "Exercício não especificado"}
                 </span>
                 <span className="detalhes-treino-rotina-exercicio-detalhes">
-                  {item.series ? `${item.series} séries` : ""}
-                  {item.series && item.repeticoes ? " • " : ""}
-                  {item.repeticoes ? `${item.repeticoes} reps` : ""}
+                  {(() => {
+                    const partes = [];
+                    if (item.series && item.repeticoes) partes.push(`${item.series}x ${item.repeticoes}`);
+                    else if (item.series) partes.push(`${item.series} séries`);
+                    else if (item.repeticoes) partes.push(`${item.repeticoes} reps`);
+
+                    if ((item as any).distancia) partes.push(`🏃 ${(item as any).distancia}`);
+                    if ((item as any).tempo) partes.push(`⏱️ ${(item as any).tempo}`);
+                    if ((item as any).descanso) partes.push(`⏸️ Descanso: ${(item as any).descanso}`);
+                    if ((item as any).carga) partes.push(`⚖️ ${(item as any).carga}`);
+                    if ((item as any).notas) partes.push(`💡 ${(item as any).notas}`);
+                    return partes.length > 0 ? partes.join(" • ") : "Sem orientações específicas";
+                  })()}
                 </span>
               </div>
 
