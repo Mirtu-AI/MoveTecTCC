@@ -274,3 +274,34 @@ export async function atualizarObjetivoAluno(db, id, objetivo) {
     }
     return { sucesso: true };
 }
+
+export async function atualizarPlanoSemanalAluno(db, id, planoSemanal) {
+    if (!planoSemanal || typeof planoSemanal !== 'object') {
+        return { sucesso: false, erro: 'Plano semanal inválido.' };
+    }
+
+    const planoLimpo = {};
+    for (let dia = 0; dia <= 6; dia++) {
+        const item = planoSemanal[dia] || planoSemanal[String(dia)];
+        if (item && item.id && item.titulo && (item.tipo === 'rotina' || item.tipo === 'treino')) {
+            planoLimpo[String(dia)] = {
+                tipo: item.tipo,
+                id: String(item.id),
+                titulo: String(item.titulo),
+            };
+        } else {
+            planoLimpo[String(dia)] = null;
+        }
+    }
+
+    const colecao = db.collection(NOME_COLECAO);
+    const resultado = await colecao.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { planoSemanal: planoLimpo } }
+    );
+
+    if (resultado.matchedCount === 0) {
+        return { sucesso: false, erro: 'Aluno não encontrado.' };
+    }
+    return { sucesso: true, planoSemanal: planoLimpo };
+}

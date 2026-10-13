@@ -44,6 +44,7 @@ import CriarComunidade from "./pages/aluno/CriarComunidades";
 import DetalhesComunidade from "./pages/aluno/DetalhesComunidade";
 import ListaComunidadesProfessor from "./pages/professor/ListaComunidadesProfessor";
 import CriarComunidadeProfessor from "./pages/professor/CriarComunidadeProfessor";
+import PlanoSemanalAluno from "./pages/aluno/PlanoSemanalAluno";
 
 import RotaProtegida from "./pages/components/RotaProtegida";
 import RotaPublica from "./pages/components/RotaPublica";
@@ -92,6 +93,14 @@ function App() {
           element={
             <RotaProtegida tipoPermitido="aluno">
               <TelaAlunoLicitacao />
+            </RotaProtegida>
+          }
+        />
+        <Route
+          path="/aluno/plano-semanal"
+          element={
+            <RotaProtegida tipoPermitido="aluno">
+              <PlanoSemanalAluno />
             </RotaProtegida>
           }
         />

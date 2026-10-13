@@ -837,3 +837,97 @@ html, body {
     width: 100%;
   }
 }
+
+/* ==========================================================================
+   CARD RESUMO: TREINO PLANEJADO PARA HOJE NA HOME
+   ========================================================================== */
+.aluno-plano-hoje-card {
+  background-color: var(--movetec-branco);
+  border: 1.5px solid var(--movetec-borda);
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  box-shadow: 0 2px 10px rgba(18, 25, 41, 0.04);
+}
+
+.aluno-plano-hoje-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.aluno-plano-hoje-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--movetec-laranja);
+}
+
+.aluno-plano-hoje-detalhe {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.aluno-plano-hoje-icone {
+  font-size: 1.35rem;
+}
+
+.aluno-plano-hoje-nome {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--movetec-texto-principal);
+}
+
+.aluno-plano-hoje-vazio {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--movetec-texto-secundario);
+  font-weight: 500;
+}
+
+.aluno-plano-hoje-acoes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.aluno-plano-hoje-btn-iniciar {
+  background-color: var(--movetec-laranja);
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 85, 46, 0.25);
+  transition: all 0.2s ease;
+}
+
+.aluno-plano-hoje-btn-iniciar:hover {
+  background-color: var(--movetec-laranja-hover);
+  transform: translateY(-1px);
+}
+
+.aluno-plano-hoje-btn-gerenciar {
+  background-color: var(--movetec-fundo);
+  color: var(--movetec-texto-principal);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.aluno-plano-hoje-btn-gerenciar:hover {
+  border-color: var(--movetec-laranja);
+  color: var(--movetec-laranja);
+}

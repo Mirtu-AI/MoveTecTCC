@@ -4,12 +4,31 @@ import axios from "axios";
 import "./TelaAlunoLicitacao.css";
 import NavegacaoAluno from "./NavegacaoAluno";
 
+interface ItemPlanoDia {
+  tipo: "rotina" | "treino";
+  id: string;
+  titulo: string;
+}
+
+type PlanoSemanal = Record<string, ItemPlanoDia | null>;
+
+const DIAS_SEMANA_LABELS = [
+  { indice: "1", curto: "Seg", completo: "Segunda" },
+  { indice: "2", curto: "Ter", completo: "Terça" },
+  { indice: "3", curto: "Qua", completo: "Quarta" },
+  { indice: "4", curto: "Qui", completo: "Quinta" },
+  { indice: "5", curto: "Sex", completo: "Sexta" },
+  { indice: "6", curto: "Sáb", completo: "Sábado" },
+  { indice: "0", curto: "Dom", completo: "Domingo" },
+];
+
 interface Perfil {
   nome: string;
   foto?: string | null;
   streakAtual?: number;
   nomeSocial?: string | null;
   objetivo?: string | null;
+  planoSemanal?: PlanoSemanal | null;
 }
 
 interface Feedback {
@@ -75,14 +94,12 @@ interface Meta {
   concluida: boolean;
 }
 
-
-
 export default function TelaAlunoLicitacao() {
   const navigate = useNavigate();
 
   const [perfil, setPerfil] = useState<Perfil | null>(null);
   const [atividades, setAtividades] = useState<AtividadeProposta[]>([]);
-  const [rotinas, setRotinas] = useState<Rotina[]>([]); // troca o tipo de Treino[] pra Rotina[]
+  const [rotinas, setRotinas] = useState<Rotina[]>([]);
   const [especificas, setEspecificas] = useState<Treino[]>([]);
   const [historico, setHistorico] = useState<HistoricoTreino[]>([]);
   const [busca, setBusca] = useState("");
@@ -91,10 +108,13 @@ export default function TelaAlunoLicitacao() {
   const [avisos, setAvisos] = useState<Aviso[]>([]);
   const [metas, setMetas] = useState<Meta[]>([]);
 
+  const [editandoPlano, setEditandoPlano] = useState(false);
+  const [planoTemp, setPlanoTemp] = useState<PlanoSemanal>({});
+  const [salvandoPlano, setSalvandoPlano] = useState(false);
+
   useEffect(() => {
     carregarDados();
   }, []);
-
 
   async function carregarDados() {
     try {
@@ -111,13 +131,15 @@ export default function TelaAlunoLicitacao() {
         axios.get("http://localhost:3000/api/aluno/metas", cabecalho).catch(() => ({ data: { metas: [] } })),
       ]);
 
-      setPerfil(respPerfil.data.aluno || null);
+      const alunoRecebido = respPerfil.data.aluno || null;
+      setPerfil(alunoRecebido);
+      setPlanoTemp(alunoRecebido?.planoSemanal || {});
       setAtividades(respAtividades.data.atividades || []);
       setRotinas(respRotinas.data.rotinas || []);
       setEspecificas(respEspecificas.data.treinos || []);
       setHistorico(respHistorico.data.historico || []);
       setAvisos(respAvisos.data.avisos || []);
-      setMetas(respMetas.data.metas || [])
+      setMetas(respMetas.data.metas || []);
 
       setStreakAnimando(true);
       setTimeout(() => setStreakAnimando(false), 900);
@@ -198,8 +220,12 @@ export default function TelaAlunoLicitacao() {
 
   const atividadePendente = atividadesVisiveis.find((a) => a.progresso < 100);
 
+  const diaHojeIndice = String(new Date().getDay());
+  const itemPlanejadoHoje = perfil?.planoSemanal?.[diaHojeIndice] || null;
+
   const proximoFoco =
     atividadePendente?.titulo ||
+    itemPlanejadoHoje?.titulo ||
     rotinaPendente?.titulo ||
     especificaPendente?.titulo ||
     "Tudo em dia por hoje! 🎉";
@@ -234,7 +260,6 @@ export default function TelaAlunoLicitacao() {
     return <p className="aluno-home-mensagem">Carregando...</p>;
   }
 
-  // Adicione essa função junto das outras funções auxiliares
   function atividadeExpirada(dataEntregaIso: string) {
     const hoje = new Date();
     hoje.setHours(0, 0, 0, 0);
@@ -246,7 +271,7 @@ export default function TelaAlunoLicitacao() {
   }
 
   async function esconderAviso(avisoId: string) {
-    setAvisos((atual) => atual.filter((a) => a._id !== avisoId)); // otimista
+    setAvisos((atual) => atual.filter((a) => a._id !== avisoId));
     try {
       const token = localStorage.getItem("token");
       await axios.put(
@@ -258,6 +283,76 @@ export default function TelaAlunoLicitacao() {
       console.error(err);
     }
   }
+
+  // Opções combinadas de rotinas e treinos para montar o plano semanal
+  const opcoesParaPlano: ItemPlanoDia[] = [
+    ...rotinasFiltradas.map((r) => ({ tipo: "rotina" as const, id: r._id, titulo: r.titulo })),
+    ...especificasFiltradas.map((t) => ({ tipo: "treino" as const, id: t._id, titulo: t.titulo })),
+  ];
+
+  async function salvarPlanoNoBanco(novoPlano: PlanoSemanal) {
+    setSalvandoPlano(true);
+    try {
+      const token = localStorage.getItem("token");
+      const resp = await axios.put(
+        "http://localhost:3000/api/aluno/plano-semanal",
+        { planoSemanal: novoPlano },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const planoSalvo = resp.data.planoSemanal || novoPlano;
+      setPerfil((prev) => (prev ? { ...prev, planoSemanal: planoSalvo } : prev));
+      setPlanoTemp(planoSalvo);
+      setEditandoPlano(false);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSalvandoPlano(false);
+    }
+  }
+
+  async function gerarPlanoInicianteRecomendado() {
+    if (opcoesParaPlano.length === 0) return;
+
+    const item1 = opcoesParaPlano[0];
+    const item2 = opcoesParaPlano[1] || opcoesParaPlano[0];
+    const item3 = opcoesParaPlano[2] || opcoesParaPlano[0];
+
+    const sugerido: PlanoSemanal = {
+      "0": null, // Dom: Descanso
+      "1": item1, // Seg
+      "2": null, // Ter: Descanso
+      "3": item2, // Qua
+      "4": null, // Qui: Descanso
+      "5": item3, // Sex
+      "6": null, // Sáb: Descanso
+    };
+
+    await salvarPlanoNoBanco(sugerido);
+  }
+
+  function alterarDiaPlanoTemp(diaIndice: string, valorSelect: string) {
+    if (!valorSelect) {
+      setPlanoTemp((atual) => ({ ...atual, [diaIndice]: null }));
+      return;
+    }
+    const [tipo, id] = valorSelect.split(":");
+    const encontrado = opcoesParaPlano.find((op) => op.tipo === tipo && op.id === id) || null;
+    setPlanoTemp((atual) => ({ ...atual, [diaIndice]: encontrado }));
+  }
+
+  function abrirItemDoPlano(item: ItemPlanoDia | null | undefined) {
+    if (!item) return;
+    if (item.tipo === "rotina") {
+      navigate(`/aluno/rotinas/${item.id}`);
+    } else {
+      navigate(`/aluno/treinos-especificos/${item.id}`);
+    }
+  }
+
+  const temAlgumDiaPlanejado = Boolean(
+    perfil?.planoSemanal &&
+      Object.values(perfil.planoSemanal).some((item) => item && item.id)
+  );
 
   return (
     <div className="aluno-home-page">
@@ -396,6 +491,46 @@ export default function TelaAlunoLicitacao() {
               </div>
             </section>
           )}
+
+          {/* TREINO PLANEJADO PARA HOJE */}
+          <section className="aluno-home-secao aluno-plano-hoje-card">
+            <div className="aluno-plano-hoje-info">
+              <span className="aluno-plano-hoje-label">📅 Seu plano para hoje</span>
+              {itemPlanejadoHoje ? (
+                <div className="aluno-plano-hoje-detalhe">
+                  <span className="aluno-plano-hoje-icone">
+                    {itemPlanejadoHoje.tipo === "rotina" ? "🏃" : "🏋️"}
+                  </span>
+                  <strong className="aluno-plano-hoje-nome">{itemPlanejadoHoje.titulo}</strong>
+                </div>
+              ) : temAlgumDiaPlanejado ? (
+                <p className="aluno-plano-hoje-vazio">😌 Hoje é seu dia de descanso no plano!</p>
+              ) : (
+                <p className="aluno-plano-hoje-vazio">
+                  Você ainda não definiu seu plano semanal de treinos.
+                </p>
+              )}
+            </div>
+
+            <div className="aluno-plano-hoje-acoes">
+              {itemPlanejadoHoje && (
+                <button
+                  type="button"
+                  className="aluno-plano-hoje-btn-iniciar"
+                  onClick={() => abrirItemDoPlano(itemPlanejadoHoje)}
+                >
+                  ▶ Treinar agora
+                </button>
+              )}
+              <button
+                type="button"
+                className="aluno-plano-hoje-btn-gerenciar"
+                onClick={() => navigate("/aluno/plano-semanal")}
+              >
+                {temAlgumDiaPlanejado ? "Ver semana" : "Montar plano →"}
+              </button>
+            </div>
+          </section>
 
           <section className="aluno-home-secao">
             <span className="aluno-home-secao-titulo">Rotinas</span>

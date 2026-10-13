@@ -48,7 +48,8 @@ import {
     atualizarPerfilSocial,
     ocultarAviso,
     atualizarConquistasFixadas,
-    atualizarObjetivoAluno
+    atualizarObjetivoAluno,
+    atualizarPlanoSemanalAluno
 } from './models/aluno.js';
 import {
     cadastrarExercicio,
@@ -891,6 +892,22 @@ async function main() {
         } catch (err) {
             console.error(err);
             res.status(500).send({ success: false, erro: 'Erro ao atualizar objetivo.' });
+        }
+    });
+
+    app.put('/api/aluno/plano-semanal', autenticarAluno, async (req, res) => {
+        try {
+            const { planoSemanal } = req.body;
+            const resultado = await atualizarPlanoSemanalAluno(db, req.alunoId, planoSemanal);
+
+            if (!resultado.sucesso) {
+                return res.status(400).send({ success: false, erro: resultado.erro });
+            }
+
+            res.send({ success: true, planoSemanal: resultado.planoSemanal, body: 'Plano semanal atualizado com sucesso.' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao atualizar plano semanal.' });
         }
     });
 
