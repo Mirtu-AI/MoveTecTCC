@@ -4,6 +4,8 @@ import axios from "axios";
 import ModalConfirmacao from "../components/ModalConfirmacao";
 import ModalEditarEmail from "../components/ModalEditarEmail";
 import "./DetalhesProfessor.css";
+import { FiArrowLeft, FiTrash2 } from "react-icons/fi";
+import { FaSchool } from "react-icons/fa";
 
 interface Sala {
   _id: string;
@@ -110,8 +112,12 @@ export default function DetalhesProfessor() {
   return (
     <div className="detalhes-page">
       <header className="detalhes-header">
-        <button className="voltar-btn" onClick={() => navigate("/admin")}>
-          ←
+        <button
+          className="voltar-btn"
+          onClick={() => navigate("/admin")}
+          aria-label="Voltar para a lista de professores"
+        >
+          <FiArrowLeft />
         </button>
         <h1>{professor.nome}</h1>
         <button
@@ -119,7 +125,7 @@ export default function DetalhesProfessor() {
           onClick={() => setModalExcluirAberto(true)}
           aria-label="Excluir professor"
         >
-          🗑
+          <FiTrash2 />
         </button>
       </header>
 
@@ -139,7 +145,7 @@ export default function DetalhesProfessor() {
 
           <div className="detalhes-info-card">
             <div className="info-card-topo">
-              <h3>Informações do(a) professor(a)</h3>
+              <h2>Informações do(a) professor(a)</h2>
               <button
                 className="editar-btn"
                 onClick={() => setModalEditarAberto(true)}
@@ -155,16 +161,21 @@ export default function DetalhesProfessor() {
         </div>
 
         <div className="detalhes-coluna-salas">
-          <h3>Salas</h3>
+          <h2>Salas</h2>
 
           {(!professor.salas || professor.salas.length === 0) && (
             <p className="detalhes-mensagem-salas">Nenhuma sala vinculada ainda.</p>
           )}
 
-          <div className="salas-lista">
+          <div
+            className="salas-lista"
+            tabIndex={0}
+            role="region"
+            aria-label="Lista de salas do professor"
+          >
             {professor.salas?.map((sala) => (
               <div key={sala._id} className="sala-card">
-                <span className="sala-icone">🏫</span>
+                <span className="sala-icone"><FaSchool /></span>
                 <span>{sala.nome}</span>
               </div>
             ))}

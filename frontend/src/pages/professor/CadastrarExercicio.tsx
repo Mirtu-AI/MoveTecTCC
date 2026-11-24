@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./CadastrarExercicio.css";
+import { FiArrowLeft, FiPlay } from "react-icons/fi";
 
 export default function CadastrarExercicio() {
   const { id } = useParams();
@@ -88,7 +89,7 @@ export default function CadastrarExercicio() {
           onClick={() => navigate("/professor/exercicios")}
           aria-label="Voltar"
         >
-          ←
+          <FiArrowLeft />
         </button>
         <h1>{modoEdicao ? "Editar exercício" : "Exercício"}</h1>
       </header>
@@ -97,7 +98,7 @@ export default function CadastrarExercicio() {
         <form onSubmit={handleSubmit} className="cadastrar-exercicio-form">
           <div className="cadastrar-exercicio-midia-preview">
             {midiaUrl ? (
-              <div className="cadastrar-exercicio-midia-play">▶</div>
+              <div className="cadastrar-exercicio-midia-play"><FiPlay /></div>
             ) : (
               <span className="cadastrar-exercicio-midia-placeholder">Sem mídia</span>
             )}

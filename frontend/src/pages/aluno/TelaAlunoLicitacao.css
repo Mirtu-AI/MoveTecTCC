@@ -6,6 +6,8 @@
   --movetec-laranja: #ff552e;
   --movetec-laranja-hover: #e0441f;
   --movetec-laranja-suave: #fff0ed;
+  --movetec-laranja-texto: #c53a14;
+  --movetec-laranja-texto-hover: #a52f0e;
   --movetec-azul-escuro: #121929;
   --movetec-azul-card: #1e293b;
   --movetec-texto-principal: #1f2937;
@@ -87,11 +89,11 @@ html, body {
 
 .navegacao-aluno-btn:hover {
   background-color: var(--movetec-laranja-suave);
-  color: var(--movetec-laranja);
+  color: var(--movetec-laranja-texto);
 }
 
 .navegacao-aluno-btn.ativo {
-  color: var(--movetec-laranja);
+  color: var(--movetec-laranja-texto);
   background-color: var(--movetec-laranja-suave);
   font-weight: 700;
 }
@@ -106,7 +108,7 @@ html, body {
 }
 
 .navegacao-aluno-rotulo {
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
@@ -263,7 +265,7 @@ html, body {
 }
 
 .aluno-home-btn-destaque {
-  background-color: var(--movetec-laranja);
+  background-color: var(--movetec-laranja-texto);
   color: var(--movetec-branco);
   border: none;
   padding: 12px 20px;
@@ -276,7 +278,7 @@ html, body {
 }
 
 .aluno-home-btn-destaque:hover {
-  background-color: var(--movetec-laranja-hover);
+  background-color: var(--movetec-laranja-texto-hover);
   transform: translateY(-2px);
 }
 
@@ -413,9 +415,9 @@ html, body {
 
 .aluno-home-atividade-data-entrega {
   display: block;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 800;
-  color: var(--movetec-laranja);
+  color: var(--movetec-laranja-texto);
   background-color: var(--movetec-laranja-suave);
   padding: 4px 12px;
   border-radius: 999px;
@@ -468,7 +470,7 @@ html, body {
 }
 
 .aluno-home-atividade-progresso-linha span {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: var(--movetec-texto-secundario);
   font-weight: 600;
 }
@@ -584,9 +586,9 @@ html, body {
 }
 
 .aluno-widget-badge {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  color: var(--movetec-laranja);
+  color: var(--movetec-laranja-texto);
 }
 
 .aluno-widget-subtexto {
@@ -596,10 +598,10 @@ html, body {
 }
 
 .aluno-widget-tag {
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
-  color: var(--movetec-laranja);
+  color: var(--movetec-laranja-texto);
   letter-spacing: 0.05em;
 }
 
@@ -628,7 +630,7 @@ html, body {
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--movetec-texto-secundario);
 }
@@ -641,7 +643,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   transition: all 0.3s ease;
 }
 
@@ -865,7 +867,7 @@ html, body {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--movetec-laranja);
+  color: var(--movetec-laranja-texto);
 }
 
 .aluno-plano-hoje-detalhe {
@@ -898,7 +900,7 @@ html, body {
 }
 
 .aluno-plano-hoje-btn-iniciar {
-  background-color: var(--movetec-laranja);
+  background-color: var(--movetec-laranja-texto);
   color: #ffffff;
   border: none;
   border-radius: 999px;
@@ -911,7 +913,7 @@ html, body {
 }
 
 .aluno-plano-hoje-btn-iniciar:hover {
-  background-color: var(--movetec-laranja-hover);
+  background-color: var(--movetec-laranja-texto-hover);
   transform: translateY(-1px);
 }
 
@@ -929,5 +931,5 @@ html, body {
 
 .aluno-plano-hoje-btn-gerenciar:hover {
   border-color: var(--movetec-laranja);
-  color: var(--movetec-laranja);
+  color: var(--movetec-laranja-texto);
 }

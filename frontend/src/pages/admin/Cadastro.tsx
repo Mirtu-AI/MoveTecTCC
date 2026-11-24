@@ -4,6 +4,7 @@ import axios from "axios";
 import "../Login/Login.css";
 // Importação do logotipo do MoveTec
 import Logo from "../../assets/logo/Logo_MoveTec.png";
+import { FiArrowLeft, FiEye, FiEyeOff } from "react-icons/fi";
 
 export default function Cadastro() {
   const [nome, setNome] = useState("");
@@ -55,7 +56,7 @@ export default function Cadastro() {
   return (
     <div className="login-page">
       <button className="voltar-topo-btn" onClick={() => navigate("/admin")}>
-        ← Voltar
+        <FiArrowLeft style={{ marginRight: 6 }} /> Voltar
       </button>
 
       <div className="login-card-split">
@@ -129,7 +130,7 @@ export default function Cadastro() {
                 onClick={() => setMostrarSenha((atual) => !atual)}
                 aria-label={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
               >
-                {mostrarSenha ? "🙈" : "👁️"}
+                {mostrarSenha ? <FiEyeOff /> : <FiEye />}
               </button>
             </div>
 
@@ -149,7 +150,7 @@ export default function Cadastro() {
                 onClick={() => setMostrarConfirmarSenha((atual) => !atual)}
                 aria-label={mostrarConfirmarSenha ? "Ocultar senha" : "Mostrar senha"}
               >
-                {mostrarConfirmarSenha ? "🙈" : "👁️"}
+                {mostrarConfirmarSenha ? <FiEyeOff /> : <FiEye />}
               </button>
             </div>
 

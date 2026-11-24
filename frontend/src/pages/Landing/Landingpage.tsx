@@ -3,6 +3,22 @@ import "./Landingpage.css";
 import { Link } from "react-router-dom";
 import Logotipo from "../../assets/logo/Logo_MoveTec.png";
 import Logo from "../../assets/logo/Logo (2).png";
+import {
+  FaFire,
+  FaRunning,
+  FaTrophy,
+  FaUsers,
+  FaChartBar,
+  FaCheckCircle,
+  FaHeart,
+  FaBrain,
+  FaMoon,
+  FaDumbbell,
+  FaSmile,
+  FaBolt,
+  FaHandsHelping,
+  FaUserGraduate,
+} from "react-icons/fa";
 
 
 export default function Landing() {
@@ -104,7 +120,7 @@ export default function Landing() {
             onMouseLeave={handleMouseLeavePhone}
           >
             <div className="floating-badge">
-              <span className="badge-icon">🔥</span>
+              <span className="badge-icon"><FaFire /></span>
               <div>
                 <strong>Em alta!</strong>
                 <p>Sua comunidade bateu a meta</p>
@@ -175,19 +191,19 @@ export default function Landing() {
       {/* MARQUEE */}
       <div className="marquee">
         <div className="marquee-track">
-          <div className="marquee-card"><span className="marquee-icon">🏃</span><span>Rankings semanais</span></div>
-          <div className="marquee-card"><span className="marquee-icon">🔥</span><span>Streaks diárias</span></div>
-          <div className="marquee-card"><span className="marquee-icon">🏆</span><span>Badges e conquistas</span></div>
-          <div className="marquee-card"><span className="marquee-icon">👥</span><span>Comunidade da turma</span></div>
-          <div className="marquee-card"><span className="marquee-icon">📊</span><span>Acompanhamento de progresso</span></div>
-          <div className="marquee-card"><span className="marquee-icon">✅</span><span>Validação do professor</span></div>
+          <div className="marquee-card"><span className="marquee-icon"><FaRunning /></span><span>Rankings semanais</span></div>
+          <div className="marquee-card"><span className="marquee-icon"><FaFire /></span><span>Streaks diárias</span></div>
+          <div className="marquee-card"><span className="marquee-icon"><FaTrophy /></span><span>Badges e conquistas</span></div>
+          <div className="marquee-card"><span className="marquee-icon"><FaUsers /></span><span>Comunidade da turma</span></div>
+          <div className="marquee-card"><span className="marquee-icon"><FaChartBar /></span><span>Acompanhamento de progresso</span></div>
+          <div className="marquee-card"><span className="marquee-icon"><FaCheckCircle /></span><span>Validação do professor</span></div>
 
-          <div className="marquee-card"><span className="marquee-icon">🏃</span><span>Rankings semanais</span></div>
-          <div className="marquee-card"><span className="marquee-icon">🔥</span><span>Streaks diárias</span></div>
-          <div className="marquee-card"><span className="marquee-icon">🏆</span><span>Badges e conquistas</span></div>
-          <div className="marquee-card"><span className="marquee-icon">👥</span><span>Comunidade da turma</span></div>
-          <div className="marquee-card"><span className="marquee-icon">📊</span><span>Acompanhamento de progresso</span></div>
-          <div className="marquee-card"><span className="marquee-icon">✅</span><span>Validação do professor</span></div>
+          <div className="marquee-card"><span className="marquee-icon"><FaRunning /></span><span>Rankings semanais</span></div>
+          <div className="marquee-card"><span className="marquee-icon"><FaFire /></span><span>Streaks diárias</span></div>
+          <div className="marquee-card"><span className="marquee-icon"><FaTrophy /></span><span>Badges e conquistas</span></div>
+          <div className="marquee-card"><span className="marquee-icon"><FaUsers /></span><span>Comunidade da turma</span></div>
+          <div className="marquee-card"><span className="marquee-icon"><FaChartBar /></span><span>Acompanhamento de progresso</span></div>
+          <div className="marquee-card"><span className="marquee-icon"><FaCheckCircle /></span><span>Validação do professor</span></div>
         </div>
       </div>
 
@@ -196,7 +212,7 @@ export default function Landing() {
         <div className="dark-mockup">
           <div className="device-container">
             <div className="floating-badge badge-dark">
-              <span className="badge-icon">🏆</span>
+              <span className="badge-icon"><FaTrophy /></span>
               <div>
                 <strong>Top 1!</strong>
                 <p>Lívia liderando este mês</p>
@@ -214,26 +230,26 @@ export default function Landing() {
                 <div className="ranking-preview-list">
                   <div className="ranking-item gold">
                     <span className="pos">1º</span>
-                    <div className="avatar">👩‍🎓</div>
+                    <div className="avatar"><FaUserGraduate /></div>
                     <div className="user-info"><strong>Lívia Q.</strong></div>
-                    <span className="streak">🔥 12</span>
+                    <span className="streak"><FaFire style={{ color: "#ff5722", verticalAlign: "middle", marginRight: 3 }} /> 12</span>
                   </div>
                   <div className="ranking-item silver">
                     <span className="pos">2º</span>
-                    <div className="avatar">👨‍🎓</div>
+                    <div className="avatar"><FaUserGraduate /></div>
                     <div className="user-info"><strong>Milton A.</strong></div>
-                    <span className="streak">🔥 8</span>
+                    <span className="streak"><FaFire style={{ color: "#ff5722", verticalAlign: "middle", marginRight: 3 }} /> 8</span>
                   </div>
                   <div className="ranking-item bronze">
                     <span className="pos">3º</span>
-                    <div className="avatar">👩‍🎓</div>
+                    <div className="avatar"><FaUserGraduate /></div>
                     <div className="user-info"><strong>Camila P.</strong></div>
-                    <span className="streak">🔥 5</span>
+                    <span className="streak"><FaFire style={{ color: "#ff5722", verticalAlign: "middle", marginRight: 3 }} /> 5</span>
                   </div>
                 </div>
 
                 <div className="app-badge-unlocked">
-                  <span>🎉 Meta Coletiva Batida!</span>
+                  <span><FaTrophy style={{ marginRight: 6 }} /> Meta Coletiva Batida!</span>
                 </div>
               </div>
             </div>
@@ -249,34 +265,27 @@ export default function Landing() {
                 <div className="desktop-screen-content">
                   <div className="app-preview-content">
                     <div className="app-header-preview">
-                      <span>Ranking</span>
-                      <span className="live-dot">● Ao vivo</span>
+                      <span>Comunidade</span>
                     </div>
 
                     <div className="ranking-preview-list">
                       <div className="ranking-item gold">
-                        <span className="pos">1º</span>
-                        <div className="avatar">👩‍🎓</div>
+                        <div className="avatar"><FaUserGraduate /></div>
                         <div className="user-info"><strong>Lívia Q.</strong></div>
-                        <span className="streak">🔥 12</span>
+                        <span className="streak"><FaFire style={{ color: "#ff5722", verticalAlign: "middle", marginRight: 3 }} /> 12</span>
                       </div>
                       <div className="ranking-item silver">
-                        <span className="pos">2º</span>
-                        <div className="avatar">👨‍🎓</div>
+                        <div className="avatar"><FaUserGraduate /></div>
                         <div className="user-info"><strong>Milton A.</strong></div>
-                        <span className="streak">🔥 8</span>
+                        <span className="streak"><FaFire style={{ color: "#ff5722", verticalAlign: "middle", marginRight: 3 }} /> 8</span>
                       </div>
                       <div className="ranking-item bronze">
-                        <span className="pos">3º</span>
-                        <div className="avatar">👩‍🎓</div>
+                        <div className="avatar"><FaUserGraduate /></div>
                         <div className="user-info"><strong>Camila P.</strong></div>
-                        <span className="streak">🔥 5</span>
+                        <span className="streak"><FaFire style={{ color: "#ff5722", verticalAlign: "middle", marginRight: 3 }} /> 5</span>
                       </div>
                     </div>
 
-                    <div className="app-badge-unlocked">
-                      <span>🎉 Meta Coletiva Batida!</span>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -299,18 +308,18 @@ export default function Landing() {
 
           <div className="feature-card">
             <div className="feature-header">
-              <span className="feature-icon">🏆</span>
-              <h3>Rankings e conquistas</h3>
+              <span className="feature-icon"><FaTrophy /></span>
+              <h3>Conquistas</h3>
             </div>
-            <p>Pontue praticando exercícios, suba no ranking e desbloqueie badges exclusivas por streaks diárias.</p>
+            <p>Pontue praticando exercícios e desbloqueie badges exclusivas por streaks diárias.</p>
           </div>
 
           <div className="feature-card">
             <div className="feature-header">
-              <span className="feature-icon">👥</span>
+              <span className="feature-icon"><FaUsers /></span>
               <h3>Comunidade</h3>
             </div>
-            <p>Acompanhe a evolução dos seus amigos, envie incentivos e comemorem juntos as metas alcançadas.</p>
+            <p>Se conecte com outras pessoas que tem os mesmos gostos que o seu.</p>
           </div>
         </div>
       </section>
@@ -319,29 +328,29 @@ export default function Landing() {
       <section className="info-section">
         <div className="benefits-marquee">
           <div className="benefits-track">
-            <div className="benefit-card"><span className="benefit-icon">❤️</span><h4>Saúde do coração</h4><p>Melhora a circulação e reduz riscos cardiovasculares.</p></div>
-            <div className="benefit-card"><span className="benefit-icon">🧠</span><h4>Foco e concentração</h4><p>Ajuda no rendimento escolar e na disposição mental.</p></div>
-            <div className="benefit-card"><span className="benefit-icon">😴</span><h4>Sono de qualidade</h4><p>Regula o sono e melhora o descanso do corpo.</p></div>
-            <div className="benefit-card"><span className="benefit-icon">💪</span><h4>Força e disposição</h4><p>Aumenta a energia para as atividades do dia a dia.</p></div>
-            <div className="benefit-card"><span className="benefit-icon">🙂</span><h4>Bem-estar emocional</h4><p>Reduz estresse, ansiedade e sintomas de tristeza.</p></div>
+            <div className="benefit-card"><span className="benefit-icon"><FaHeart /></span><h4>Saúde do coração</h4><p>Melhora a circulação e reduz riscos cardiovasculares.</p></div>
+            <div className="benefit-card"><span className="benefit-icon"><FaBrain /></span><h4>Foco e concentração</h4><p>Ajuda no rendimento escolar e na disposição mental.</p></div>
+            <div className="benefit-card"><span className="benefit-icon"><FaMoon /></span><h4>Sono de qualidade</h4><p>Regula o sono e melhora o descanso do corpo.</p></div>
+            <div className="benefit-card"><span className="benefit-icon"><FaDumbbell /></span><h4>Força e disposição</h4><p>Aumenta a energia para as atividades do dia a dia.</p></div>
+            <div className="benefit-card"><span className="benefit-icon"><FaSmile /></span><h4>Bem-estar emocional</h4><p>Reduz estresse, ansiedade e sintomas de tristeza.</p></div>
 
-            <div className="benefit-card"><span className="benefit-icon">❤️</span><h4>Saúde do coração</h4><p>Melhora a circulação e reduz riscos cardiovasculares.</p></div>
-            <div className="benefit-card"><span className="benefit-icon">🧠</span><h4>Foco e concentração</h4><p>Ajuda no rendimento escolar e na disposição mental.</p></div>
-            <div className="benefit-card"><span className="benefit-icon">😴</span><h4>Sono de qualidade</h4><p>Regula o sono e melhora o descanso do corpo.</p></div>
-            <div className="benefit-card"><span className="benefit-icon">💪</span><h4>Força e disposição</h4><p>Aumenta a energia para as atividades do dia a dia.</p></div>
-            <div className="benefit-card"><span className="benefit-icon">🙂</span><h4>Bem-estar emocional</h4><p>Reduz estresse, ansiedade e sintomas de tristeza.</p></div>
+            <div className="benefit-card"><span className="benefit-icon"><FaHeart /></span><h4>Saúde do coração</h4><p>Melhora a circulação e reduz riscos cardiovasculares.</p></div>
+            <div className="benefit-card"><span className="benefit-icon"><FaBrain /></span><h4>Foco e concentração</h4><p>Ajuda no rendimento escolar e na disposição mental.</p></div>
+            <div className="benefit-card"><span className="benefit-icon"><FaMoon /></span><h4>Sono de qualidade</h4><p>Regula o sono e melhora o descanso do corpo.</p></div>
+            <div className="benefit-card"><span className="benefit-icon"><FaDumbbell /></span><h4>Força e disposição</h4><p>Aumenta a energia para as atividades do dia a dia.</p></div>
+            <div className="benefit-card"><span className="benefit-icon"><FaSmile /></span><h4>Bem-estar emocional</h4><p>Reduz estresse, ansiedade e sintomas de tristeza.</p></div>
           </div>
         </div>
 
         <div className="info-content">
           <div className="info-visual-card">
-            <div className="visual-card-badge">📊 Dado Importante</div>
+            <div className="visual-card-badge"><FaChartBar style={{ marginRight: 6 }} /> Dado Importante</div>
             <div className="impact-number">84%</div>
             <p className="impact-desc">dos jovens não atingem a meta diária recomendada de atividade física pela OMS.</p>
             
             <div className="mini-chart">
               <div className="chart-bar" style={{ height: "40%" }}><span>ativos</span></div>
-              <div className="chart-bar active" style={{ height: "90%" }}><span>sedentários</span></div>
+              <div className="chart-bar active" style={{ height: "90%" }}><span>inativos</span></div>
             </div>
           </div>
 
@@ -356,11 +365,11 @@ export default function Landing() {
             
             <div className="info-bullets">
               <div className="bullet-item">
-                <span className="bullet-icon">⚡</span>
+                <span className="bullet-icon"><FaBolt /></span>
                 <span><strong>Hábito Sustentável:</strong> Rotinas adaptadas à vida escolar.</span>
               </div>
               <div className="bullet-item">
-                <span className="bullet-icon">🤝</span>
+                <span className="bullet-icon"><FaHandsHelping /></span>
                 <span><strong>Apoio Coletivo:</strong> Colegas motivando colegas todos os dias.</span>
               </div>
             </div>

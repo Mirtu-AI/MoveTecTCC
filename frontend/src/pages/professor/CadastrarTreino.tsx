@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./CadastrarTreino.css";
+import { FiArrowLeft, FiTrash2, FiCheck } from "react-icons/fi";
 
 interface ExercicioCatalogo {
   _id: string;
@@ -46,8 +47,6 @@ export default function CadastrarTreino() {
   const [carregando, setCarregando] = useState(false);
   const [carregandoDados, setCarregandoDados] = useState(true);
   const [especifica, setEspecifica] = useState(false);
-
-  const [tipo, setTipo] = useState<"rotina" | "especifica">("rotina");
 
   function alternarObjetivo(valor: string) {
     setObjetivos((atual) =>
@@ -249,7 +248,7 @@ export default function CadastrarTreino() {
           onClick={() => navigate("/professor/treinos")}
           aria-label="Voltar"
         >
-          ←
+          <FiArrowLeft />
         </button>
         <h1>{modoEdicao ? "Editar treino" : "Novo treino"}</h1>
       </header>
@@ -342,7 +341,7 @@ export default function CadastrarTreino() {
               <div key={item.exercicioId} className="cadastrar-treino-exercicio-card">
                 <div className="cadastrar-treino-exercicio-cabecalho">
                   <div className="cadastrar-treino-exercicio-nome-selo">
-                    <span>✓</span> {item.nome}
+                    <span><FiCheck /></span> {item.nome}
                   </div>
                   <button
                     type="button"
@@ -351,7 +350,7 @@ export default function CadastrarTreino() {
                     aria-label="Remover exercício"
                     title="Remover exercício"
                   >
-                    🗑
+                    <FiTrash2 />
                   </button>
                 </div>
 

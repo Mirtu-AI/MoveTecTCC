@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./DetalhesExercicioAluno.css";
+import { FiArrowLeft, FiPlay, FiClock } from "react-icons/fi";
 
 interface Exercicio {
   nome: string;
@@ -52,7 +53,7 @@ export default function DetalhesExercicioAluno() {
           onClick={() => navigate(-1)}
           aria-label="Voltar"
         >
-          ←
+          <FiArrowLeft />
         </button>
         <h1>{exercicio.nome}</h1>
       </header>
@@ -61,7 +62,7 @@ export default function DetalhesExercicioAluno() {
         <div className="detalhes-exercicio-aluno-midia">
           {exercicio.midiaUrl ? (
             <a href={exercicio.midiaUrl} target="_blank" rel="noopener noreferrer" aria-label="Ver mídia">
-              ▶
+              <FiPlay />
             </a>
           ) : (
             <span style={{ fontSize: "0.9rem", color: "#888" }}>Sem mídia disponível</span>
@@ -71,7 +72,9 @@ export default function DetalhesExercicioAluno() {
         {exercicio.tempoEstimado && (
           <div className="detalhes-exercicio-aluno-secao">
             <span className="detalhes-exercicio-aluno-label">Tempo estimado</span>
-            <p className="detalhes-exercicio-aluno-texto">⏱️ {exercicio.tempoEstimado} segundos</p>
+            <p className="detalhes-exercicio-aluno-texto">
+              <FiClock style={{ marginRight: 6 }} />{exercicio.tempoEstimado} segundos
+            </p>
           </div>
         )}
 

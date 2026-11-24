@@ -4,6 +4,8 @@ import axios from "axios";
 import "./ListaTreinos.css";
 import Logotipo from "../../assets/logo/Logo_MoveTec.png";
 import ModalConfirmacao from "../components/ModalConfirmacao";
+import { FiTrash2 } from "react-icons/fi";
+import { FaChalkboardTeacher, FaBullhorn, FaComments, FaRunning, FaDumbbell, FaClipboardList, FaUser } from "react-icons/fa";
 
 interface ItemExercicio {
   exercicioId: string;
@@ -153,7 +155,7 @@ export default function ListaTreinos() {
                       onClick={(e) => abrirModalExcluir(e, treino)}
                       aria-label="Excluir treino"
                     >
-                      🗑
+                      <FiTrash2 />
                     </button>
                   </div>
                 </div>
@@ -212,13 +214,13 @@ function NavegacaoProfessor() {
   const location = useLocation();
 
   const menuItens = [
-    { rota: "/dashboard", icone: "📊", rotulo: "Salas" },
-    { rota: "/professor/avisos", icone: "📢", rotulo: "Avisos" },
-    { rota: "/professor/comunidade", icone: "💬", rotulo: "Comunidades"},
-    { rota: "/professor/rotinas", icone: "🏃", rotulo: "Rotinas" },
-    { rota: "/professor/treinos", icone: "🏋️‍♂️", rotulo: "Treinos" },
-    { rota: "/professor/exercicios", icone: "🏋️‍♂️", rotulo: "Exercicios" },
-    { rota: "/professor/perfil", icone: "👤", rotulo: "Perfil" },
+    { rota: "/dashboard", icone: <FaChalkboardTeacher />, rotulo: "Salas" },
+    { rota: "/professor/avisos", icone: <FaBullhorn />, rotulo: "Avisos" },
+    { rota: "/professor/comunidades", icone: <FaComments />, rotulo: "Comunidades" },
+    { rota: "/professor/rotinas", icone: <FaRunning />, rotulo: "Rotinas" },
+    { rota: "/professor/treinos", icone: <FaDumbbell />, rotulo: "Treinos" },
+    { rota: "/professor/exercicios", icone: <FaClipboardList />, rotulo: "Exercicios" },
+    { rota: "/professor/perfil", icone: <FaUser />, rotulo: "Perfil" },
   ];
 
   return (
@@ -230,7 +232,9 @@ function NavegacaoProfessor() {
         {menuItens.map((item) => {
           const ativo =
             location.pathname === item.rota ||
-            (item.rota === "/professor/dashboard" && location.pathname === "/professor/salas");
+            (item.rota === "/dashboard" && (location.pathname === "/professor/salas" || location.pathname.startsWith("/professor/sala/"))) ||
+            (item.rota === "/professor/comunidades" &&
+              (location.pathname === "/professor/comunidade" || location.pathname.startsWith("/professor/comunidades")));
 
           return (
             <li key={item.rota}>

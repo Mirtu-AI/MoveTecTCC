@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./DetalhesTreinoRotinaAluno.css";
+import { FiArrowLeft, FiClock, FiChevronRight, FiPlay } from "react-icons/fi";
+import { FaDumbbell } from "react-icons/fa";
 
 interface ItemExercicio {
   exercicioId: string;
@@ -95,7 +97,7 @@ export default function DetalhesTreinoRotinaAluno() {
           onClick={() => navigate(`/aluno/rotinas/${rotinaId}`)}
           aria-label="Voltar"
         >
-          ←
+          <FiArrowLeft />
         </button>
         <h1>{treino.titulo}</h1>
       </header>
@@ -107,7 +109,7 @@ export default function DetalhesTreinoRotinaAluno() {
             <img src={treino.midiaUrl} alt={treino.titulo} />
           ) : (
             <div className="detalhes-treino-rotina-placeholder">
-              <span className="detalhes-treino-rotina-icone-placeholder">🏋️‍♂️</span>
+              <span className="detalhes-treino-rotina-icone-placeholder"><FaDumbbell /></span>
             </div>
           )}
         </div>
@@ -151,11 +153,11 @@ export default function DetalhesTreinoRotinaAluno() {
                     else if (item.series) partes.push(`${item.series} séries`);
                     else if (item.repeticoes) partes.push(`${item.repeticoes} reps`);
 
-                    if ((item as any).distancia) partes.push(`🏃 ${(item as any).distancia}`);
-                    if ((item as any).tempo) partes.push(`⏱️ ${(item as any).tempo}`);
-                    if ((item as any).descanso) partes.push(`⏸️ Descanso: ${(item as any).descanso}`);
-                    if ((item as any).carga) partes.push(`⚖️ ${(item as any).carga}`);
-                    if ((item as any).notas) partes.push(`💡 ${(item as any).notas}`);
+                    if ((item as any).distancia) partes.push(`Distância: ${(item as any).distancia}`);
+                    if ((item as any).tempo) partes.push(`Tempo: ${(item as any).tempo}`);
+                    if ((item as any).descanso) partes.push(`Descanso: ${(item as any).descanso}`);
+                    if ((item as any).carga) partes.push(`Carga: ${(item as any).carga}`);
+                    if ((item as any).notas) partes.push(`Obs: ${(item as any).notas}`);
                     return partes.length > 0 ? partes.join(" • ") : "Sem orientações específicas";
                   })()}
                 </span>
@@ -163,9 +165,10 @@ export default function DetalhesTreinoRotinaAluno() {
 
               <div className="detalhes-treino-rotina-exercicio-meta">
                 <span className="detalhes-treino-rotina-exercicio-tempo">
-                  ⏱️ {formatarTempo(item.exercicio?.tempoEstimado ?? null)}
+                  <FiClock style={{ marginRight: 4 }} />
+                  {formatarTempo(item.exercicio?.tempoEstimado ?? null)}
                 </span>
-                <span className="detalhes-treino-rotina-seta">→</span>
+                <span className="detalhes-treino-rotina-seta"><FiChevronRight /></span>
               </div>
             </button>
           ))}
@@ -179,7 +182,7 @@ export default function DetalhesTreinoRotinaAluno() {
             onClick={comecar}
             disabled={concluindo}
           >
-            {concluindo ? "Iniciando..." : "🚀 Começar Treino"}
+            {concluindo ? "Iniciando..." : <><FiPlay style={{ marginRight: 6 }} /> Começar Treino</>}
           </button>
 
           {mostrarConfete && (

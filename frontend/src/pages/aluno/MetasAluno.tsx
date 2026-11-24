@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./MetasAluno.css";
 import ModalConfirmacao from "../components/ModalConfirmacao";
+import { FiArrowLeft, FiClock, FiCheck, FiPlus, FiEdit2, FiTrash2 } from "react-icons/fi";
+import { FaDumbbell } from "react-icons/fa";
 
 interface Meta {
   _id: string;
@@ -153,7 +155,7 @@ export default function MetasAluno() {
     <div className="metas-page">
       <header className="metas-header">
         <button className="metas-voltar" onClick={() => navigate(-1)} aria-label="Voltar">
-          ←
+          <FiArrowLeft />
         </button>
         <h1>Minhas Metas</h1>
       </header>
@@ -174,7 +176,7 @@ export default function MetasAluno() {
                     checked={tipo === "tempo"}
                     onChange={() => setTipo("tempo")}
                   />
-                  <span>⏱️ Tempo</span>
+                  <span><FiClock style={{ marginRight: 6 }} /> Tempo</span>
                 </label>
                 <label className={`metas-tipo-opcao ${tipo === "atividades" ? "selecionada" : ""}`}>
                   <input
@@ -183,7 +185,7 @@ export default function MetasAluno() {
                     checked={tipo === "atividades"}
                     onChange={() => setTipo("atividades")}
                   />
-                  <span>🏋️ Atividades</span>
+                  <span><FaDumbbell style={{ marginRight: 6 }} /> Atividades</span>
                 </label>
               </div>
             </div>
@@ -230,7 +232,15 @@ export default function MetasAluno() {
 
             <div className="metas-form-botoes">
               <button type="submit" className="metas-salvar-btn" disabled={salvando}>
-                {salvando ? "Salvando..." : metaEditandoId ? "✓ Salvar alterações" : "+ Criar meta"}
+                {salvando ? "Salvando..." : metaEditandoId ? (
+                  <>
+                    <FiCheck style={{ marginRight: 6 }} /> Salvar alterações
+                  </>
+                ) : (
+                  <>
+                    <FiPlus style={{ marginRight: 6 }} /> Criar meta
+                  </>
+                )}
               </button>
               {metaEditandoId && (
                 <button type="button" className="metas-cancelar-btn" onClick={cancelarEdicao} disabled={salvando}>
@@ -252,7 +262,7 @@ export default function MetasAluno() {
                 <div key={meta._id} className="metas-card">
                   <div className="metas-card-topo">
                     <div className="metas-card-info-principal">
-                      <span className="metas-card-icone">{meta.tipo === "tempo" ? "⏱️" : "🏋️"}</span>
+                      <span className="metas-card-icone">{meta.tipo === "tempo" ? <FiClock /> : <FaDumbbell />}</span>
                       <span className="metas-card-titulo">{meta.titulo}</span>
                     </div>
                     <div className="metas-card-acoes">
@@ -263,7 +273,7 @@ export default function MetasAluno() {
                         aria-label="Editar meta"
                         title="Editar meta"
                       >
-                        ✏️
+                        <FiEdit2 />
                       </button>
                       <button
                         type="button"
@@ -272,7 +282,7 @@ export default function MetasAluno() {
                         aria-label="Excluir meta"
                         title="Excluir meta"
                       >
-                        🗑️
+                        <FiTrash2 />
                       </button>
                     </div>
                   </div>
@@ -308,7 +318,7 @@ export default function MetasAluno() {
                 <div key={meta._id} className="metas-card metas-card-atingida">
                   <div className="metas-card-topo">
                     <div className="metas-card-info-principal">
-                      <span className="metas-badge-check">✓</span>
+                      <span className="metas-badge-check"><FiCheck /></span>
                       <span className="metas-card-titulo">{meta.titulo}</span>
                     </div>
                     <button
@@ -318,7 +328,7 @@ export default function MetasAluno() {
                       aria-label="Excluir meta"
                       title="Excluir meta"
                     >
-                      🗑️
+                      <FiTrash2 />
                     </button>
                   </div>
                 </div>

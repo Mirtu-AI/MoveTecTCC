@@ -2,7 +2,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
-import Logo from "../../assets/logo/Logo_MoveTec.png"
+import Logo from "../../assets/logo/Logo_MoveTec.png";
+import { FiArrowLeft, FiEye, FiEyeOff } from "react-icons/fi";
+import { FaHeart, FaBrain, FaHandsHelping } from "react-icons/fa";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -44,7 +46,7 @@ export default function Login() {
   return (
     <div className="login-page">
       <button className="voltar-topo-btn" onClick={() => navigate("/")}>
-        ← Voltar
+        <FiArrowLeft style={{ marginRight: 6 }} /> Voltar
       </button>
 
       <div className="login-card-split">
@@ -62,15 +64,15 @@ export default function Login() {
             {/* Conexão com os pilares da Landing Page */}
             <div className="login-features-list">
               <div className="login-feature-item">
-                <span className="feature-emoji">❤️</span>
+                <span className="feature-emoji"><FaHeart /></span>
                 <span>Saúde & Energia</span>
               </div>
               <div className="login-feature-item">
-                <span className="feature-emoji">🧠</span>
+                <span className="feature-emoji"><FaBrain /></span>
                 <span>Foco nos Estudos</span>
               </div>
               <div className="login-feature-item">
-                <span className="feature-emoji">🤝</span>
+                <span className="feature-emoji"><FaHandsHelping /></span>
                 <span>Desafios em Turma</span>
               </div>
             </div>
@@ -109,7 +111,7 @@ export default function Login() {
                 onClick={() => setMostrarSenha((atual) => !atual)}
                 aria-label={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
               >
-                {mostrarSenha ? "🚫" : "👁️"}
+                {mostrarSenha ? <FiEyeOff /> : <FiEye />}
               </button>
             </div>
 

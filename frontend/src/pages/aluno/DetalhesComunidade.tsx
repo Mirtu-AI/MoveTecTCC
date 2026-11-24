@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { io, Socket } from "socket.io-client";
 import "./DetalhesComunidade.css";
+import { FiArrowLeft, FiSend, FiPlus, FiCheck, FiLogOut } from "react-icons/fi";
 
 interface Mensagem {
   _id: string;
@@ -28,6 +29,7 @@ interface Desafio {
 }
 
 interface Comunidade {
+  nome?: string;
   tipo: "geral" | "tematica";
   adminId: string;
 }
@@ -52,6 +54,8 @@ export default function DetalhesComunidade() {
   const [erroDesafio, setErroDesafio] = useState("");
   const [criandoDesafio, setCriandoDesafio] = useState(false);
   const [mostrarFormDesafio, setMostrarFormDesafio] = useState(false);
+  const [saindo, setSaindo] = useState(false);
+  const [mostrarModalSair, setMostrarModalSair] = useState(false);
 
   const socketRef = useRef<Socket | null>(null);
   const fimDaListaRef = useRef<HTMLDivElement | null>(null);
@@ -196,6 +200,25 @@ export default function DetalhesComunidade() {
     }
   }
 
+  async function confirmarSaida() {
+    setSaindo(true);
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        `http://localhost:3000/api/aluno/comunidades/${id}/sair`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const tipo = localStorage.getItem("tipo");
+      navigate(tipo === "professor" ? "/professor/comunidades" : "/aluno/comunidades");
+    } catch (err: any) {
+      setErro(err.response?.data?.erro || "Não foi possível sair da comunidade.");
+      setMostrarModalSair(false);
+    } finally {
+      setSaindo(false);
+    }
+  }
+
   function formatarHora(dataIso: string) {
     return new Date(dataIso).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
   }
@@ -213,9 +236,20 @@ export default function DetalhesComunidade() {
     <div className="comunidade-chat-page">
       <header className="comunidade-chat-header">
         <button className="comunidade-chat-voltar" onClick={() => navigate(-1)} aria-label="Voltar">
-          ←
+          <FiArrowLeft />
         </button>
-        <h1>Chat</h1>
+        <h1>{comunidade?.nome || "Comunidade"}</h1>
+        {comunidade?.tipo === "tematica" && !souAdmin && (
+          <button
+            type="button"
+            className="comunidade-sair-btn"
+            onClick={() => setMostrarModalSair(true)}
+            disabled={saindo}
+            title="Sair da comunidade"
+          >
+            {saindo ? "Saindo..." : "Sair"}
+          </button>
+        )}
       </header>
 
       {erro && <p className="comunidade-chat-erro">{erro}</p>}
@@ -261,7 +295,7 @@ export default function DetalhesComunidade() {
               onChange={(e) => setTexto(e.target.value)}
             />
             <button type="submit" disabled={!texto.trim()}>
-              Enviar
+              <FiSend style={{ marginRight: 6 }} /> Enviar
             </button>
           </form>
         </>
@@ -275,7 +309,11 @@ export default function DetalhesComunidade() {
               className="comunidade-desafios-novo-btn"
               onClick={() => setMostrarFormDesafio((atual) => !atual)}
             >
-              {mostrarFormDesafio ? "Cancelar" : "+ Criar desafio"}
+              {mostrarFormDesafio ? "Cancelar" : (
+                <>
+                  <FiPlus style={{ marginRight: 6 }} /> Criar desafio
+                </>
+              )}
             </button>
           )}
 
@@ -295,7 +333,11 @@ export default function DetalhesComunidade() {
               />
               {erroDesafio && <p className="comunidade-desafio-erro">{erroDesafio}</p>}
               <button type="submit" className="btn btn-filled" disabled={criandoDesafio}>
-                {criandoDesafio ? "Criando..." : "✓ Publicar desafio"}
+                {criandoDesafio ? "Criando..." : (
+                  <>
+                    <FiCheck style={{ marginRight: 6 }} /> Publicar desafio
+                  </>
+                )}
               </button>
             </form>
           )}
@@ -341,7 +383,9 @@ export default function DetalhesComunidade() {
                         </button>
                       )}
                       {d.minhaParticipacao.concluido && (
-                        <span className="comunidade-desafio-concluido">✓ Você concluiu!</span>
+                        <span className="comunidade-desafio-concluido">
+                          <FiCheck style={{ marginRight: 6 }} /> Você concluiu!
+                        </span>
                       )}
                     </>
                   )}
@@ -350,6 +394,36 @@ export default function DetalhesComunidade() {
             </div>
           )}
         </main>
+      )}
+      {mostrarModalSair && (
+        <div className="comunidade-modal-overlay" onClick={() => !saindo && setMostrarModalSair(false)}>
+          <div className="comunidade-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="comunidade-modal-icone"><FiLogOut /></div>
+            <h2 className="comunidade-modal-titulo">Sair da comunidade?</h2>
+            <p className="comunidade-modal-texto">
+              Você perderá o acesso ao chat e aos desafios desta comunidade.
+              Para voltar, precisará entrar novamente.
+            </p>
+            <div className="comunidade-modal-acoes">
+              <button
+                type="button"
+                className="comunidade-modal-btn cancelar"
+                onClick={() => setMostrarModalSair(false)}
+                disabled={saindo}
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                className="comunidade-modal-btn confirmar"
+                onClick={confirmarSaida}
+                disabled={saindo}
+              >
+                {saindo ? "Saindo..." : "Sim, sair"}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

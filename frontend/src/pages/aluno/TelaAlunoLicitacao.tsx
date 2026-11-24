@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./TelaAlunoLicitacao.css";
 import NavegacaoAluno from "./NavegacaoAluno";
+import { FiSearch, FiX, FiImage, FiCalendar, FiCheck, FiPlay } from "react-icons/fi";
+import { FaFire, FaUser, FaRunning, FaDumbbell, FaTrophy, FaMedal } from "react-icons/fa";
 
 interface ItemPlanoDia {
   tipo: "rotina" | "treino";
@@ -11,16 +13,6 @@ interface ItemPlanoDia {
 }
 
 type PlanoSemanal = Record<string, ItemPlanoDia | null>;
-
-const DIAS_SEMANA_LABELS = [
-  { indice: "1", curto: "Seg", completo: "Segunda" },
-  { indice: "2", curto: "Ter", completo: "Terça" },
-  { indice: "3", curto: "Qua", completo: "Quarta" },
-  { indice: "4", curto: "Qui", completo: "Quinta" },
-  { indice: "5", curto: "Sex", completo: "Sexta" },
-  { indice: "6", curto: "Sáb", completo: "Sábado" },
-  { indice: "0", curto: "Dom", completo: "Domingo" },
-];
 
 interface Perfil {
   nome: string;
@@ -108,10 +100,6 @@ export default function TelaAlunoLicitacao() {
   const [avisos, setAvisos] = useState<Aviso[]>([]);
   const [metas, setMetas] = useState<Meta[]>([]);
 
-  const [editandoPlano, setEditandoPlano] = useState(false);
-  const [planoTemp, setPlanoTemp] = useState<PlanoSemanal>({});
-  const [salvandoPlano, setSalvandoPlano] = useState(false);
-
   useEffect(() => {
     carregarDados();
   }, []);
@@ -133,7 +121,6 @@ export default function TelaAlunoLicitacao() {
 
       const alunoRecebido = respPerfil.data.aluno || null;
       setPerfil(alunoRecebido);
-      setPlanoTemp(alunoRecebido?.planoSemanal || {});
       setAtividades(respAtividades.data.atividades || []);
       setRotinas(respRotinas.data.rotinas || []);
       setEspecificas(respEspecificas.data.treinos || []);
@@ -284,62 +271,6 @@ export default function TelaAlunoLicitacao() {
     }
   }
 
-  // Opções combinadas de rotinas e treinos para montar o plano semanal
-  const opcoesParaPlano: ItemPlanoDia[] = [
-    ...rotinasFiltradas.map((r) => ({ tipo: "rotina" as const, id: r._id, titulo: r.titulo })),
-    ...especificasFiltradas.map((t) => ({ tipo: "treino" as const, id: t._id, titulo: t.titulo })),
-  ];
-
-  async function salvarPlanoNoBanco(novoPlano: PlanoSemanal) {
-    setSalvandoPlano(true);
-    try {
-      const token = localStorage.getItem("token");
-      const resp = await axios.put(
-        "http://localhost:3000/api/aluno/plano-semanal",
-        { planoSemanal: novoPlano },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const planoSalvo = resp.data.planoSemanal || novoPlano;
-      setPerfil((prev) => (prev ? { ...prev, planoSemanal: planoSalvo } : prev));
-      setPlanoTemp(planoSalvo);
-      setEditandoPlano(false);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setSalvandoPlano(false);
-    }
-  }
-
-  async function gerarPlanoInicianteRecomendado() {
-    if (opcoesParaPlano.length === 0) return;
-
-    const item1 = opcoesParaPlano[0];
-    const item2 = opcoesParaPlano[1] || opcoesParaPlano[0];
-    const item3 = opcoesParaPlano[2] || opcoesParaPlano[0];
-
-    const sugerido: PlanoSemanal = {
-      "0": null, // Dom: Descanso
-      "1": item1, // Seg
-      "2": null, // Ter: Descanso
-      "3": item2, // Qua
-      "4": null, // Qui: Descanso
-      "5": item3, // Sex
-      "6": null, // Sáb: Descanso
-    };
-
-    await salvarPlanoNoBanco(sugerido);
-  }
-
-  function alterarDiaPlanoTemp(diaIndice: string, valorSelect: string) {
-    if (!valorSelect) {
-      setPlanoTemp((atual) => ({ ...atual, [diaIndice]: null }));
-      return;
-    }
-    const [tipo, id] = valorSelect.split(":");
-    const encontrado = opcoesParaPlano.find((op) => op.tipo === tipo && op.id === id) || null;
-    setPlanoTemp((atual) => ({ ...atual, [diaIndice]: encontrado }));
-  }
-
   function abrirItemDoPlano(item: ItemPlanoDia | null | undefined) {
     if (!item) return;
     if (item.tipo === "rotina") {
@@ -370,7 +301,7 @@ export default function TelaAlunoLicitacao() {
                   onClick={() => navigate("/aluno/perfil")}
                   aria-label="Meu perfil"
                 >
-                  {perfil?.foto ? <img src={perfil.foto} alt="Foto de perfil" /> : <span>👤</span>}
+                  {perfil?.foto ? <img src={perfil.foto} alt="Foto de perfil" /> : <span><FaUser /></span>}
                 </button>
                 <span className="aluno-home-data">{formatarDataHoje()}</span>
 
@@ -380,7 +311,7 @@ export default function TelaAlunoLicitacao() {
                   onClick={() => navigate("/aluno/foguinho")}
                   aria-label="Ver detalhes da sequência"
                 >
-                  <span className="aluno-home-streak-icone">🔥</span>
+                  <span className="aluno-home-streak-icone"><FaFire /></span>
                   <span className="aluno-home-streak-numero">
                     {String(perfil?.streakAtual || 0).padStart(2, "0")}
                   </span>
@@ -393,10 +324,11 @@ export default function TelaAlunoLicitacao() {
           </header>
 
           <div className="aluno-home-busca-container">
-            <span className="aluno-home-busca-icone">🔍</span>
+            <span className="aluno-home-busca-icone"><FiSearch /></span>
             <input
               type="text"
               placeholder="Buscar treino ou atividade..."
+              aria-label="Buscar treino ou atividade"
               value={busca}
               onChange={(e) => setBusca(e.target.value)}
               className="aluno-home-busca-input"
@@ -417,7 +349,7 @@ export default function TelaAlunoLicitacao() {
                     onClick={() => esconderAviso(aviso._id)}
                     aria-label="Esconder aviso"
                   >
-                    ✕
+                    <FiX />
                   </button>
                 </div>
               ))}
@@ -449,7 +381,7 @@ export default function TelaAlunoLicitacao() {
 
                     <div className="aluno-home-atividade-corpo">
                       <div className="aluno-home-atividade-midia">
-                        {atividade.midiaUrl ? <img src={atividade.midiaUrl} alt="" /> : <span>🖼️</span>}
+                        {atividade.midiaUrl ? <img src={atividade.midiaUrl} alt="" /> : <span><FiImage /></span>}
                       </div>
 
                       {/* TÍTULO DA ATIVIDADE ADICIONADO AQUI */}
@@ -495,11 +427,13 @@ export default function TelaAlunoLicitacao() {
           {/* TREINO PLANEJADO PARA HOJE */}
           <section className="aluno-home-secao aluno-plano-hoje-card">
             <div className="aluno-plano-hoje-info">
-              <span className="aluno-plano-hoje-label">📅 Seu plano para hoje</span>
+              <span className="aluno-plano-hoje-label">
+                <FiCalendar style={{ marginRight: 6 }} /> Seu plano para hoje
+              </span>
               {itemPlanejadoHoje ? (
                 <div className="aluno-plano-hoje-detalhe">
                   <span className="aluno-plano-hoje-icone">
-                    {itemPlanejadoHoje.tipo === "rotina" ? "🏃" : "🏋️"}
+                    {itemPlanejadoHoje.tipo === "rotina" ? <FaRunning /> : <FaDumbbell />}
                   </span>
                   <strong className="aluno-plano-hoje-nome">{itemPlanejadoHoje.titulo}</strong>
                 </div>
@@ -519,7 +453,7 @@ export default function TelaAlunoLicitacao() {
                   className="aluno-plano-hoje-btn-iniciar"
                   onClick={() => abrirItemDoPlano(itemPlanejadoHoje)}
                 >
-                  ▶ Treinar agora
+                  <FiPlay style={{ marginRight: 6 }} /> Treinar agora
                 </button>
               )}
               <button
@@ -547,7 +481,7 @@ export default function TelaAlunoLicitacao() {
                   className="aluno-home-treino-card"
                   onClick={() => navigate(`/aluno/rotinas/${rotina._id}`)}
                 >
-                  <span className="aluno-home-treino-icone">🏃</span>
+                  <span className="aluno-home-treino-icone"><FaRunning /></span>
                   <span className="aluno-home-treino-nome">{rotina.titulo}</span>
                 </button>
               ))}
@@ -569,7 +503,7 @@ export default function TelaAlunoLicitacao() {
                   className="aluno-home-treino-card"
                   onClick={() => navigate(`/aluno/treinos-especificos/${treino._id}`)}
                 >
-                  <span className="aluno-home-treino-icone">🏋️</span>
+                  <span className="aluno-home-treino-icone"><FaDumbbell /></span>
                   <span className="aluno-home-treino-nome">{treino.titulo}</span>
                 </button>
               ))}
@@ -580,7 +514,7 @@ export default function TelaAlunoLicitacao() {
         {/* PAINEL LATERAL DIREITA */}
         <aside className="aluno-home-sidebar-direita">
           <div className="aluno-widget-card">
-            <h3 className="aluno-widget-titulo">Resumo Semanal</h3>
+            <h2 className="aluno-widget-titulo">Resumo Semanal</h2>
             <div className="aluno-widget-dias">
               {diasSemana.map((dia, idx) => (
                 <div
@@ -588,7 +522,7 @@ export default function TelaAlunoLicitacao() {
                   className={`aluno-dia-item ${dia.concluido ? "concluido" : ""} ${dia.eHoje ? "ativo" : ""}`}
                 >
                   <span>{dia.sigla}</span>
-                  <div className="aluno-dia-dot">{dia.concluido ? "✓" : ""}</div>
+                  <div className="aluno-dia-dot">{dia.concluido ? <FiCheck /> : ""}</div>
                 </div>
               ))}
             </div>
@@ -596,10 +530,10 @@ export default function TelaAlunoLicitacao() {
 
           <div className={`aluno-widget-card ${metaAtingida ? "meta-atingida" : ""}`}>
             <div className="aluno-widget-topo">
-              <h3 className="aluno-widget-titulo">
-                {metaAtingida && <span className="aluno-meta-trofeu">🏆</span>}
+              <h2 className="aluno-widget-titulo">
+                {metaAtingida && <span className="aluno-meta-trofeu"><FaTrophy /></span>}
                 Meta da Semana
-              </h3>
+              </h2>
               <span className="aluno-widget-badge">
                 {treinosNaSemana} / {metaSemanal} Treinos
               </span>
@@ -621,7 +555,7 @@ export default function TelaAlunoLicitacao() {
 
             {metaAtingida && (
               <span className="aluno-meta-selo" title="Meta batida!">
-                🏅
+                <FaMedal />
               </span>
             )}
 
@@ -649,7 +583,7 @@ export default function TelaAlunoLicitacao() {
               role="button"
               tabIndex={0}
             >
-              <h3 className="aluno-widget-titulo">Sua Meta</h3>
+              <h2 className="aluno-widget-titulo">Sua Meta</h2>
               <p className="aluno-widget-subtexto">{metaAtiva.titulo}</p>
               <div className="aluno-home-atividade-progresso-trilha" style={{ marginTop: "8px" }}>
                 <div className="aluno-home-atividade-progresso-barra" style={{ width: `${metaAtiva.percentual}%` }} />
@@ -659,7 +593,7 @@ export default function TelaAlunoLicitacao() {
 
           <div className="aluno-widget-card destaque-laranja">
             <span className="aluno-widget-tag">Próximo Foco</span>
-            <h4 className="aluno-widget-destaque-titulo">{proximoFoco}</h4>
+            <h3 className="aluno-widget-destaque-titulo">{proximoFoco}</h3>
             <p className="aluno-widget-destaque-desc">Recomendado para a sua rotina atual.</p>
           </div>
 
@@ -679,7 +613,7 @@ export default function TelaAlunoLicitacao() {
               <span className="aluno-widget-tag">Feedback do professor</span>
               <div className="aluno-widget-feedback-corpo">
                 <span className="aluno-widget-feedback-emoji">{ultimaComFeedback.feedback!.reacao}</span>
-                <h4 className="aluno-widget-destaque-titulo">{ultimaComFeedback.titulo}</h4>
+                <h3 className="aluno-widget-destaque-titulo">{ultimaComFeedback.titulo}</h3>
               </div>
               {ultimaComFeedback.feedback!.comentario && (
                 <p className="aluno-widget-destaque-desc">"{ultimaComFeedback.feedback!.comentario}"</p>

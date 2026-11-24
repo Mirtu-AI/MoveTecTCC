@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./DetalhesAtividadeProfessor.css";
+import { FiArrowLeft, FiEdit2, FiTrash2, FiImage, FiCheck, FiPaperclip } from "react-icons/fi";
 
 interface ExercicioItem {
   concluido: boolean;
@@ -104,7 +105,7 @@ export default function DetalhesAtividadeProfessor() {
           onClick={() => navigate(-1)}
           aria-label="Voltar"
         >
-          ←
+          <FiArrowLeft />
         </button>
         <h1>{atividade.titulo}</h1>
       </header>
@@ -118,7 +119,7 @@ export default function DetalhesAtividadeProfessor() {
               className="detalhes-atividade-btn-editar"
               onClick={() => navigate(`/professor/atividades/${id}/editar`)}
             >
-              ✏️ Editar
+              <FiEdit2 style={{ marginRight: 6 }} /> Editar
             </button>
             <button
               type="button"
@@ -126,13 +127,17 @@ export default function DetalhesAtividadeProfessor() {
               onClick={excluirAtividade}
               disabled={excluindo}
             >
-              {excluindo ? "Excluindo..." : "🗑️ Excluir"}
+              {excluindo ? "Excluindo..." : (
+                <>
+                  <FiTrash2 style={{ marginRight: 6 }} /> Excluir
+                </>
+              )}
             </button>
           </div>
         )}
 
         <div className="detalhes-atividade-midia">
-          {atividade.midiaUrl ? <img src={atividade.midiaUrl} alt="" /> : <span>🖼️</span>}
+          {atividade.midiaUrl ? <img src={atividade.midiaUrl} alt="" /> : <span><FiImage /></span>}
         </div>
 
         <div className="detalhes-atividade-secao">
@@ -157,7 +162,7 @@ export default function DetalhesAtividadeProfessor() {
             {atividade.exercicios.map((item, indice) => (
               <div key={indice} className="detalhes-atividade-exercicio-linha">
                 <span className={`detalhes-atividade-check ${item.concluido ? "concluido" : ""}`}>
-                  {item.concluido ? "✓" : ""}
+                  {item.concluido ? <FiCheck /> : null}
                 </span>
                 <span>{item.exercicio?.nome || "Exercício removido"}</span>
               </div>
@@ -175,7 +180,7 @@ export default function DetalhesAtividadeProfessor() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              📎 {atividade.arquivoAlternativoAluno.nome}
+              <FiPaperclip style={{ marginRight: 6 }} />{atividade.arquivoAlternativoAluno.nome}
             </a>
           </div>
         )}

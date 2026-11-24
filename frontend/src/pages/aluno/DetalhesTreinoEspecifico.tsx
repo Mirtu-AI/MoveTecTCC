@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./DetalhesTreinoEspecifico.css";
+import { FiArrowLeft, FiPlay } from "react-icons/fi";
+import { FaDumbbell } from "react-icons/fa";
 
 interface ItemExercicio {
   series: string;
@@ -91,7 +93,7 @@ export default function DetalhesTreinoEspecificaAluno() {
           onClick={() => navigate(-1)}
           aria-label="Voltar"
         >
-          ←
+          <FiArrowLeft />
         </button>
         <h1>{treino.titulo}</h1>
       </header>
@@ -101,7 +103,7 @@ export default function DetalhesTreinoEspecificaAluno() {
           {treino.midiaUrl ? (
             <img src={treino.midiaUrl} alt={treino.titulo} />
           ) : (
-            <span className="detalhes-treino-especifico-icone-midia">🏋️</span>
+            <span className="detalhes-treino-especifico-icone-midia"><FaDumbbell /></span>
           )}
         </div>
 
@@ -123,11 +125,11 @@ export default function DetalhesTreinoEspecificaAluno() {
             else if (item.series) partes.push(`${item.series} séries`);
             else if (item.repeticoes) partes.push(`${item.repeticoes} reps`);
 
-            if (item.distancia) partes.push(`🏃 ${item.distancia}`);
-            if (item.tempo) partes.push(`⏱️ ${item.tempo}`);
-            if (item.descanso) partes.push(`⏸️ Descanso: ${item.descanso}`);
-            if (item.carga) partes.push(`⚖️ Carga: ${item.carga}`);
-            if (item.notas) partes.push(`💡 ${item.notas}`);
+            if (item.distancia) partes.push(`Distância: ${item.distancia}`);
+            if (item.tempo) partes.push(`Tempo: ${item.tempo}`);
+            if (item.descanso) partes.push(`Descanso: ${item.descanso}`);
+            if (item.carga) partes.push(`Carga: ${item.carga}`);
+            if (item.notas) partes.push(`Obs: ${item.notas}`);
 
             return (
               <div key={idx} className="detalhes-treino-especifico-item">
@@ -148,7 +150,7 @@ export default function DetalhesTreinoEspecificaAluno() {
           onClick={comecar}
           disabled={iniciando}
         >
-          {iniciando ? "Iniciando..." : "✓ Começar"}
+          {iniciando ? "Iniciando..." : <><FiPlay style={{ marginRight: 6 }} /> Começar</>}
         </button>
       </main>
     </div>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./DetalhesExercicio.css";
+import { FiArrowLeft, FiPlay } from "react-icons/fi";
 
 interface Exercicio {
   nome: string;
@@ -51,7 +52,7 @@ export default function DetalhesExercicio() {
           onClick={() => navigate(-1)}
           aria-label="Voltar"
         >
-          ←
+          <FiArrowLeft />
         </button>
         <h1>{exercicio.nome}</h1>
       </header>
@@ -69,7 +70,7 @@ export default function DetalhesExercicio() {
                 className="detalhes-exercicio-midia-play"
                 aria-label="Abrir mídia em nova aba"
               >
-                ▶
+                <FiPlay />
               </a>
             ) : (
               <span className="detalhes-exercicio-midia-placeholder">Sem mídia</span>

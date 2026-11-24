@@ -7,6 +7,11 @@
 }
 
 .detalhes-aluno-page {
+  /* Cores de texto com contraste mínimo de 4,5:1 (válidas só nesta página) */
+  --laranja-texto: #a52f0e;
+  --verde-texto: #166534;
+  --vermelho-texto: #b91c1c;
+
   min-height: 100vh;
   background-color: var(--papel-branco);
   /* Textura de caderno de exercícios */
@@ -132,7 +137,7 @@
 
 .detalhes-aluno-seta {
   transition: transform 0.2s ease;
-  color: var(--laranja-move);
+  color: var(--laranja-texto);
 }
 
 .detalhes-aluno-seta.aberta {
@@ -216,6 +221,12 @@
   padding-right: 6px;
 }
 
+/* INDICADOR DE FOCO PARA NAVEGAÇÃO POR TECLADO */
+.detalhes-aluno-atividades-lista:focus-visible {
+  outline: 2px solid var(--azul-marinho);
+  outline-offset: 2px;
+}
+
 /* ESTILIZAÇÃO DA BARRA DE ROLAGEM */
 .detalhes-aluno-atividades-lista::-webkit-scrollbar {
   width: 6px;
@@ -262,6 +273,12 @@
 .detalhes-aluno-atividade-card.clicavel:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* INDICADOR DE FOCO NOS CARDS (TECLADO) */
+.detalhes-aluno-atividade-card.clicavel:focus-visible {
+  outline: 2px solid var(--azul-marinho);
+  outline-offset: 2px;
 }
 
 .detalhes-aluno-atividade-info {
@@ -311,17 +328,17 @@
 }
 
 .detalhes-aluno-atividade-status.entregue {
-  color: #16a34a;
+  color: var(--verde-texto);
   background-color: #e7f6ec;
 }
 
 .detalhes-aluno-atividade-status.andamento {
-  color: var(--laranja-move);
+  color: var(--laranja-texto);
   background-color: var(--laranja-claro);
 }
 
 .detalhes-aluno-atividade-status.nao-entregue {
-  color: #e53e3e;
+  color: var(--vermelho-texto);
   background-color: #fdeaea;
 }
 
@@ -458,5 +475,5 @@
   border-radius: 20px;
   padding: 4px 10px;
   font-size: 0.82rem;
-  color: #e65100;
+  color: var(--laranja-texto);
 }

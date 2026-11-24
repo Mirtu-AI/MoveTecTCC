@@ -171,6 +171,41 @@
   border-radius: 999px;
 }
 
+/* TERMO DE CONSENTIMENTO / LGPD */
+.anexar-video-consentimento-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background-color: #f1f5f9;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 16px;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--azul-marinho);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.anexar-video-consentimento-box:hover {
+  background-color: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+.anexar-video-consentimento-box input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--laranja-move);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.anexar-video-consentimento-box strong {
+  color: #0f172a;
+}
+
 /* ERRO */
 .anexar-video-erro {
   color: #ef4444;

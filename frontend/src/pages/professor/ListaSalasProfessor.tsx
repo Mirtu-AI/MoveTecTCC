@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "./ListaSalasProfessor.css";
-import Logotipo from "../../assets/logo/Logo_MoveTec.png"
+import Logotipo from "../../assets/logo/Logo_MoveTec.png";
+import { FaUser, FaChalkboardTeacher, FaBullhorn, FaComments, FaRunning, FaDumbbell, FaClipboardList } from "react-icons/fa";
 
 interface Sala {
   _id: string;
@@ -45,7 +46,7 @@ export default function ListaSalasProfessor() {
             onClick={() => navigate("/professor/perfil")}
             aria-label="Meu perfil"
           >
-            👤
+            <FaUser />
           </button>
         </header>
 
@@ -63,7 +64,7 @@ export default function ListaSalasProfessor() {
                 className="sala-professor-card"
                 onClick={() => navigate(`/professor/sala/${sala._id}`)}
               >
-                <div className="sala-professor-icone">🖼️</div>
+                <div className="sala-professor-icone"><FaChalkboardTeacher /></div>
                 <span className="sala-professor-nome">{sala.nome}</span>
               </div>
             ))}
@@ -80,13 +81,13 @@ function NavegacaoProfessor() {
   const location = useLocation();
 
   const menuItens = [
-    { rota: "/dashboard", icone: "📊", rotulo: "Salas" },
-    { rota: "/professor/avisos", icone: "📢", rotulo: "Avisos" },
-    { rota: "/professor/comunidade", icone: "💬", rotulo: "Comunidades"},
-    { rota: "/professor/rotinas", icone: "🏃", rotulo: "Rotinas" },
-    { rota: "/professor/treinos", icone: "🏋️‍♂️", rotulo: "Treinos" },
-    { rota: "/professor/exercicios", icone: "🏋️‍♂️", rotulo: "Exercicios" },
-    { rota: "/professor/perfil", icone: "👤", rotulo: "Perfil" },
+    { rota: "/dashboard", icone: <FaChalkboardTeacher />, rotulo: "Salas" },
+    { rota: "/professor/avisos", icone: <FaBullhorn />, rotulo: "Avisos" },
+    { rota: "/professor/comunidades", icone: <FaComments />, rotulo: "Comunidades" },
+    { rota: "/professor/rotinas", icone: <FaRunning />, rotulo: "Rotinas" },
+    { rota: "/professor/treinos", icone: <FaDumbbell />, rotulo: "Treinos" },
+    { rota: "/professor/exercicios", icone: <FaClipboardList />, rotulo: "Exercicios" },
+    { rota: "/professor/perfil", icone: <FaUser />, rotulo: "Perfil" },
   ];
   return (
     <nav className="navegacao-professor">
@@ -95,10 +96,12 @@ function NavegacaoProfessor() {
       </div>
       <ul className="navegacao-lista">
         {menuItens.map((item) => {
-          // Marca ativo se a rota for idêntica ou se estiver nas variações de salas
+          // Marca ativo se a rota for idêntica ou se estiver nas variações
           const ativo =
             location.pathname === item.rota ||
-            (item.rota === "/professor/dashboard" && location.pathname === "/professor/salas");
+            (item.rota === "/dashboard" && (location.pathname === "/professor/salas" || location.pathname.startsWith("/professor/sala/"))) ||
+            (item.rota === "/professor/comunidades" &&
+              (location.pathname === "/professor/comunidade" || location.pathname.startsWith("/professor/comunidades")));
 
           return (
             <li key={item.rota}>

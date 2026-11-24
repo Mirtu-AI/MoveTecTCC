@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./DetalhesAlunoProfessor.css";
+import { FiArrowLeft } from "react-icons/fi";
+import { FaUser, FaMedal, FaDumbbell, FaFire, FaRunning, FaSmile, FaQuestionCircle } from "react-icons/fa";
 
 const OBJETIVOS_OPCOES = [
-  { valor: "perder-peso", label: "Perder peso", emoji: "🔥" },
-  { valor: "ganhar-massa", label: "Ganhar massa muscular", emoji: "💪" },
-  { valor: "melhorar-condicionamento", label: "Melhorar condicionamento", emoji: "🏃" },
-  { valor: "manter-ativo", label: "Manter-se ativo", emoji: "😊" },
-  { valor: "sem-objetivo", label: "Sem objetivo definido", emoji: "❓" },
+  { valor: "perder-peso", label: "Perder peso", icon: FaFire },
+  { valor: "ganhar-massa", label: "Ganhar massa muscular", icon: FaDumbbell },
+  { valor: "melhorar-condicionamento", label: "Melhorar condicionamento", icon: FaRunning },
+  { valor: "manter-ativo", label: "Manter-se ativo", icon: FaSmile },
+  { valor: "sem-objetivo", label: "Sem objetivo definido", icon: FaQuestionCircle },
 ];
 
 interface Aluno {
@@ -102,9 +104,9 @@ export default function DetalhesAlunoProfessor() {
   }
 
   function obterObjetivoLabel(objetivo?: string | null) {
-    if (!objetivo) return { label: 'Não definido', emoji: '—' };
+    if (!objetivo) return { label: 'Não definido', icon: null };
     const obj = OBJETIVOS_OPCOES.find((o) => o.valor === objetivo);
-    return obj ? { label: obj.label, emoji: obj.emoji } : { label: objetivo, emoji: '🎯' };
+    return obj ? { label: obj.label, icon: obj.icon } : { label: objetivo, icon: FaQuestionCircle };
   }
 
   const atividadesOrdenadas = [...atividades].sort((a, b) =>
@@ -131,14 +133,14 @@ export default function DetalhesAlunoProfessor() {
           onClick={handleVoltar}
           aria-label="Voltar para a lista de alunos"
         >
-          ←
+          <FiArrowLeft />
         </button>
         <h1>{aluno.nome}</h1>
       </header>
 
       <main className="detalhes-aluno-conteudo">
         <div className="detalhes-aluno-coluna-info">
-          <div className="detalhes-aluno-avatar">👤</div>
+          <div className="detalhes-aluno-avatar"><FaUser /></div>
 
           {/* INFORMAÇÕES DO ALUNO */}
           <button
@@ -164,7 +166,7 @@ export default function DetalhesAlunoProfessor() {
             <div className="detalhes-aluno-campo">
               <span className="detalhes-aluno-label">Objetivo</span>
               <div className="detalhes-aluno-valor detalhes-aluno-objetivo">
-                <span>{objetivoInfo.emoji}</span>
+                {objetivoInfo.icon && <objetivoInfo.icon style={{ marginRight: 6 }} />}
                 <span>{objetivoInfo.label}</span>
               </div>
             </div>
@@ -210,7 +212,7 @@ export default function DetalhesAlunoProfessor() {
                     <div className="detalhes-aluno-conquistas-lista">
                       {conquistasDesbloqueadas.map((c) => (
                         <span key={c.id} className="detalhes-aluno-conquista-badge">
-                          🏅 {c.nome}
+                          <FaMedal style={{ marginRight: 6 }} /> {c.nome}
                         </span>
                       ))}
                     </div>
@@ -236,7 +238,12 @@ export default function DetalhesAlunoProfessor() {
             </p>
           )}
 
-          <div className="detalhes-aluno-atividades-lista">
+          <div
+            className="detalhes-aluno-atividades-lista"
+            tabIndex={0}
+            role="region"
+            aria-label="Lista de atividades do aluno"
+          >
             {atividadesOrdenadas.map((atividade) => {
               const statusExibicao = obterStatusExibicao(atividade);
               return (
@@ -244,9 +251,17 @@ export default function DetalhesAlunoProfessor() {
                   key={atividade._id}
                   className="detalhes-aluno-atividade-card clicavel"
                   onClick={() => navigate(`/professor/atividades/${atividade._id}`)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      navigate(`/professor/atividades/${atividade._id}`);
+                    }
+                  }}
                 >
                   <div className="detalhes-aluno-atividade-info">
-                    <span className="detalhes-aluno-atividade-icone">🏋️</span>
+                    <span className="detalhes-aluno-atividade-icone"><FaDumbbell /></span>
                     <div>
                       <span className="detalhes-aluno-atividade-titulo">{atividade.titulo}</span>
                       <span className="detalhes-aluno-atividade-data">

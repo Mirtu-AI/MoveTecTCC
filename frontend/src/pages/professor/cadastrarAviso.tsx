@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./CadastrarAviso.css";
+import { FiArrowLeft, FiCheck } from "react-icons/fi";
 
 interface Sala {
   _id: string;
@@ -100,7 +101,7 @@ export default function CadastrarAviso() {
     <div className="cadastrar-aviso-page">
       <header className="cadastrar-aviso-header">
         <button className="cadastrar-aviso-voltar" onClick={() => navigate("/professor/avisos")} aria-label="Voltar">
-          ←
+          <FiArrowLeft />
         </button>
         <h1>{modoEdicao ? "Editar aviso" : "Novo aviso"}</h1>
       </header>
@@ -141,7 +142,12 @@ export default function CadastrarAviso() {
           {erro && <p className="cadastrar-aviso-erro">{erro}</p>}
 
           <button type="submit" className="btn btn-filled cadastrar-aviso-salvar-btn" disabled={carregando}>
-            {carregando ? "Salvando..." : modoEdicao ? "✓ Salvar alterações" : "✓ Publicar aviso"}
+            {carregando ? "Salvando..." : (
+              <>
+                <FiCheck style={{ marginRight: 6 }} />
+                {modoEdicao ? "Salvar alterações" : "Publicar aviso"}
+              </>
+            )}
           </button>
         </form>
       </main>

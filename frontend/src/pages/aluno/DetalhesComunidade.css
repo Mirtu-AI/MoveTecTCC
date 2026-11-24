@@ -43,6 +43,33 @@
   font-weight: 700;
   color: var(--movetec-text);
   margin: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.comunidade-sair-btn {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid var(--movetec-danger);
+  color: var(--movetec-danger);
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.comunidade-sair-btn:hover:not(:disabled) {
+  background: var(--movetec-danger);
+  color: #fff;
+}
+
+.comunidade-sair-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .comunidade-chat-voltar {
@@ -350,4 +377,103 @@
   font-weight: 600;
   color: var(--movetec-primary);
   font-size: 0.875rem;
+}
+
+/* ============================================================
+   Modal de confirmação — Sair da comunidade
+   ============================================================ */
+
+.comunidade-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeInOverlay 0.18s ease;
+}
+
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.comunidade-modal {
+  background: var(--movetec-bg-card);
+  border-radius: 16px;
+  padding: 32px 28px 24px;
+  max-width: 360px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: slideUpModal 0.2s ease;
+}
+
+@keyframes slideUpModal {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.comunidade-modal-icone {
+  font-size: 2.8rem;
+  margin-bottom: 12px;
+}
+
+.comunidade-modal-titulo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--movetec-text);
+  margin: 0 0 10px;
+}
+
+.comunidade-modal-texto {
+  font-size: 0.92rem;
+  color: var(--movetec-text-muted);
+  line-height: 1.5;
+  margin: 0 0 24px;
+}
+
+.comunidade-modal-acoes {
+  display: flex;
+  gap: 10px;
+}
+
+.comunidade-modal-btn {
+  flex: 1;
+  padding: 11px 0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.comunidade-modal-btn:active {
+  transform: scale(0.97);
+}
+
+.comunidade-modal-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.comunidade-modal-btn.cancelar {
+  background: #f1f5f9;
+  color: var(--movetec-text-muted);
+}
+
+.comunidade-modal-btn.cancelar:hover:not(:disabled) {
+  background: #e2e8f0;
+}
+
+.comunidade-modal-btn.confirmar {
+  background: var(--movetec-danger);
+  color: #fff;
+}
+
+.comunidade-modal-btn.confirmar:hover:not(:disabled) {
+  opacity: 0.88;
 }

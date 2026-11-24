@@ -375,6 +375,10 @@ function App() {
         />
 
         <Route
+          path="/professor/comunidades"
+          element={<RotaProtegida tipoPermitido="professor"><ListaComunidadesProfessor /></RotaProtegida>}
+        />
+        <Route
           path="/professor/comunidade"
           element={<RotaProtegida tipoPermitido="professor"><ListaComunidadesProfessor /></RotaProtegida>}
         />

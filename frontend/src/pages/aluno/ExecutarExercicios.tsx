@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./ExecutarAtividade.css";
+import { FiArrowLeft, FiArrowRight, FiCheck, FiPlay, FiPause, FiInfo } from "react-icons/fi";
 
 interface ExercicioItem {
   exercicioId: string;
@@ -283,7 +284,7 @@ export default function ExecutarExercicios({ tipo }: Props) {
           onClick={() => navigate(-1)}
           aria-label="Sair"
         >
-          ←
+          <FiArrowLeft />
         </button>
         <div className="executar-header-info">
           <h1>{dados.titulo || "Execução"}</h1>
@@ -315,7 +316,7 @@ export default function ExecutarExercicios({ tipo }: Props) {
                   className={`executar-etapa-pill ${ativo ? "ativo" : ""} ${feito ? "feito" : ""}`}
                   onClick={() => setIndiceAtual(idx)}
                 >
-                  {feito && !ativo ? "✓" : idx + 1}
+                  {feito && !ativo ? <FiCheck /> : idx + 1}
                 </button>
               );
             })}
@@ -333,7 +334,7 @@ export default function ExecutarExercicios({ tipo }: Props) {
                 </h2>
                 {itemAtual.descanso && (
                   <span className="executar-card-descanso">
-                    ⏸ Descanso entre séries: {itemAtual.descanso}
+                    <FiPause style={{ marginRight: 4 }} /> Descanso entre séries: {itemAtual.descanso}
                   </span>
                 )}
               </div>
@@ -347,13 +348,13 @@ export default function ExecutarExercicios({ tipo }: Props) {
                 className="executar-card-video-link"
                 title="Ver vídeo demonstrativo"
               >
-                ▶ Vídeo
+                <FiPlay style={{ marginRight: 4 }} /> Vídeo
               </a>
             )}
           </div>
 
           {itemAtual.notas && (
-            <p className="executar-card-nota">💡 {itemAtual.notas}</p>
+            <p className="executar-card-nota"><FiInfo style={{ marginRight: 4 }} /> {itemAtual.notas}</p>
           )}
 
           {/* CHECKLIST DAS SÉRIES DESTE EXERCÍCIO */}
@@ -377,7 +378,7 @@ export default function ExecutarExercicios({ tipo }: Props) {
                     onClick={() => alternarSerie(indiceAtual, sIdx)}
                   >
                     <span className={`executar-checkbox ${feita ? "marcado" : ""}`}>
-                      {feita ? "✓" : ""}
+                      {feita ? <FiCheck /> : ""}
                     </span>
                     <span className="executar-serie-label">
                       {qtdSeries > 1 ? `${sIdx + 1}ª Série` : "Série única"}
@@ -391,7 +392,7 @@ export default function ExecutarExercicios({ tipo }: Props) {
                       className={`executar-serie-timer-btn ${rodando ? "ativo" : ""}`}
                       onClick={() => alternarTimer(indiceAtual, sIdx, segsExercicio)}
                     >
-                      {rodando ? "⏸" : "▶"} {formatarTempo(tempoRestante)}
+                      {rodando ? <FiPause style={{ marginRight: 4 }} /> : <FiPlay style={{ marginRight: 4 }} />} {formatarTempo(tempoRestante)}
                     </button>
                   )}
                 </div>
@@ -408,7 +409,7 @@ export default function ExecutarExercicios({ tipo }: Props) {
             onClick={voltarExercicio}
             disabled={indiceAtual === 0 || avancando}
           >
-            ← Anterior
+            <FiArrowLeft style={{ marginRight: 4 }} /> Anterior
           </button>
 
           <button
@@ -420,10 +421,10 @@ export default function ExecutarExercicios({ tipo }: Props) {
             {avancando
               ? "Salvando..."
               : ultimoExercicio
-              ? "🎉 Finalizar Treino"
+              ? <><FiCheck style={{ marginRight: 4 }} /> Finalizar Treino</>
               : exercicioAtualCompleto
-              ? "Próximo Exercício →"
-              : "Concluir e Avançar →"}
+              ? <>Próximo Exercício <FiArrowRight style={{ marginLeft: 4 }} /></>
+              : <>Concluir e Avançar <FiArrowRight style={{ marginLeft: 4 }} /></>}
           </button>
         </div>
       </main>

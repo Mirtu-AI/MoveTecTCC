@@ -5,6 +5,8 @@ import ModalConfirmacao from "../components/ModalConfirmacao";
 import ModalAdicionarAluno from "../components/ModalAdicionarAluno";
 import ModalEditarEmail from "../components/ModalEditarEmail";
 import "./DetalhesProfessor.css";
+import { FiArrowLeft, FiTrash2, FiPlus, FiEdit2 } from "react-icons/fi";
+import { FaUser } from "react-icons/fa";
 
 interface Aluno {
   _id: string;
@@ -157,7 +159,7 @@ export default function DetalhesSala() {
     <div className="detalhes-page">
       <header className="detalhes-header">
         <button className="voltar-btn" onClick={() => navigate("/admin/salas")}>
-          ←
+          <FiArrowLeft />
         </button>
         <h1>{sala.nome}</h1>
         <button
@@ -165,7 +167,7 @@ export default function DetalhesSala() {
           onClick={() => setModalExcluirAberto(true)}
           aria-label="Excluir sala"
         >
-          🗑
+          <FiTrash2 />
         </button>
       </header>
 
@@ -192,7 +194,7 @@ export default function DetalhesSala() {
           <div className="info-card-topo">
             <h3>Alunos</h3>
             <button className="editar-btn" onClick={() => setModalAlunoAberto(true)}>
-              + Adicionar aluno
+              <FiPlus style={{ marginRight: 4 }} /> Adicionar aluno
             </button>
           </div>
 
@@ -203,7 +205,7 @@ export default function DetalhesSala() {
           <div className="salas-lista">
             {alunos.map((aluno) => (
               <div key={aluno._id} className="sala-card aluno-card">
-                <span className="sala-icone">👤</span>
+                <span className="sala-icone"><FaUser /></span>
                 <div className="aluno-info">
                   <span>{aluno.nome}</span>
                   <span className="aluno-email">{aluno.email}</span>
@@ -217,7 +219,7 @@ export default function DetalhesSala() {
                     }}
                     aria-label="Editar e-mail do aluno"
                   >
-                    ✎
+                    <FiEdit2 />
                   </button>
                   <button
                     className="aluno-acao-btn aluno-acao-excluir"
@@ -227,7 +229,7 @@ export default function DetalhesSala() {
                     }}
                     aria-label="Excluir aluno"
                   >
-                    🗑
+                    <FiTrash2 />
                   </button>
                 </div>
               </div>

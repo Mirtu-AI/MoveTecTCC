@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import confetti from "canvas-confetti";
 import "./ParabensAtividade.css";
+import { FiCheck } from "react-icons/fi";
+import { FaFire } from "react-icons/fa";
 
 interface ExercicioItem {
   exercicio: { tempoEstimado: number | null } | null;
@@ -105,13 +107,15 @@ export default function ParabensAtividade({ tipo }: Props) {
     <div className="parabens-atividade-page">
       <main className="parabens-atividade-conteudo">
         <div className="parabens-atividade-badge-wrapper">
-          <div className="parabens-atividade-check">✓</div>
+          <div className="parabens-atividade-check"><FiCheck /></div>
         </div>
 
         <h1 className="parabens-atividade-titulo">
           {tipo === "atividade" ? "Atividade Concluída!" : "Treino Concluído!"}
         </h1>
-        <p className="parabens-atividade-subtitulo">Excelente trabalho, meta batida! 🔥</p>
+        <p className="parabens-atividade-subtitulo">
+          Excelente trabalho, meta batida! <FaFire style={{ color: "#f97316", verticalAlign: "middle" }} />
+        </p>
 
         <div className="parabens-atividade-resumo">
           <div className="parabens-atividade-resumo-linha">
@@ -137,7 +141,8 @@ export default function ParabensAtividade({ tipo }: Props) {
             )
           }
         >
-          ✓ {tipo === "atividade" ? "Voltar para Detalhes" : dados.rotinaId ? "Voltar para a Rotina" : "Voltar para o Início"}
+          <FiCheck style={{ marginRight: 6 }} />
+          {tipo === "atividade" ? "Voltar para Detalhes" : dados.rotinaId ? "Voltar para a Rotina" : "Voltar para o Início"}
         </button>
       </main>
     </div>

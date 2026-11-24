@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import NavegacaoAluno from "./NavegacaoAluno";
 import "./PlanoSemanalAluno.css";
+import { FiArrowLeft, FiCheck } from "react-icons/fi";
+import { FaMagic } from "react-icons/fa";
 
 interface ItemPlanoDia {
   tipo: "rotina" | "treino";
@@ -179,7 +181,7 @@ export default function PlanoSemanalAluno() {
               onClick={() => navigate("/aluno")}
               aria-label="Voltar para o início"
             >
-              ←
+              <FiArrowLeft />
             </button>
             <div>
               <h1>Meu Plano Semanal</h1>
@@ -196,7 +198,7 @@ export default function PlanoSemanalAluno() {
               onClick={gerarPlanoInicianteRecomendado}
               disabled={salvando}
             >
-              ✨ Gerar plano para iniciante (Seg, Qua e Sex)
+              <FaMagic style={{ marginRight: 6 }} /> Gerar plano para iniciante (Seg, Qua e Sex)
             </button>
           )}
         </header>
@@ -274,7 +276,11 @@ export default function PlanoSemanalAluno() {
             onClick={() => salvarPlanoNoBanco(planoTemp)}
             disabled={salvando}
           >
-            {salvando ? "Salvando alterações..." : "✓ Salvar Meu Plano Semanal"}
+            {salvando ? "Salvando alterações..." : (
+              <>
+                <FiCheck style={{ marginRight: 6 }} /> Salvar Meu Plano Semanal
+              </>
+            )}
           </button>
         </footer>
       </div>

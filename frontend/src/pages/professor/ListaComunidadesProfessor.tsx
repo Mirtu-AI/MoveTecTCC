@@ -4,6 +4,8 @@ import axios from "axios";
 import "./ListaComunidadesProfessor.css";
 import Logotipo from "../../assets/logo/Logo_MoveTec.png";
 import ModalConfirmacao from "../components/ModalConfirmacao";
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
+import { FaChalkboardTeacher, FaBullhorn, FaComments, FaRunning, FaDumbbell, FaClipboardList, FaUser, FaSchool } from "react-icons/fa";
 
 interface ComunidadeResumo {
   _id: string;
@@ -152,7 +154,7 @@ export default function ListaComunidadesProfessor() {
 
   function renderCard(
     comunidade: ComunidadeResumo,
-    icone: string,
+    icone: React.ReactNode,
     podeExcluir = false
   ) {
     return (
@@ -198,7 +200,7 @@ export default function ListaComunidadesProfessor() {
               aria-label={`Editar comunidade ${comunidade.nome}`}
               title="Editar comunidade"
             >
-              ✏️
+              <FiEdit2 />
             </button>
 
             {podeExcluir && (
@@ -211,7 +213,7 @@ export default function ListaComunidadesProfessor() {
                 aria-label={`Excluir comunidade ${comunidade.nome}`}
                 title="Excluir comunidade"
               >
-                🗑️
+                <FiTrash2 />
               </button>
             )}
           </div>
@@ -263,7 +265,7 @@ export default function ListaComunidadesProfessor() {
 
               <div className="comunidades-professor-lista">
                 {gerais.map((comunidade) =>
-                  renderCard(comunidade, "🏫")
+                  renderCard(comunidade, <FaSchool />)
                 )}
               </div>
             </section>
@@ -283,7 +285,7 @@ export default function ListaComunidadesProfessor() {
             ) : (
               <div className="comunidades-professor-lista">
                 {minhasTematicas.map((comunidade) =>
-                  renderCard(comunidade, "💬", true)
+                  renderCard(comunidade, <FaComments />, true)
                 )}
               </div>
             )}
@@ -318,7 +320,7 @@ export default function ListaComunidadesProfessor() {
                     className="comunidade-professor-card comunidade-professor-card-descobrir"
                   >
                     <span className="comunidade-professor-card-icone">
-                      💬
+                      <FaComments />
                     </span>
 
                     <div className="comunidade-professor-card-info">
@@ -377,37 +379,37 @@ function NavegacaoProfessor() {
   const menuItens = [
     {
       rota: "/dashboard",
-      icone: "📊",
+      icone: <FaChalkboardTeacher />,
       rotulo: "Salas",
     },
     {
-      rota: "/professor/comunidades",
-      icone: "💬",
-      rotulo: "Comunidades",
-    },
-    {
       rota: "/professor/avisos",
-      icone: "📢",
+      icone: <FaBullhorn />,
       rotulo: "Avisos",
     },
     {
+      rota: "/professor/comunidades",
+      icone: <FaComments />,
+      rotulo: "Comunidades",
+    },
+    {
       rota: "/professor/rotinas",
-      icone: "🏃",
+      icone: <FaRunning />,
       rotulo: "Rotinas",
     },
     {
       rota: "/professor/treinos",
-      icone: "🏋️‍♂️",
+      icone: <FaDumbbell />,
       rotulo: "Treinos",
     },
     {
       rota: "/professor/exercicios",
-      icone: "🏋️‍♂️",
+      icone: <FaClipboardList />,
       rotulo: "Exercícios",
     },
     {
       rota: "/professor/perfil",
-      icone: "👤",
+      icone: <FaUser />,
       rotulo: "Perfil",
     },
   ];
@@ -423,7 +425,9 @@ function NavegacaoProfessor() {
           const ativo =
             location.pathname === item.rota ||
             (item.rota === "/dashboard" &&
-              location.pathname === "/professor/salas");
+              (location.pathname === "/professor/salas" || location.pathname.startsWith("/professor/sala/"))) ||
+            (item.rota === "/professor/comunidades" &&
+              (location.pathname === "/professor/comunidade" || location.pathname.startsWith("/professor/comunidades")));
 
           return (
             <li key={item.rota}>

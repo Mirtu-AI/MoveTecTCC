@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./DetalhesAtividadeAluno.css";
+import { FiArrowLeft, FiClock, FiCheck, FiPaperclip, FiX, FiPlay } from "react-icons/fi";
+import { FaDumbbell } from "react-icons/fa";
 
 interface ExercicioItem {
   exercicioId: string;
@@ -170,7 +172,7 @@ export default function DetalhesAtividadeAluno() {
           onClick={() => navigate("/aluno")}
           aria-label="Voltar para a página inicial"
         >
-          ←
+          <FiArrowLeft />
         </button>
 
         <h1>{atividade.titulo}</h1>
@@ -178,7 +180,7 @@ export default function DetalhesAtividadeAluno() {
 
       <main className="detalhes-atividade-aluno-conteudo">
         <div className="detalhes-atividade-aluno-midia">
-          {atividade.midiaUrl ? <img src={atividade.midiaUrl} alt="" /> : <span>🏋️‍♂️</span>}
+          {atividade.midiaUrl ? <img src={atividade.midiaUrl} alt="" /> : <span><FaDumbbell /></span>}
         </div>
 
         <div className="detalhes-atividade-aluno-progresso-linha">
@@ -205,7 +207,7 @@ export default function DetalhesAtividadeAluno() {
               </>
             ) : (
               <p className="detalhes-atividade-aluno-feedback-texto-aguardando">
-                ⏳ Atividade enviada! Seu professor ainda vai avaliar.
+                <FiClock style={{ marginRight: 6, verticalAlign: "middle" }} /> Atividade enviada! Seu professor ainda vai avaliar.
               </p>
             )}
           </div>
@@ -222,7 +224,7 @@ export default function DetalhesAtividadeAluno() {
               onClick={() => navigate(`/aluno/exercicios/${item.exercicioId}`)}
             >
               <span className={`detalhes-atividade-aluno-check ${item.concluido ? "concluido" : ""}`}>
-                {item.concluido ? "✓" : ""}
+                {item.concluido ? <FiCheck /> : ""}
               </span>
               <span className="detalhes-atividade-aluno-exercicio-nome">
                 {item.exercicio?.nome || "Exercício"}
@@ -240,7 +242,7 @@ export default function DetalhesAtividadeAluno() {
               <div className="detalhes-atividade-aluno-anexo">
                 <div className="detalhes-atividade-aluno-anexo-linha">
                   <label htmlFor="arquivo-alternativo" className="detalhes-atividade-aluno-anexo-btn">
-                    📎 {arquivoSelecionado ? arquivoSelecionado.nome : "Anexar arquivo alternativo"}
+                    <FiPaperclip style={{ marginRight: 6 }} /> {arquivoSelecionado ? arquivoSelecionado.nome : "Anexar arquivo alternativo"}
                   </label>
                   <input
                     id="arquivo-alternativo"
@@ -259,7 +261,7 @@ export default function DetalhesAtividadeAluno() {
                       disabled={enviandoArquivo}
                       aria-label="Remover arquivo selecionado"
                     >
-                      ✕
+                      <FiX />
                     </button>
                   )}
                 </div>
@@ -269,7 +271,7 @@ export default function DetalhesAtividadeAluno() {
 
             {atividadeFinalizada ? (
               <div className="detalhes-atividade-aluno-anexo-enviado">
-                <span>📎 Enviado: {atividade.arquivoAlternativoAluno?.nome}</span>
+                <span><FiPaperclip style={{ marginRight: 6 }} /> Enviado: {atividade.arquivoAlternativoAluno?.nome}</span>
                 {dentroDoPrazo && (
                   <button
                     type="button"
@@ -291,7 +293,7 @@ export default function DetalhesAtividadeAluno() {
                   disabled={!arquivoSelecionado || enviandoArquivo}
                   style={{ opacity: !arquivoSelecionado || enviandoArquivo ? 0.6 : 1 }}
                 >
-                  ✓ {enviandoArquivo ? "Enviando..." : "Finalizar atividade"}
+                  <FiCheck style={{ marginRight: 6 }} /> {enviandoArquivo ? "Enviando..." : "Finalizar atividade"}
                 </button>
 
                 {mostrarConfete && (
@@ -319,7 +321,7 @@ export default function DetalhesAtividadeAluno() {
             disabled
             style={{ opacity: 0.65, backgroundColor: "#22c55e" }}
           >
-            ✓ Atividade Finalizada
+            <FiCheck style={{ marginRight: 6 }} /> Atividade Finalizada
           </button>
         ) : (
           <button
@@ -328,7 +330,7 @@ export default function DetalhesAtividadeAluno() {
             onClick={comecar}
             disabled={iniciando}
           >
-            ✓ {iniciando ? "Iniciando..." : "Começar Atividade"}
+            <FiPlay style={{ marginRight: 6 }} /> {iniciando ? "Iniciando..." : "Começar Atividade"}
           </button>
         )}
       </main>

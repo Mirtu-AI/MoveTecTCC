@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./TelaFoguinho.css";
+import { FiArrowLeft, FiEdit2 } from "react-icons/fi";
+import { FaFire, FaTrophy } from "react-icons/fa";
 
 interface Perfil {
   nome: string;
@@ -132,7 +134,7 @@ export default function TelaFoguinho() {
     <div className="foguinho-page">
       <header className="foguinho-header">
         <button className="foguinho-voltar" onClick={() => navigate(-1)} aria-label="Voltar">
-          ←
+          <FiArrowLeft />
         </button>
 
         {editandoApelido ? (
@@ -151,7 +153,7 @@ export default function TelaFoguinho() {
           />
         ) : (
           <button type="button" className="foguinho-apelido-btn" onClick={() => setEditandoApelido(true)}>
-            {apelido.toUpperCase()} <span className="foguinho-apelido-lapis">✏️</span>
+            {apelido.toUpperCase()} <span className="foguinho-apelido-lapis"><FiEdit2 /></span>
           </button>
         )}
       </header>
@@ -159,14 +161,14 @@ export default function TelaFoguinho() {
       <main className="foguinho-conteudo">
         <div className="foguinho-card-destaque">
           <div className="foguinho-icone-wrapper">
-            <span className="foguinho-icone-grande">🔥</span>
+            <span className="foguinho-icone-grande"><FaFire /></span>
           </div>
           <p className="foguinho-texto">
             Sequência atual: <strong>{perfil?.streakAtual || 0}</strong> dia{(perfil?.streakAtual || 0) === 1 ? "" : "s"}
           </p>
           {(perfil?.maiorStreak || 0) > 0 && (
             <p className="foguinho-recorde">
-              🏆 Recorde: <strong>{perfil?.maiorStreak}</strong> dia{(perfil?.maiorStreak || 0) === 1 ? "" : "s"}
+              <FaTrophy style={{ marginRight: 6 }} /> Recorde: <strong>{perfil?.maiorStreak}</strong> dia{(perfil?.maiorStreak || 0) === 1 ? "" : "s"}
             </p>
           )}
         </div>

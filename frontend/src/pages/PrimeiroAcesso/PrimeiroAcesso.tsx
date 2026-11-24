@@ -4,13 +4,27 @@ import axios from "axios";
 import "../Login/Login.css";
 import "./PrimeiroAcesso.css";
 import Logo from "../../assets/logo/Logo_MoveTec.png";
+import { FiArrowLeft, FiEye, FiEyeOff } from "react-icons/fi";
+import {
+  FaFire,
+  FaDumbbell,
+  FaRunning,
+  FaSmile,
+  FaQuestionCircle,
+  FaBullseye,
+  FaChartLine,
+  FaTrophy,
+  FaHeart,
+  FaBrain,
+  FaHandsHelping,
+} from "react-icons/fa";
 
 const OBJETIVOS = [
-  { valor: "perder-peso", label: "Perder peso", emoji: "🔥" },
-  { valor: "ganhar-massa", label: "Ganhar massa muscular", emoji: "💪" },
-  { valor: "melhorar-condicionamento", label: "Melhorar condicionamento", emoji: "🏃" },
-  { valor: "manter-ativo", label: "Manter-se ativo", emoji: "😊" },
-  { valor: "sem-objetivo", label: "Sem objetivo definido", emoji: "❓" },
+  { valor: "perder-peso", label: "Perder peso", icon: FaFire },
+  { valor: "ganhar-massa", label: "Ganhar massa muscular", icon: FaDumbbell },
+  { valor: "melhorar-condicionamento", label: "Melhorar condicionamento", icon: FaRunning },
+  { valor: "manter-ativo", label: "Manter-se ativo", icon: FaSmile },
+  { valor: "sem-objetivo", label: "Sem objetivo definido", icon: FaQuestionCircle },
 ];
 
 export default function PrimeiroAcesso() {
@@ -122,15 +136,15 @@ export default function PrimeiroAcesso() {
               </p>
               <div className="login-features-list">
                 <div className="login-feature-item">
-                  <span className="feature-emoji">🎯</span>
+                  <span className="feature-emoji"><FaBullseye /></span>
                   <span>Treinos personalizados</span>
                 </div>
                 <div className="login-feature-item">
-                  <span className="feature-emoji">📈</span>
+                  <span className="feature-emoji"><FaChartLine /></span>
                   <span>Progresso visível</span>
                 </div>
                 <div className="login-feature-item">
-                  <span className="feature-emoji">🏆</span>
+                  <span className="feature-emoji"><FaTrophy /></span>
                   <span>Conquistas e desafios</span>
                 </div>
               </div>
@@ -144,20 +158,23 @@ export default function PrimeiroAcesso() {
             </p>
 
             <div className="primeiro-acesso-objetivos">
-              {OBJETIVOS.map((obj) => (
-                <button
-                  key={obj.valor}
-                  type="button"
-                  className={`primeiro-acesso-objetivo-btn ${
-                    objetivo === obj.valor ? "selecionado" : ""
-                  }`}
-                  onClick={() => handleSelecionarObjetivo(obj.valor)}
-                  disabled={carregando}
-                >
-                  <span className="primeiro-acesso-objetivo-emoji">{obj.emoji}</span>
-                  <span>{obj.label}</span>
-                </button>
-              ))}
+              {OBJETIVOS.map((obj) => {
+                const Icon = obj.icon;
+                return (
+                  <button
+                    key={obj.valor}
+                    type="button"
+                    className={`primeiro-acesso-objetivo-btn ${
+                      objetivo === obj.valor ? "selecionado" : ""
+                    }`}
+                    onClick={() => handleSelecionarObjetivo(obj.valor)}
+                    disabled={carregando}
+                  >
+                    <span className="primeiro-acesso-objetivo-emoji"><Icon /></span>
+                    <span>{obj.label}</span>
+                  </button>
+                );
+              })}
             </div>
 
             {carregando && <p className="login-subtitle">Salvando...</p>}
@@ -179,7 +196,7 @@ export default function PrimeiroAcesso() {
   return (
     <div className="login-page">
       <button className="voltar-topo-btn" onClick={() => navigate("/login")}>
-        ← Voltar
+        <FiArrowLeft style={{ marginRight: 6 }} /> Voltar
       </button>
 
       <div className="login-card-split">
@@ -191,15 +208,15 @@ export default function PrimeiroAcesso() {
             </p>
             <div className="login-features-list">
               <div className="login-feature-item">
-                <span className="feature-emoji">❤️</span>
+                <span className="feature-emoji"><FaHeart /></span>
                 <span>Saúde &amp; Energia</span>
               </div>
               <div className="login-feature-item">
-                <span className="feature-emoji">🧠</span>
+                <span className="feature-emoji"><FaBrain /></span>
                 <span>Foco nos Estudos</span>
               </div>
               <div className="login-feature-item">
-                <span className="feature-emoji">🤝</span>
+                <span className="feature-emoji"><FaHandsHelping /></span>
                 <span>Desafios em Turma</span>
               </div>
             </div>
@@ -239,7 +256,7 @@ export default function PrimeiroAcesso() {
                 onClick={() => setMostrarNovaSenha((atual) => !atual)}
                 aria-label={mostrarNovaSenha ? "Ocultar senha" : "Mostrar senha"}
               >
-                {mostrarNovaSenha ? "🙈" : "👁️"}
+                {mostrarNovaSenha ? <FiEyeOff /> : <FiEye />}
               </button>
             </div>
 
@@ -259,7 +276,7 @@ export default function PrimeiroAcesso() {
                 onClick={() => setMostrarConfirmarSenha((atual) => !atual)}
                 aria-label={mostrarConfirmarSenha ? "Ocultar senha" : "Mostrar senha"}
               >
-                {mostrarConfirmarSenha ? "🙈" : "👁️"}
+                {mostrarConfirmarSenha ? <FiEyeOff /> : <FiEye />}
               </button>
             </div>
 

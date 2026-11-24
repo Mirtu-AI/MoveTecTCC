@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./CriarComunidadeProfessor.css";
+import { FiArrowLeft, FiCheck } from "react-icons/fi";
 
 export default function CriarComunidadeProfessor() {
   const { id } = useParams();
@@ -56,7 +57,7 @@ export default function CriarComunidadeProfessor() {
 
       if (modoEdicao) {
         await axios.put(`http://localhost:3000/api/comunidades/${id}`, dados, cabecalho);
-        navigate("/professor/comunidade");
+        navigate("/professor/comunidades");
       } else {
         const response = await axios.post("http://localhost:3000/api/professor/comunidades", dados, cabecalho);
         navigate(`/professor/comunidades/${response.data.id}`);
@@ -77,10 +78,10 @@ export default function CriarComunidadeProfessor() {
       <header className="criar-comunidade-professor-header">
         <button
           className="criar-comunidade-professor-voltar"
-          onClick={() => navigate("/professor/comunidade")}
+          onClick={() => navigate("/professor/comunidades")}
           aria-label="Voltar"
         >
-          ←
+          <FiArrowLeft />
         </button>
         <h1>
           {modoEdicao
@@ -112,7 +113,12 @@ export default function CriarComunidadeProfessor() {
           {erro && <p className="criar-comunidade-professor-erro">{erro}</p>}
 
           <button type="submit" className="btn btn-filled criar-comunidade-professor-salvar-btn" disabled={salvando}>
-            {salvando ? "Salvando..." : modoEdicao ? "✓ Salvar alterações" : "✓ Criar comunidade"}
+            {salvando ? "Salvando..." : (
+              <>
+                <FiCheck style={{ marginRight: 6 }} />
+                {modoEdicao ? "Salvar alterações" : "Criar comunidade"}
+              </>
+            )}
           </button>
         </form>
       </main>

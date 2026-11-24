@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./DesempenhoAluno.css";
+import { FiArrowLeft, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FaFire, FaMedal } from "react-icons/fa";
 
 interface Conquista {
   id: string;
@@ -165,7 +167,7 @@ export default function DesempenhoAluno() {
     <div className="historico-page">
       <header className="historico-header">
         <button className="historico-voltar" onClick={() => navigate(-1)} aria-label="Voltar">
-          ←
+          <FiArrowLeft />
         </button>
         <h1>Desempenho</h1>
       </header>
@@ -182,7 +184,7 @@ export default function DesempenhoAluno() {
             <span className="historico-card-label">Ontem</span>
           </div>
           <div className="historico-card-resumo historico-card-streak">
-            <span className="historico-card-numero">🔥 {perfil?.streakAtual ?? 0}</span>
+            <span className="historico-card-numero"><FaFire style={{ color: "#f97316", marginRight: 4, verticalAlign: "middle" }} />{perfil?.streakAtual ?? 0}</span>
             <span className="historico-card-label">Sequência atual</span>
           </div>
           <div className="historico-card-resumo">
@@ -247,8 +249,8 @@ export default function DesempenhoAluno() {
             <div className="historico-calendario-navegacao-topo">
               <span className="historico-mes-nome">{formatarMesAno()}</span>
               <div className="historico-calendario-navegacao">
-                <button type="button" onClick={irParaMesAnterior} aria-label="Mês anterior">‹</button>
-                <button type="button" onClick={irParaProximoMes} aria-label="Próximo mês">›</button>
+                <button type="button" onClick={irParaMesAnterior} aria-label="Mês anterior"><FiChevronLeft /></button>
+                <button type="button" onClick={irParaProximoMes} aria-label="Próximo mês"><FiChevronRight /></button>
               </div>
             </div>
 
@@ -292,7 +294,7 @@ export default function DesempenhoAluno() {
                   key={conquista.id}
                   className={`historico-medalha-wrap ${conquista.desbloqueada ? "desbloqueada" : ""}`}
                 >
-                  <span className="historico-medalha">🎖️</span>
+                  <span className="historico-medalha"><FaMedal /></span>
                   <span className="historico-medalha-tooltip">{conquista.nome}</span>
                 </span>
               ))}

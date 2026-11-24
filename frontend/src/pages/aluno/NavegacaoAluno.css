@@ -3,7 +3,7 @@
 }
 
 :root {
-  --movetec-laranja: #ff552e;
+  --movetec-laranja-texto: #c53a14;
   --movetec-laranja-suave: #fff0ed;
   --movetec-azul-escuro: #121929;
   --movetec-texto-secundario: #6b7280;
@@ -63,11 +63,11 @@
 
 .navegacao-aluno-btn:hover {
   background-color: var(--movetec-laranja-suave);
-  color: var(--movetec-laranja);
+  color: var(--movetec-laranja-texto);
 }
 
 .navegacao-aluno-btn.ativo {
-  color: var(--movetec-laranja);
+  color: var(--movetec-laranja-texto);
   background-color: var(--movetec-laranja-suave);
   font-weight: 700;
 }
@@ -82,7 +82,7 @@
 }
 
 .navegacao-aluno-rotulo {
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: -0.01em;
 }

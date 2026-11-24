@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./AdicionarAtividade.css";
+import { FiArrowLeft, FiPlay, FiImage, FiSearch, FiCheck, FiInfo } from "react-icons/fi";
+import { FaDumbbell } from "react-icons/fa";
 
 interface Exercicio {
   _id: string;
@@ -159,12 +161,13 @@ export default function AdicionarAtividade() {
         );
         navigate(`/professor/atividades/${id}`);
       } else {
+        const idDestino = alunoId || alunoIdParam;
         await axios.post(
-          `http://localhost:3000/api/professor/alunos/${alunoIdParam}/atividades`,
+          `http://localhost:3000/api/professor/alunos/${idDestino}/atividades`,
           corpo,
           cabecalho
         );
-        navigate(`/professor/aluno/${alunoIdParam}`);
+        navigate(`/professor/aluno/${idDestino}`);
       }
     } catch (err: any) {
       const mensagem = err.response?.data?.erros?.[0] || "Não foi possível salvar a atividade.";
@@ -186,7 +189,7 @@ export default function AdicionarAtividade() {
           onClick={() => navigate(-1)}
           aria-label="Voltar"
         >
-          ←
+          <FiArrowLeft />
         </button>
         <h1>{estaEditando ? `Editar atividade de ${aluno?.nome}` : `Atividade para ${aluno?.nome}`}</h1>
       </header>
@@ -196,7 +199,7 @@ export default function AdicionarAtividade() {
           <form onSubmit={handleSubmit} className="adicionar-atividade-form">
             <div className="adicionar-atividade-coluna-esquerda">
               <div className="adicionar-atividade-midia-preview">
-                {midiaUrl ? <div className="adicionar-atividade-midia-play">▶</div> : <span>🖼️</span>}
+                {midiaUrl ? <div className="adicionar-atividade-midia-play"><FiPlay /></div> : <span><FiImage /></span>}
               </div>
 
               <label htmlFor="midiaUrl">Link do vídeo ou imagem (opcional)</label>
@@ -246,7 +249,7 @@ export default function AdicionarAtividade() {
                   <span className="adicionar-atividade-secao-label">Atividades</span>
 
                   <div className="adicionar-atividade-busca-wrap">
-                    <span className="adicionar-atividade-busca-icone">🔍</span>
+                    <span className="adicionar-atividade-busca-icone"><FiSearch /></span>
                     <input
                       type="text"
                       placeholder="Buscar exercício..."
@@ -278,9 +281,9 @@ export default function AdicionarAtividade() {
                           }}
                         >
                           <span className={`adicionar-atividade-check ${marcado ? "marcado" : ""}`}>
-                            {marcado ? "✓" : ""}
+                            {marcado ? <FiCheck /> : null}
                           </span>
-                          <span className="adicionar-atividade-exercicio-icone">🏋️</span>
+                          <span className="adicionar-atividade-exercicio-icone"><FaDumbbell /></span>
                           <span className="adicionar-atividade-exercicio-nome">{ex.nome}</span>
                           <button
                             type="button"
@@ -291,7 +294,7 @@ export default function AdicionarAtividade() {
                             }}
                             aria-label={`Ver detalhes de ${ex.nome}`}
                           >
-                            ℹ️
+                            <FiInfo />
                           </button>
                         </div>
                       );
@@ -316,7 +319,12 @@ export default function AdicionarAtividade() {
               className="btn btn-filled adicionar-atividade-salvar-btn"
               disabled={carregando}
             >
-              {carregando ? "Salvando..." : estaEditando ? "✓ Salvar alterações" : "✓ Adicionar"}
+              {carregando ? "Salvando..." : (
+                <>
+                  <FiCheck style={{ marginRight: 6 }} />
+                  {estaEditando ? "Salvar alterações" : "Adicionar"}
+                </>
+              )}
             </button>
           </form>
         </div>

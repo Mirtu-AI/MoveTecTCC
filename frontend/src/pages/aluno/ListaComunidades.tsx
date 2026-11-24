@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./ListaComunidades.css";
 import NavegacaoAluno from "./NavegacaoAluno";
+import { FaSchool, FaComments } from "react-icons/fa";
 
 interface ComunidadeResumo {
   _id: string;
@@ -76,13 +77,6 @@ export default function ListaComunidades() {
       <div className="comunidades-container">
         <header className="comunidades-header">
           <h1>Comunidades</h1>
-          <button
-            type="button"
-            className="comunidades-nova-btn"
-            onClick={() => navigate("/aluno/comunidades/nova")}
-          >
-            + Criar comunidade
-          </button>
         </header>
 
         {geral && (
@@ -94,7 +88,7 @@ export default function ListaComunidades() {
                 className="comunidade-card"
                 onClick={() => navigate(`/aluno/comunidades/${geral._id}`)}
               >
-                <span className="comunidade-card-icone">🏫</span>
+                <span className="comunidade-card-icone"><FaSchool /></span>
                 <div className="comunidade-card-info">
                   <span className="comunidade-card-nome">{geral.nome}</span>
                   <span className="comunidade-card-membros">{geral.totalMembros} membros</span>
@@ -117,7 +111,7 @@ export default function ListaComunidades() {
                 className="comunidade-card"
                 onClick={() => navigate(`/aluno/comunidades/${c._id}`)}
               >
-                <span className="comunidade-card-icone">💬</span>
+                <span className="comunidade-card-icone"><FaComments /></span>
                 <div className="comunidade-card-info">
                   <span className="comunidade-card-nome">{c.nome}</span>
                   <span className="comunidade-card-membros">{c.totalMembros} membros</span>
@@ -132,6 +126,7 @@ export default function ListaComunidades() {
           <input
             type="text"
             placeholder="Buscar por nome..."
+            aria-label="Buscar comunidades por nome"
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
             className="comunidades-busca-input"
@@ -139,7 +134,7 @@ export default function ListaComunidades() {
           <div className="comunidades-lista">
             {paraDescobrir.map((c) => (
               <div key={c._id} className="comunidade-card comunidade-card-descobrir">
-                <span className="comunidade-card-icone">💬</span>
+                <span className="comunidade-card-icone"><FaComments /></span>
                 <div className="comunidade-card-info">
                   <span className="comunidade-card-nome">{c.nome}</span>
                   <span className="comunidade-card-membros">{c.totalMembros} membros</span>

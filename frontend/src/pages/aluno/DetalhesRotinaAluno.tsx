@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./DetalhesRotinaAluno.css";
+import { FiArrowLeft } from "react-icons/fi";
+import { FaDumbbell } from "react-icons/fa";
 
 interface TreinoResumo {
   treinoId: string;
@@ -70,7 +72,7 @@ export default function DetalhesRotinaAluno() {
     <div className="detalhes-rotina-page">
       <header className="detalhes-rotina-header">
         <button className="detalhes-rotina-voltar" onClick={() => navigate("/aluno")} aria-label="Voltar">
-          ←
+          <FiArrowLeft />
         </button>
         <h1>{rotina.titulo}</h1>
       </header>
@@ -90,7 +92,7 @@ export default function DetalhesRotinaAluno() {
                     className={`detalhes-rotina-item ${vezes > 0 ? "com-repeticoes" : ""}`}
                     onClick={() => navigate(`/aluno/rotinas/${id}/treinos/${item.treinoId}`)}
                   >
-                    <span className="detalhes-rotina-item-icone">🏋️</span>
+                    <span className="detalhes-rotina-item-icone"><FaDumbbell /></span>
                     <span className="detalhes-rotina-item-nome">
                       {item.treino?.titulo || "Treino removido"}
                     </span>

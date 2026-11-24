@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./ListaProfessores.css";
 import ModalConfirmacao from "../components/ModalConfirmacao";
+import { FiLogOut, FiPlus } from "react-icons/fi";
+import { FaSchool, FaUser } from "react-icons/fa";
 
 interface Sala {
   _id: string;
@@ -48,7 +50,7 @@ export default function ListaSalas() {
           onClick={() => setModalLogoutAberto(true)}
           aria-label="Sair"
         >
-          ⎋
+          <FiLogOut />
         </button>
         <h1>Salas</h1>
 
@@ -63,7 +65,7 @@ export default function ListaSalas() {
             className="novo-professor-btn"
             onClick={() => navigate("/admin/cadastrar-sala")}
           >
-            + Nova sala
+            <FiPlus style={{ marginRight: 4 }} /> Nova sala
           </button>
         </div>
       </header>
@@ -82,7 +84,7 @@ export default function ListaSalas() {
               className="professor-card"
               onClick={() => navigate(`/admin/sala/${sala._id}/detalhes`)}
             >
-              <div className="professor-avatar">🏫</div>
+              <div className="professor-avatar"><FaSchool /></div>
               <div className="professor-info">
                 <span className="professor-nome">{sala.nome}</span>
                 <span className="professor-email">
@@ -101,14 +103,14 @@ export default function ListaSalas() {
           onClick={() => navigate("/admin")}
           aria-label="Ver professores"
         >
-          👤
+          <FaUser />
         </button>
         <button
           className="fab-btn"
           onClick={() => navigate("/admin/cadastrar-sala")}
           aria-label="Cadastrar nova sala"
         >
-          +
+          <FiPlus />
         </button>
       </div>
 

@@ -4,6 +4,8 @@ import axios from "axios";
 import "./PerfilAluno.css";
 import NavegacaoAluno from "./NavegacaoAluno";
 import ModalConfirmacao from "../components/ModalConfirmacao";
+import { FiArrowLeft, FiLogOut, FiEdit2, FiCheck } from "react-icons/fi";
+import { FaUser, FaMedal, FaFire, FaDumbbell, FaRunning, FaSmile, FaQuestionCircle } from "react-icons/fa";
 
 interface Aluno {
     nome: string;
@@ -21,11 +23,11 @@ interface Conquista {
 }
 
 const OBJETIVOS_OPCOES = [
-  { valor: 'perder-peso', label: 'Perder peso', emoji: '🔥' },
-  { valor: 'ganhar-massa', label: 'Ganhar massa muscular', emoji: '💪' },
-  { valor: 'melhorar-condicionamento', label: 'Melhorar condicionamento', emoji: '🏃' },
-  { valor: 'manter-ativo', label: 'Manter-se ativo', emoji: '😊' },
-  { valor: 'sem-objetivo', label: 'Sem objetivo definido', emoji: '❓' },
+  { valor: 'perder-peso', label: 'Perder peso', icon: FaFire },
+  { valor: 'ganhar-massa', label: 'Ganhar massa muscular', icon: FaDumbbell },
+  { valor: 'melhorar-condicionamento', label: 'Melhorar condicionamento', icon: FaRunning },
+  { valor: 'manter-ativo', label: 'Manter-se ativo', icon: FaSmile },
+  { valor: 'sem-objetivo', label: 'Sem objetivo definido', icon: FaQuestionCircle },
 ];
 
 interface Desempenho {
@@ -229,7 +231,7 @@ export default function PerfilAluno() {
                         onClick={() => navigate(-1)}
                         aria-label="Voltar"
                     >
-                        ←
+                        <FiArrowLeft />
                     </button>
                     <h1>Perfil</h1>
                     <button
@@ -238,7 +240,7 @@ export default function PerfilAluno() {
                         onClick={() => setModalLogoutAberto(true)}
                         aria-label="Sair"
                     >
-                        🚪
+                        <FiLogOut />
                     </button>
                 </header>
 
@@ -246,10 +248,10 @@ export default function PerfilAluno() {
                     <div className="perfil-aluno-conteudo">
                         <label className="perfil-aluno-avatar-editavel" htmlFor="foto-input">
                             <span className="perfil-aluno-avatar">
-                                {aluno.foto ? <img src={aluno.foto} alt="Foto de perfil" /> : <span>👤</span>}
+                                {aluno.foto ? <img src={aluno.foto} alt="Foto de perfil" /> : <span><FaUser /></span>}
                             </span>
                             <span className="perfil-aluno-avatar-editar-icone">
-                                {enviandoFoto ? "..." : "✏️"}
+                                {enviandoFoto ? "..." : <FiEdit2 />}
                             </span>
                             <input
                                 id="foto-input"
@@ -281,7 +283,7 @@ export default function PerfilAluno() {
                                 className="perfil-aluno-nome perfil-aluno-nome-editavel"
                                 onClick={() => setEditandoNome(true)}
                             >
-                                {nomeExibido} <span className="perfil-aluno-lapis">✏️</span>
+                                {nomeExibido} <span className="perfil-aluno-lapis"><FiEdit2 /></span>
                             </h2>
                         )}
 
@@ -302,7 +304,7 @@ export default function PerfilAluno() {
                                 className="perfil-aluno-descricao perfil-aluno-descricao-editavel"
                                 onClick={() => setEditandoDescricao(true)}
                             >
-                                {aluno.descricao || "Adicionar uma descrição..."} <span className="perfil-aluno-lapis">✏️</span>
+                                {aluno.descricao || "Adicionar uma descrição..."} <span className="perfil-aluno-lapis"><FiEdit2 /></span>
                             </p>
                         )}
 
@@ -323,26 +325,37 @@ export default function PerfilAluno() {
 
                           {!editandoObjetivo ? (
                             <p className="perfil-campo-valor">
-                              {OBJETIVOS_OPCOES.find((o) => o.valor === aluno?.objetivo)
-                                ? `${OBJETIVOS_OPCOES.find((o) => o.valor === aluno?.objetivo)!.emoji} ${OBJETIVOS_OPCOES.find((o) => o.valor === aluno?.objetivo)!.label}`
-                                : 'Não definido'}
+                              {(() => {
+                                const obj = OBJETIVOS_OPCOES.find((o) => o.valor === aluno?.objetivo);
+                                if (!obj) return 'Não definido';
+                                const Icon = obj.icon;
+                                return (
+                                  <>
+                                    <Icon style={{ marginRight: 6, verticalAlign: 'middle' }} />
+                                    {obj.label}
+                                  </>
+                                );
+                              })()}
                             </p>
                           ) : (
                             <div className="perfil-objetivo-opcoes">
-                              {OBJETIVOS_OPCOES.map((op) => (
-                                <button
-                                  key={op.valor}
-                                  type="button"
-                                  className={`perfil-objetivo-btn ${
-                                    objetivoSelecionado === op.valor ? 'selecionado' : ''
-                                  }`}
-                                  onClick={() => salvarObjetivo(op.valor)}
-                                  disabled={salvandoObjetivo}
-                                >
-                                  <span>{op.emoji}</span>
-                                  <span>{op.label}</span>
-                                </button>
-                              ))}
+                              {OBJETIVOS_OPCOES.map((op) => {
+                                const Icon = op.icon;
+                                return (
+                                  <button
+                                    key={op.valor}
+                                    type="button"
+                                    className={`perfil-objetivo-btn ${
+                                      objetivoSelecionado === op.valor ? 'selecionado' : ''
+                                    }`}
+                                    onClick={() => salvarObjetivo(op.valor)}
+                                    disabled={salvandoObjetivo}
+                                  >
+                                    <Icon style={{ marginRight: 6 }} />
+                                    <span>{op.label}</span>
+                                  </button>
+                                );
+                              })}
                               <button
                                 type="button"
                                 className="perfil-cancelar-btn"
@@ -392,7 +405,7 @@ export default function PerfilAluno() {
                                                     if (editandoConquistas && conquista.desbloqueada) alternarSelecaoConquista(conquista.id);
                                                 }}
                                             >
-                                                <span className="perfil-aluno-medalha">🎖️</span>
+                                                <span className="perfil-aluno-medalha"><FaMedal /></span>
                                                 <span className="perfil-aluno-medalha-tooltip">{conquista.nome}</span>
                                             </span>
                                         );
@@ -408,7 +421,11 @@ export default function PerfilAluno() {
                                             onClick={salvarConquistasFixadas}
                                             disabled={salvandoConquistas}
                                         >
-                                            {salvandoConquistas ? "Salvando..." : "✓ Salvar"}
+                                            {salvandoConquistas ? "Salvando..." : (
+                                                <>
+                                                    <FiCheck style={{ marginRight: 6 }} /> Salvar
+                                                </>
+                                            )}
                                         </button>
                                     </>
                                 )}

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./DetalhesSalaProfessor.css";
+import { FiArrowLeft } from "react-icons/fi";
+import { FaUser } from "react-icons/fa";
 
 interface Aluno {
   _id: string;
@@ -57,7 +59,7 @@ export default function DetalhesSalaProfessor() {
           onClick={() => navigate("/dashboard")}
           aria-label="Voltar"
         >
-          ←
+          <FiArrowLeft />
         </button>
         <h1>{sala.nome.toUpperCase()}</h1>
       </header>
@@ -76,7 +78,7 @@ export default function DetalhesSalaProfessor() {
               className="sala-professor-aluno-card"
               onClick={() => navigate(`/professor/aluno/${aluno._id}`)}
             >
-              <span className="sala-professor-aluno-icone">👤</span>
+              <span className="sala-professor-aluno-icone"><FaUser /></span>
               <span className="sala-professor-aluno-nome">{aluno.nome}</span>
             </div>
           ))}

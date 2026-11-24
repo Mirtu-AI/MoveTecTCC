@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./PerfilProfessor.css";
 import ModalConfirmacao from "../components/ModalConfirmacao";
+import { FiArrowLeft, FiEdit2, FiLogOut } from "react-icons/fi";
+import { FaUser } from "react-icons/fa";
 
 interface Professor {
   nome: string;
@@ -55,7 +57,7 @@ export default function PerfilProfessor() {
           onClick={() => navigate("/dashboard")}
           aria-label="Voltar"
         >
-          ←
+          <FiArrowLeft />
         </button>
         <h1>Perfil</h1>
         <div className="perfil-professor-acoes">
@@ -65,14 +67,14 @@ export default function PerfilProfessor() {
             onClick={() => setModalSenhaAberto(true)}
             aria-label="Editar senha"
           >
-            ✎
+            <FiEdit2 />
           </button>
           <button
             className="perfil-professor-icone-btn"
             onClick={() => setModalLogoutAberto(true)}
             aria-label="Sair"
           >
-            ⎋
+            <FiLogOut />
           </button>
         </div>
       </header>
@@ -94,7 +96,7 @@ export default function PerfilProfessor() {
                   className="perfil-professor-avatar-img"
                 />
               ) : (
-                <span className="perfil-professor-avatar-placeholder">👤</span>
+                <span className="perfil-professor-avatar-placeholder"><FaUser /></span>
               )}
             </button>
 
@@ -321,7 +323,7 @@ function ModalAlterarFoto({ aberto, fotoAtual, onCancelar, onSalvar }: ModalAlte
           {imagemExibida ? (
             <img src={imagemExibida} alt="Pré-visualização" />
           ) : (
-            <span>👤</span>
+            <span><FaUser /></span>
           )}
         </div>
 

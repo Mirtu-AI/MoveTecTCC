@@ -24,6 +24,7 @@ import { autenticarAluno } from './middlewares/autenticarAluno.js';
 import { autenticarUsuario } from './middlewares/autenticarUsuario.js';
 import { calcularDesempenho } from './models/desempenho.js';
 import { registrarTreinoConcluido, listarHistoricoPorAluno } from './models/registroTreino.js';
+import { registrarAtividadeAutonoma, listarAtividadesAutonomasPorAluno } from './models/atividadeAutonoma.js';
 import { iniciarExecucao } from './models/execucaoAtividade.js';
 import jwtParaTipos from 'jsonwebtoken';
 import {
@@ -1504,6 +1505,29 @@ async function main() {
         } catch (err) {
             console.error(err);
             res.status(500).send({ success: false, erro: 'Erro ao buscar histórico.' });
+        }
+    });
+
+    app.post('/api/aluno/atividades-autonomas', autenticarAluno, async (req, res) => {
+        try {
+            const resultado = await registrarAtividadeAutonoma(db, req.alunoId, req.body);
+            if (!resultado.sucesso) {
+                return res.status(400).send({ success: false, erro: resultado.erro });
+            }
+            res.status(201).send({ success: true, atividade: resultado.atividade });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao registrar atividade física por conta própria.' });
+        }
+    });
+
+    app.get('/api/aluno/atividades-autonomas', autenticarAluno, async (req, res) => {
+        try {
+            const atividades = await listarAtividadesAutonomasPorAluno(db, req.alunoId);
+            res.send({ success: true, atividades });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ success: false, erro: 'Erro ao buscar atividades por conta própria.' });
         }
     });
 

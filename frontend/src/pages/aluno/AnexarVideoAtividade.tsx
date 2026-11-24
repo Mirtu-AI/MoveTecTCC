@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./AnexarVideoAtividade.css";
+import { FiVideo, FiPaperclip, FiCheck } from "react-icons/fi";
 
 const DURACAO_MINIMA = 5;
 const DURACAO_MAXIMA = 15;
@@ -12,6 +13,7 @@ export default function AnexarVideoAtividade() {
 
   const [videoSelecionado, setVideoSelecionado] = useState<{ nome: string; conteudo: string; duracao: number } | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [consentimento, setConsentimento] = useState(false);
   const [erro, setErro] = useState("");
   const [enviando, setEnviando] = useState(false);
 
@@ -54,6 +56,10 @@ export default function AnexarVideoAtividade() {
 
   async function enviarVideo() {
     if (!videoSelecionado) return;
+    if (!consentimento) {
+      setErro("É necessário autorizar o envio do vídeo para fins de avaliação pedagógica.");
+      return;
+    }
 
     setEnviando(true);
     setErro("");
@@ -92,7 +98,7 @@ export default function AnexarVideoAtividade() {
           <video src={previewUrl} controls className="anexar-video-preview" />
         ) : (
           <label htmlFor="video-input" className="anexar-video-upload-box">
-            🎥 Toque para selecionar ou gravar um vídeo
+            <FiVideo style={{ marginRight: 8, fontSize: "1.2rem", verticalAlign: "middle" }} /> Toque para selecionar ou gravar um vídeo
           </label>
         )}
 
@@ -108,9 +114,22 @@ export default function AnexarVideoAtividade() {
 
         {videoSelecionado && (
           <p className="anexar-video-info">
-            📎 {videoSelecionado.nome} — {videoSelecionado.duracao}s
+            <FiPaperclip style={{ marginRight: 6, verticalAlign: "middle" }} /> {videoSelecionado.nome} — {videoSelecionado.duracao}s
           </p>
         )}
+
+        {/* TERMO DE CONSENTIMENTO / LGPD */}
+        <label className="anexar-video-consentimento-box">
+          <input
+            type="checkbox"
+            checked={consentimento}
+            onChange={(e) => setConsentimento(e.target.checked)}
+            disabled={enviando}
+          />
+          <span>
+            Autorizo o envio deste vídeo <strong>exclusivamente para avaliação pedagógica do professor de Educação Física</strong>, ciente de que a mídia é privada e não será compartilhada publicamente.
+          </span>
+        </label>
 
         {erro && <p className="anexar-video-erro">{erro}</p>}
 
@@ -118,9 +137,9 @@ export default function AnexarVideoAtividade() {
           type="button"
           className="anexar-video-enviar-btn"
           onClick={enviarVideo}
-          disabled={!videoSelecionado || enviando}
+          disabled={!videoSelecionado || !consentimento || enviando}
         >
-          {enviando ? "Enviando..." : "✓ Enviar e finalizar"}
+          {enviando ? "Enviando..." : <><FiCheck style={{ marginRight: 6 }} /> Enviar e finalizar</>}
         </button>
       </main>
     </div>

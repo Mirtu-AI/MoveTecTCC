@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./CadastrarRotina.css";
+import { FiArrowLeft, FiTrash2, FiCheck } from "react-icons/fi";
+import { FaDumbbell } from "react-icons/fa";
 
 interface TreinoCatalogo {
   _id: string;
@@ -169,7 +171,7 @@ export default function CadastrarRotina() {
           onClick={() => navigate("/professor/rotinas")}
           aria-label="Voltar"
         >
-          ←
+          <FiArrowLeft />
         </button>
         <h1>{modoEdicao ? "Editar rotina" : "Nova rotina"}</h1>
       </header>
@@ -248,7 +250,7 @@ export default function CadastrarRotina() {
                       onClick={() => removerGrupo(indiceGrupo)}
                       aria-label="Remover grupo"
                     >
-                      🗑
+                      <FiTrash2 />
                     </button>
                   )}
                 </div>
@@ -271,9 +273,9 @@ export default function CadastrarRotina() {
                         }}
                       >
                         <span className={`cadastrar-rotina-check ${marcado ? "marcado" : ""}`}>
-                          {marcado ? "✓" : ""}
+                          {marcado ? <FiCheck /> : null}
                         </span>
-                        <span className="cadastrar-rotina-treino-icone">🏋️</span>
+                        <span className="cadastrar-rotina-treino-icone"><FaDumbbell /></span>
                         <span className="cadastrar-rotina-treino-nome">{treino.titulo}</span>
                       </div>
                     );
@@ -286,7 +288,12 @@ export default function CadastrarRotina() {
           {erro && <p className="cadastrar-rotina-erro">{erro}</p>}
 
           <button type="submit" className="btn btn-filled cadastrar-rotina-salvar-btn" disabled={carregando}>
-            {carregando ? "Salvando..." : modoEdicao ? "✓ Salvar alterações" : "✓ Criar rotina"}
+            {carregando ? "Salvando..." : (
+              <>
+                <FiCheck style={{ marginRight: 6 }} />
+                {modoEdicao ? "Salvar alterações" : "Criar rotina"}
+              </>
+            )}
           </button>
         </form>
       </main>
