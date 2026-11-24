@@ -1,0 +1,218 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --movetec-laranja: #ff552e;
+  --movetec-laranja-hover: #e0441f;
+  --movetec-laranja-suave: #fff0ed;
+  --movetec-azul-escuro: #121929;
+  --movetec-texto-principal: #1f2937;
+  --movetec-texto-secundario: #6b7280;
+  --movetec-fundo: #f8fafc;
+  --movetec-branco: #ffffff;
+  --movetec-borda: #e2e8f0;
+}
+
+.foguinho-page {
+  min-height: 100vh;
+  background-color: var(--movetec-fundo);
+  background-image: radial-gradient(var(--movetec-borda) 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
+  background-position: 0 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--movetec-texto-principal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 20px 100px;
+}
+
+.foguinho-header {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.foguinho-voltar {
+  background: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  color: var(--movetec-azul-escuro);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 10px 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(18, 25, 41, 0.04);
+  transition: all 0.2s ease;
+}
+
+.foguinho-voltar:hover {
+  background-color: var(--movetec-laranja-suave);
+  color: var(--movetec-laranja);
+  border-color: rgba(255, 85, 46, 0.3);
+}
+
+.foguinho-apelido-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--movetec-azul-escuro);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: -0.01em;
+}
+
+.foguinho-apelido-lapis {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.foguinho-apelido-input {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--movetec-azul-escuro);
+  border: 1px solid var(--movetec-laranja);
+  border-radius: 8px;
+  padding: 6px 12px;
+  outline: none;
+  text-transform: uppercase;
+}
+
+.foguinho-conteudo {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.foguinho-card-destaque {
+  background: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(18, 25, 41, 0.04);
+
+  /* Centralização total */
+  display: flex;
+  flex-direction: column;
+  align-items: center;     /* Centraliza na horizontal */
+  justify-content: center; /* Centraliza na vertical */
+  text-align: center;      /* Garante o alinhamento central dos textos */
+}
+
+.foguinho-icone-grande {
+  font-size: 3.5rem;
+  margin-bottom: 8px;
+  line-height: 1;          /* Remove espaçamentos extras da linha do emoji */
+}
+
+.foguinho-texto {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--movetec-azul-escuro);
+  margin: 0;
+  text-align: center;
+}
+
+.foguinho-recorde {
+  font-size: 0.9rem;
+  color: var(--movetec-texto-secundario);
+  margin-top: 6px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.foguinho-calendario {
+  background: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(18, 25, 41, 0.04);
+}
+
+.foguinho-calendario-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.foguinho-mes-nome {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--movetec-azul-escuro);
+  text-transform: capitalize;
+}
+
+.foguinho-calendario-navegacao button {
+  background: var(--movetec-fundo);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--movetec-azul-escuro);
+  margin-left: 6px;
+  transition: all 0.2s ease;
+}
+
+.foguinho-calendario-navegacao button:hover {
+  background: var(--movetec-laranja-suave);
+  color: var(--movetec-laranja);
+}
+
+.foguinho-calendario-grade {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  text-align: center;
+}
+
+.foguinho-calendario-cabecalho {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--movetec-texto-secundario);
+  margin-bottom: 8px;
+}
+
+.foguinho-dia {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 10px;
+  color: var(--movetec-texto-secundario);
+}
+
+.foguinho-dia-treino {
+  background-color: var(--movetec-laranja);
+  color: var(--movetec-branco) !important;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(255, 85, 46, 0.3);
+}
+
+.foguinho-dia-hoje {
+  border: 2px solid var(--movetec-azul-escuro);
+}
+
+.foguinho-mensagem {
+  color: var(--movetec-texto-secundario);
+  margin-top: 60px;
+  font-size: 0.95rem;
+  text-align: center;
+  font-weight: 500;
+}

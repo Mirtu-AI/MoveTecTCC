@@ -1,0 +1,288 @@
+/* ==========================================================================
+   LISTA DE SALAS DO PROFESSOR - IDENTIDADE MOVETEC
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+.salas-professor-page {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--papel-branco);
+  background-image: 
+    linear-gradient(var(--papel-linha) 1px, transparent 1px),
+    linear-gradient(90deg, var(--papel-linha) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+}
+
+/* ÁREA PRINCIPAL DA PÁGINA */
+.salas-professor-main {
+  flex: 1;
+  margin-left: 240px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+.salas-professor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
+  background-color: var(--branco);
+  border-bottom: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+.salas-professor-header h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.4rem;
+  margin: 0;
+  color: var(--azul-marinho);
+  font-weight: 700;
+}
+
+.perfil-btn {
+  background-color: rgba(242, 101, 34, 0.1);
+  color: var(--laranja-move);
+  border: 1.5px solid rgba(242, 101, 34, 0.2);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.perfil-btn:hover {
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  border-color: var(--laranja-move);
+  transform: translateY(-1px);
+}
+
+/* CONTEÚDO */
+.salas-professor-conteudo {
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.salas-professor-mensagem {
+  text-align: center;
+  color: var(--cinza-texto);
+  margin-top: 60px;
+  font-size: 0.95rem;
+}
+
+.salas-professor-lista {
+  background-color: var(--branco);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.sala-professor-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--papel-linha);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sala-professor-card:last-child {
+  border-bottom: none;
+}
+
+.sala-professor-card:hover {
+  background-color: var(--papel-branco);
+  padding-left: 24px;
+}
+
+.sala-professor-icone {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background-color: rgba(242, 101, 34, 0.1);
+  color: var(--laranja-move);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(242, 101, 34, 0.15);
+}
+
+.sala-professor-nome {
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 700;
+  color: var(--azul-marinho);
+  font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   COMPONENTES DE NAVEGAÇÃO
+   ========================================================================== */
+
+.navegacao-professor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100vh;
+  background-color: var(--branco);
+  border-right: 1.5px solid var(--papel-linha);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  z-index: 100;
+  box-shadow: 4px 0 12px rgba(15, 23, 42, 0.03);
+}
+
+/* ESTILIZAÇÃO DO LOGOTIPO */
+.navegacao-logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 32px;
+  padding: 0 8px;
+  width: 100%;
+}
+
+.navegacao-logo img {
+  max-width: 100%;
+  height: auto;
+  max-height: 48px;
+  object-fit: contain;
+  display: block;
+}
+
+.navegacao-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.navegacao-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: none;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  color: var(--azul-marinho);
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.navegacao-btn:hover {
+  background-color: var(--papel-branco);
+  color: var(--laranja-move);
+}
+
+/* Destaque Ativo em Laranja */
+.navegacao-btn.ativo {
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(242, 101, 34, 0.25);
+}
+
+.navegacao-icone {
+  font-size: 1.2rem;
+}
+
+.navegacao-rotulo {
+  display: inline;
+}
+
+/* ==========================================================================
+   REGRAS RESPONSIVAS (MOBILE)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .salas-professor-main {
+    margin-left: 0;
+    padding-bottom: 72px;
+  }
+
+  .salas-professor-header {
+    padding: 14px 16px;
+  }
+
+  .salas-professor-conteudo {
+    padding: 16px;
+  }
+
+  .sala-professor-card:hover {
+    padding-left: 20px;
+  }
+
+  /* BARRA INFERIOR NO MOBILE */
+  .navegacao-professor {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: 64px;
+    border-right: none;
+    border-top: 1.5px solid var(--papel-linha);
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 8px;
+    box-shadow: 0 -4px 12px rgba(15, 23, 42, 0.04);
+  }
+
+  .navegacao-logo {
+    display: none;
+  }
+  
+  .navegacao-lista {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    gap: 0;
+  }
+
+  .navegacao-btn {
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .navegacao-btn.ativo {
+    background-color: rgba(242, 101, 34, 0.15);
+    color: var(--laranja-move);
+    box-shadow: none;
+  }
+
+  .navegacao-icone {
+    font-size: 1.1rem;
+  }
+
+  .navegacao-rotulo {
+    font-size: 0.65rem;
+  }
+}

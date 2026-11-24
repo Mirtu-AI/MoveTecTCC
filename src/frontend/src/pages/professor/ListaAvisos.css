@@ -1,0 +1,336 @@
+/* ==========================================================================
+   CENTRAL DE AVISOS DO PROFESSOR - IDENTIDADE MOVETEC
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+.lista-avisos-page {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--papel-branco);
+  /* Textura de caderno */
+  background-image: 
+    linear-gradient(var(--papel-linha) 1px, transparent 1px),
+    linear-gradient(90deg, var(--papel-linha) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+}
+
+/* ÁREA PRINCIPAL DA PÁGINA */
+.lista-avisos-main {
+  flex: 1;
+  margin-left: 240px; /* Offset para a Sidebar Desktop */
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* Previne overflow de flex items */
+}
+
+/* HEADER */
+.lista-avisos-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
+  background-color: var(--branco);
+  border-bottom: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  gap: 16px;
+}
+
+.lista-avisos-header h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.4rem;
+  margin: 0;
+  color: var(--azul-marinho);
+  font-weight: 700;
+}
+
+.lista-avisos-novo-btn {
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  border: 1.5px solid var(--laranja-move);
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(242, 101, 34, 0.25);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.lista-avisos-novo-btn:hover {
+  background-color: #d85418;
+  border-color: #d85418;
+  transform: translateY(-1px);
+}
+
+/* CONTEÚDO PRINCIPAL */
+.lista-avisos-conteudo {
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.lista-avisos-mensagem {
+  text-align: center;
+  color: var(--cinza-texto);
+  margin-top: 40px;
+  font-size: 0.95rem;
+  font-family: 'Urbanist', sans-serif;
+  padding: 0 16px;
+}
+
+/* LISTAGEM DE AVISOS */
+.avisos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.aviso-card {
+  background-color: var(--branco);
+  border-radius: 16px;
+  padding: 16px 20px;
+  border: 1.5px solid var(--papel-linha);
+  border-left: 4px solid var(--laranja-move);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.aviso-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(242, 101, 34, 0.4);
+  border-left-color: var(--laranja-move);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+/* TOPO DO CARD: TÍTULO + META + BOTÃO EXCLUIR */
+.aviso-card-topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.aviso-card-topo h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  color: var(--azul-marinho);
+  font-size: 1rem;
+  margin: 0 0 4px;
+}
+
+.aviso-card-data {
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 600;
+  color: var(--laranja-move);
+  font-size: 0.78rem;
+  margin-right: 10px;
+}
+
+.aviso-card-destinatario {
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 600;
+  color: var(--cinza-texto);
+  font-size: 0.78rem;
+  background-color: var(--papel-branco);
+  border: 1px solid var(--papel-linha);
+  border-radius: 999px;
+  padding: 2px 10px;
+  display: inline-block;
+}
+
+.aviso-card-descricao {
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 500;
+  color: var(--cinza-texto);
+  font-size: 0.88rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* BOTAO EXCLUIR */
+.aviso-excluir-btn {
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  font-size: 1.1rem;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.aviso-excluir-btn:hover {
+  opacity: 1;
+  background-color: rgba(239, 68, 68, 0.1);
+  transform: scale(1.1);
+}
+
+/* ==========================================================================
+   NAVEGAÇÃO (SIDEBAR / BARRA INFERIOR MOBILE)
+   ========================================================================== */
+
+.navegacao-professor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 240px;
+  background-color: var(--branco);
+  border-right: 1.5px solid var(--papel-linha);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  z-index: 100;
+}
+
+.navegacao-logo {
+  margin-bottom: 32px;
+  padding: 0 8px;
+}
+
+.navegacao-logo img {
+  max-width: 140px;
+  height: auto;
+}
+
+.navegacao-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.navegacao-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  border-radius: 12px;
+  color: var(--azul-marinho);
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navegacao-btn:hover {
+  background-color: var(--papel-branco);
+  color: var(--laranja-move);
+}
+
+.navegacao-btn.ativo {
+  background-color: rgba(242, 101, 34, 0.1);
+  color: var(--laranja-move);
+  font-weight: 700;
+}
+
+.navegacao-icone {
+  font-size: 1.2rem;
+}
+
+/* ==========================================================================
+   REGRAS RESPONSIVAS (MOBILE & TABLET)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  /* Remove offset lateral e previne colisão com o menu mobile */
+  .lista-avisos-main {
+    margin-left: 0;
+    padding-bottom: 80px;
+  }
+
+  .lista-avisos-header {
+    padding: 16px;
+  }
+
+  .lista-avisos-header h1 {
+    font-size: 1.2rem;
+  }
+
+  .lista-avisos-novo-btn {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+
+  .lista-avisos-conteudo {
+    padding: 20px 16px;
+  }
+
+  .aviso-card {
+    padding: 12px 14px;
+    gap: 6px;
+    border-radius: 14px;
+  }
+
+  .aviso-card-topo h3 {
+    font-size: 0.95rem;
+  }
+
+  .aviso-card-descricao {
+    font-size: 0.83rem;
+  }
+
+  /* Converte a Sidebar Desktop numa Navbar Inferior Fixa para Mobile */
+  .navegacao-professor {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 65px;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 4px 8px;
+    border-right: none;
+    border-top: 1.5px solid var(--papel-linha);
+    box-shadow: 0 -4px 12px rgba(15, 23, 42, 0.05);
+  }
+
+  .navegacao-logo {
+    display: none; /* Oculta a logo na barra inferior */
+  }
+
+  .navegacao-lista {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    gap: 0;
+  }
+
+  .navegacao-btn {
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 4px;
+    font-size: 0.7rem;
+    align-items: center;
+    border-radius: 8px;
+  }
+
+  .navegacao-icone {
+    font-size: 1.1rem;
+  }
+}

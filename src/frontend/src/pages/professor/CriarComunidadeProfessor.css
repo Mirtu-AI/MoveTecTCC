@@ -1,0 +1,181 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --movetec-laranja: #ff552e;
+  --movetec-laranja-hover: #e0441f;
+  --movetec-laranja-suave: #fff0ed;
+  --movetec-azul-escuro: #121929;
+  --movetec-azul-card: #1e293b;
+  --movetec-texto-principal: #1f2937;
+  --movetec-texto-secundario: #6b7280;
+  --movetec-fundo: #f8fafc;
+  --movetec-branco: #ffffff;
+  --movetec-borda: #e2e8f0;
+  --movetec-sucesso: #10b981;
+  --movetec-erro: #ef4444;
+}
+
+/* ESTRUTURA GERAL DA PÁGINA */
+.criar-comunidade-professor-page {
+  min-height: 100vh;
+  background-color: var(--movetec-fundo);
+  background-image: radial-gradient(var(--movetec-borda) 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
+  background-position: 0 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--movetec-texto-principal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 20px 100px;
+}
+
+/* CABEÇALHO */
+.criar-comunidade-professor-header {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.criar-comunidade-professor-header h1 {
+  flex: 1;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--movetec-azul-escuro);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.criar-comunidade-professor-voltar {
+  background: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  color: var(--movetec-azul-escuro);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 10px 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(18, 25, 41, 0.04);
+  transition: all 0.2s ease;
+}
+
+.criar-comunidade-professor-voltar:hover {
+  background-color: var(--movetec-laranja-suave);
+  color: var(--movetec-laranja);
+  border-color: rgba(255, 85, 46, 0.3);
+}
+
+/* CONTEÚDO E CARD PRINCIPAL */
+.criar-comunidade-professor-conteudo {
+  width: 100%;
+  max-width: 600px;
+  background-color: var(--movetec-branco);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(18, 25, 41, 0.04);
+}
+
+/* FORMULÁRIO */
+.criar-comunidade-professor-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.criar-comunidade-professor-form label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--movetec-azul-escuro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: -10px;
+}
+
+.criar-comunidade-professor-form input,
+.criar-comunidade-professor-form textarea {
+  width: 100%;
+  background-color: var(--movetec-fundo);
+  border: 1px solid var(--movetec-borda);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--movetec-texto-principal);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.criar-comunidade-professor-form input::placeholder,
+.criar-comunidade-professor-form textarea::placeholder {
+  color: var(--movetec-texto-secundario);
+}
+
+.criar-comunidade-professor-form input:focus,
+.criar-comunidade-professor-form textarea:focus {
+  background-color: var(--movetec-branco);
+  border-color: var(--movetec-laranja);
+  box-shadow: 0 0 0 3px rgba(255, 85, 46, 0.15);
+}
+
+.criar-comunidade-professor-form textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+/* ERRO */
+.criar-comunidade-professor-erro {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--movetec-erro);
+  background-color: #fef2f2;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+
+/* BOTÃO DE SALVAR */
+.criar-comunidade-professor-salvar-btn {
+  background-color: var(--movetec-laranja);
+  color: var(--movetec-branco);
+  border: none;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(255, 85, 46, 0.25);
+  transition: all 0.2s ease;
+  margin-top: 6px;
+}
+
+.criar-comunidade-professor-salvar-btn:hover:not(:disabled) {
+  background-color: var(--movetec-laranja-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(255, 85, 46, 0.35);
+}
+
+.criar-comunidade-professor-salvar-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 576px) {
+  .criar-comunidade-professor-conteudo {
+    padding: 20px;
+  }
+}

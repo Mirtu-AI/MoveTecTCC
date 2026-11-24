@@ -1,0 +1,198 @@
+/* ==========================================================================
+   DETALHES DO EXERCÍCIO - LAYOUT VERTICAL MOVETEC
+   ========================================================================== */
+
+:root {
+  --laranja-move: #f26522;
+  --laranja-hover: #d95318;
+  --laranja-claro: rgba(242, 101, 34, 0.1);
+  --azul-marinho: #0f172a;
+  --cinza-texto: #64748b;
+  --papel-branco: #f8fafc;
+  --papel-linha: #e2e8f0;
+  --branco: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.detalhes-exercicio-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--papel-branco);
+  background-image: 
+    linear-gradient(var(--papel-linha) 1px, transparent 1px),
+    linear-gradient(90deg, var(--papel-linha) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+  font-family: 'Urbanist', sans-serif;
+}
+
+.detalhes-exercicio-mensagem {
+  text-align: center;
+  color: var(--cinza-texto);
+  margin-top: 40px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.95rem;
+}
+
+/* HEADER */
+.detalhes-exercicio-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 24px;
+  background-color: var(--branco);
+  border-bottom: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  flex-shrink: 0;
+}
+
+.detalhes-exercicio-voltar {
+  background: transparent;
+  border: 1.5px solid var(--papel-linha);
+  color: var(--azul-marinho);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.detalhes-exercicio-voltar:hover {
+  background-color: var(--papel-branco);
+  border-color: var(--laranja-move);
+  color: var(--laranja-move);
+  transform: translateX(-2px);
+}
+
+.detalhes-exercicio-header h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--azul-marinho);
+}
+
+/* CONTAINER PRINCIPAL */
+.detalhes-exercicio-conteudo {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 32px 16px;
+  width: 100%;
+}
+
+/* CARD COM ESTRUTURA VERTICAL */
+.detalhes-exercicio-card-info {
+  background-color: var(--branco);
+  border: 1.5px solid var(--papel-linha);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  width: 100%;
+  max-width: 480px; /* Garante tamanho de cartão sem espremer */
+  display: flex;
+  flex-direction: column; /* Força tudo a ficar um abaixo do outro */
+  gap: 16px;
+}
+
+/* MÍDIA / PREVIEW DE VÍDEO */
+.detalhes-exercicio-midia {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  background-color: var(--azul-marinho);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--papel-linha);
+  color: var(--papel-linha);
+  font-size: 0.9rem;
+}
+
+.detalhes-exercicio-midia-play {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(242, 101, 34, 0.3);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.detalhes-exercicio-midia-play:hover {
+  transform: scale(1.08);
+  background-color: var(--laranja-hover);
+}
+
+.detalhes-exercicio-midia-placeholder {
+  color: var(--papel-linha);
+  font-size: 0.85rem;
+}
+
+/* SEÇÕES VERTICAIS */
+.detalhes-exercicio-secao {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.detalhes-exercicio-label {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--azul-marinho);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.detalhes-exercicio-texto {
+  width: 100%;
+  background-color: var(--papel-branco);
+  border: 1.5px solid var(--papel-linha);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: var(--azul-marinho);
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+  word-break: break-word;
+}
+
+/* BOTÃO EDITAR */
+.detalhes-exercicio-editar-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(242, 101, 34, 0.25);
+  transition: all 0.2s ease;
+}
+
+.detalhes-exercicio-editar-btn:hover {
+  background-color: var(--laranja-hover);
+  transform: translateY(-1px);
+}

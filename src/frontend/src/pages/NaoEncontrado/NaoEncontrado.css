@@ -1,0 +1,81 @@
+/* ==========================================================================
+   PÁGINA NÃO ENCONTRADO (404) - IDENTIDADE MOVETEC
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+.nao-encontrado-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--papel-branco);
+  /* Textura de caderno de exercícios */
+  background-image: 
+    linear-gradient(var(--papel-linha) 1px, transparent 1px),
+    linear-gradient(90deg, var(--papel-linha) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+  padding: 24px;
+  text-align: center;
+}
+
+.nao-encontrado-card {
+  max-width: 460px;
+  width: 100%;
+  background-color: var(--branco);
+  border: 1.5px solid var(--papel-linha);
+  border-radius: 20px;
+  padding: 40px 24px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.nao-encontrado-conteudo h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 5rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--laranja-move);
+  line-height: 1;
+}
+
+.nao-encontrado-titulo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--azul-marinho);
+  margin: 12px 0 8px;
+}
+
+.nao-encontrado-texto {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.95rem;
+  color: var(--cinza-texto);
+  margin-bottom: 32px;
+  line-height: 1.5;
+}
+
+/* BOTAO DE RETORNO */
+.nao-encontrado-btn {
+  display: inline-block;
+  padding: 12px 28px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  border: 1.5px solid var(--laranja-move);
+  border-radius: 999px;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(242, 101, 34, 0.25);
+  transition: all 0.2s ease;
+}
+
+.nao-encontrado-btn:hover {
+  background-color: #d85418;
+  border-color: #d85418;
+  transform: translateY(-1px);
+}

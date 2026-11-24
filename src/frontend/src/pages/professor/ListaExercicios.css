@@ -1,0 +1,400 @@
+/* ==========================================================================
+   LISTA DE EXERCÍCIOS DO PROFESSOR - IDENTIDADE MOVETEC
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+.lista-exercicios-page {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--papel-branco);
+  /* Textura de caderno de exercícios */
+  background-image: 
+    linear-gradient(var(--papel-linha) 1px, transparent 1px),
+    linear-gradient(90deg, var(--papel-linha) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+}
+
+/* ÁREA PRINCIPAL DA PÁGINA */
+.lista-exercicios-main {
+  flex: 1;
+  margin-left: 240px; /* Offset para a Sidebar Desktop */
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* Previne overflow de flex items */
+}
+
+/* HEADER */
+.lista-exercicios-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
+  background-color: var(--branco);
+  border-bottom: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  gap: 16px;
+}
+
+.lista-exercicios-header-titulo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lista-exercicios-header h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.4rem;
+  margin: 0;
+  color: var(--azul-marinho);
+  font-weight: 700;
+}
+
+.lista-exercicios-voltar {
+  background: transparent;
+  border: 1.5px solid var(--papel-linha);
+  color: var(--azul-marinho);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.lista-exercicios-voltar:hover {
+  background-color: var(--papel-branco);
+  border-color: var(--laranja-move);
+  color: var(--laranja-move);
+  transform: translateX(-2px);
+}
+
+.lista-exercicios-novo-btn {
+  background-color: var(--laranja-move);
+  color: var(--branco);
+  border: 1.5px solid var(--laranja-move);
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(242, 101, 34, 0.25);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.lista-exercicios-novo-btn:hover {
+  background-color: #d85418;
+  border-color: #d85418;
+  transform: translateY(-1px);
+}
+
+/* CAMPO DE BUSCA DE EXERCÍCIOS */
+.lista-exercicios-busca-container {
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.lista-exercicios-busca-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.95rem;
+  color: var(--azul-marinho);
+  background-color: var(--branco);
+  border: 1.5px solid var(--papel-linha);
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+}
+
+.lista-exercicios-busca-input:focus {
+  border-color: var(--laranja-move);
+  box-shadow: 0 0 0 3px rgba(242, 101, 34, 0.15);
+}
+
+/* CONTEÚDO PRINCIPAL */
+.lista-exercicios-conteudo {
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.lista-exercicios-mensagem {
+  text-align: center;
+  color: var(--cinza-texto);
+  margin-top: 40px;
+  font-size: 0.95rem;
+  font-family: 'Urbanist', sans-serif;
+  padding: 0 16px;
+}
+
+/* LISTAGEM DE EXERCÍCIOS */
+.exercicios-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.exercicio-card {
+  background-color: var(--branco);
+  border-radius: 16px;
+  padding: 16px 20px;
+  border: 1.5px solid var(--papel-linha);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.exercicio-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(242, 101, 34, 0.4);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+/* ÍCONE / MÍDIA DO CARD */
+.exercicio-card-midia {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: rgba(242, 101, 34, 0.1);
+  color: var(--laranja-move);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(242, 101, 34, 0.12);
+}
+
+/* INFORMAÇÕES DO CARD */
+.exercicio-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0; /* Impede a quebra de layout por textos extensos */
+}
+
+.exercicio-card-nome {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  color: var(--azul-marinho);
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.exercicio-card-orientacoes {
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 500;
+  color: var(--cinza-texto);
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* BOTAO EXCLUIR */
+.exercicio-excluir-btn {
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  font-size: 1.1rem;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.exercicio-excluir-btn:hover {
+  opacity: 1;
+  background-color: rgba(239, 68, 68, 0.1);
+  transform: scale(1.1);
+}
+
+/* ==========================================================================
+   NAVEGAÇÃO (SIDEBAR / BARRA INFERIOR MOBILE)
+   ========================================================================== */
+
+.navegacao-professor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 240px;
+  background-color: var(--branco);
+  border-right: 1.5px solid var(--papel-linha);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  z-index: 100;
+}
+
+.navegacao-logo {
+  margin-bottom: 32px;
+  padding: 0 8px;
+}
+
+.navegacao-logo img {
+  max-width: 140px;
+  height: auto;
+}
+
+.navegacao-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.navegacao-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  border-radius: 12px;
+  color: var(--azul-marinho);
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navegacao-btn:hover {
+  background-color: var(--papel-branco);
+  color: var(--laranja-move);
+}
+
+.navegacao-btn.ativo {
+  background-color: rgba(242, 101, 34, 0.1);
+  color: var(--laranja-move);
+  font-weight: 700;
+}
+
+.navegacao-icone {
+  font-size: 1.2rem;
+}
+
+/* ==========================================================================
+   REGRAS RESPONSIVAS (MOBILE & TABLET)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  /* Remove offset lateral e previne colisão com o menu mobile */
+  .lista-exercicios-main {
+    margin-left: 0;
+    padding-bottom: 80px; 
+  }
+
+  .lista-exercicios-header {
+    padding: 16px;
+  }
+
+  .lista-exercicios-header h1 {
+    font-size: 1.2rem;
+  }
+
+  .lista-exercicios-novo-btn {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+
+  .lista-exercicios-conteudo {
+    padding: 20px 16px;
+  }
+
+  .lista-exercicios-busca-input {
+    font-size: 0.9rem;
+    padding: 10px 14px;
+  }
+
+  .exercicio-card {
+    padding: 12px 14px;
+    gap: 12px;
+    border-radius: 14px;
+  }
+
+  .exercicio-card-midia {
+    width: 38px;
+    height: 38px;
+    font-size: 1rem;
+    border-radius: 10px;
+  }
+
+  .exercicio-card-nome {
+    font-size: 0.95rem;
+  }
+
+  .exercicio-card-orientacoes {
+    font-size: 0.8rem;
+  }
+
+  /* Converte a Sidebar Desktop numa Navbar Inferior Fixa para Mobile */
+  .navegacao-professor {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 65px;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 4px 8px;
+    border-right: none;
+    border-top: 1.5px solid var(--papel-linha);
+    box-shadow: 0 -4px 12px rgba(15, 23, 42, 0.05);
+  }
+
+  .navegacao-logo {
+    display: none; /* Oculta a logo na barra inferior */
+  }
+
+  .navegacao-lista {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    gap: 0;
+  }
+
+  .navegacao-btn {
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 4px;
+    font-size: 0.7rem;
+    align-items: center;
+    border-radius: 8px;
+  }
+
+  .navegacao-icone {
+    font-size: 1.1rem;
+  }
+}

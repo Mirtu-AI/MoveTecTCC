@@ -1,0 +1,158 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --laranja-move: #ff5722;
+  --laranja-hover: #e04818;
+  --laranja-suave: #fff3f0;
+  --cinza-fundo: #f8f9fa;
+  --cinza-borda: #eaeaea;
+  --texto-principal: #1a1a1a;
+  --texto-secundario: #666666;
+  --sucesso-verde: #22c55e;
+}
+
+.parabens-atividade-page {
+  min-height: 100vh;
+  background-color: var(--cinza-fundo);
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.parabens-atividade-mensagem {
+  text-align: center;
+  color: var(--texto-secundario);
+  margin-top: 60px;
+  font-weight: 500;
+}
+
+.parabens-atividade-conteudo {
+  max-width: 380px;
+  width: 100%;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* CONTAINER DA MEDALHA/CHECK COM ANIMAÇÃO */
+.parabens-atividade-badge-wrapper {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.parabens-atividade-check {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background-color: var(--sucesso-verde);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.8rem;
+  box-shadow: 0 8px 24px rgba(34, 197, 94, 0.35);
+  animation: pulso-glow 2s infinite ease-in-out, popup-surgir 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.parabens-atividade-titulo {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--texto-principal);
+  margin: 0 0 6px;
+  text-align: center;
+}
+
+.parabens-atividade-subtitulo {
+  font-size: 0.9rem;
+  color: var(--texto-secundario);
+  margin: 0 0 28px;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* CARDS DE RESUMO */
+.parabens-atividade-resumo {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.parabens-atividade-resumo-linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  border: 1px solid var(--cinza-borda);
+  padding: 14px 18px;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.parabens-atividade-resumo-linha span {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--texto-secundario);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.parabens-atividade-resumo-linha strong {
+  color: var(--texto-principal);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* BOTÃO PRINCIPAL */
+.parabens-atividade-finalizar-btn {
+  width: 100%;
+  padding: 14px;
+  background-color: var(--laranja-move);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 87, 34, 0.25);
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.parabens-atividade-finalizar-btn:hover {
+  background-color: var(--laranja-hover);
+  transform: translateY(-1px);
+}
+
+/* ANIMAÇÕES */
+@keyframes popup-surgir {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulso-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 16px rgba(34, 197, 94, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}

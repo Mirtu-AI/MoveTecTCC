@@ -1,0 +1,479 @@
+/* ==========================================================================
+   DetalhesComunidade.css - Identidade Visual MoveTec (Laranja)
+   ========================================================================== */
+
+:root {
+  --movetec-primary: #f97316;        /* Laranja principal MoveTec */
+  --movetec-primary-hover: #ea580c;  /* Laranja mais escuro para hover */
+  --movetec-secondary: #0f172a;      /* Azul escuro/Chumbo para destaques */
+  --movetec-secondary-hover: #1e293b;
+  --movetec-bg-page: #f8fafc;        /* Fundo claro da tela */
+  --movetec-bg-card: #ffffff;        /* Fundo dos cards e contêineres */
+  --movetec-border: #e2e8f0;         /* Bordas suaves */
+  --movetec-text: #0f172a;           /* Texto principal */
+  --movetec-text-muted: #64748b;     /* Texto secundário */
+  --movetec-danger: #ef4444;         /* Vermelho para avisos/erros */
+  --movetec-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.comunidade-chat-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: var(--movetec-bg-page);
+  color: var(--movetec-text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Header */
+.comunidade-chat-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  background-color: var(--movetec-bg-card);
+  border-bottom: 1px solid var(--movetec-border);
+  box-shadow: var(--movetec-shadow);
+}
+
+.comunidade-chat-header h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--movetec-text);
+  margin: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.comunidade-sair-btn {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid var(--movetec-danger);
+  color: var(--movetec-danger);
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.comunidade-sair-btn:hover:not(:disabled) {
+  background: var(--movetec-danger);
+  color: #fff;
+}
+
+.comunidade-sair-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.comunidade-chat-voltar {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: var(--movetec-text-muted);
+  transition: color 0.2s;
+}
+
+.comunidade-chat-voltar:hover {
+  color: var(--movetec-primary);
+}
+
+/* Mensagens de estado/erro */
+.comunidade-chat-mensagem {
+  text-align: center;
+  padding: 32px;
+  color: var(--movetec-text-muted);
+}
+
+.comunidade-chat-erro {
+  background-color: #fef2f2;
+  color: var(--movetec-danger);
+  border: 1px solid #fecaca;
+  padding: 10px 16px;
+  margin: 12px 24px 0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+}
+
+/* Abas Navigation */
+.comunidade-chat-abas {
+  display: flex;
+  background-color: var(--movetec-bg-card);
+  border-bottom: 1px solid var(--movetec-border);
+  padding: 0 24px;
+}
+
+.comunidade-chat-aba {
+  flex: 1;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--movetec-text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.comunidade-chat-aba:hover {
+  color: var(--movetec-primary);
+}
+
+.comunidade-chat-aba.ativa {
+  color: var(--movetec-primary);
+  border-bottom-color: var(--movetec-primary);
+}
+
+/* Área do Chat */
+.comunidade-chat-mensagens {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comunidade-chat-bolha {
+  max-width: 65%;
+  align-self: flex-start;
+  background-color: var(--movetec-bg-card);
+  border: 1px solid var(--movetec-border);
+  border-radius: 12px 12px 12px 2px;
+  padding: 10px 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.comunidade-chat-bolha.minha {
+  align-self: flex-end;
+  background-color: var(--movetec-primary);
+  color: #ffffff;
+  border-color: var(--movetec-primary);
+  border-radius: 12px 12px 2px 12px;
+}
+
+.comunidade-chat-autor {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--movetec-primary);
+  margin-bottom: 2px;
+}
+
+.comunidade-chat-texto {
+  margin: 0;
+  font-size: 0.925rem;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.comunidade-chat-hora {
+  display: block;
+  font-size: 0.6875rem;
+  text-align: right;
+  margin-top: 4px;
+  opacity: 0.8;
+}
+
+/* Formulário do Chat (Input Bar) */
+.comunidade-chat-input-linha {
+  display: flex;
+  gap: 12px;
+  padding: 16px 24px;
+  background-color: var(--movetec-bg-card);
+  border-top: 1px solid var(--movetec-border);
+}
+
+.comunidade-chat-input-linha input {
+  flex: 1;
+  padding: 10px 16px;
+  border: 1px solid var(--movetec-border);
+  border-radius: 20px;
+  font-size: 0.925rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.comunidade-chat-input-linha input:focus {
+  border-color: var(--movetec-primary);
+}
+
+.comunidade-chat-input-linha button {
+  padding: 10px 20px;
+  background-color: var(--movetec-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.comunidade-chat-input-linha button:hover:not(:disabled) {
+  background-color: var(--movetec-primary-hover);
+}
+
+.comunidade-chat-input-linha button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Área de Desafios */
+.comunidade-desafios-conteudo {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.comunidade-desafios-novo-btn {
+  display: block;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: var(--movetec-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.comunidade-desafios-novo-btn:hover {
+  background-color: var(--movetec-primary-hover);
+}
+
+.comunidade-desafio-form {
+  background-color: var(--movetec-bg-card);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--movetec-border);
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comunidade-desafio-form input,
+.comunidade-desafio-form textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--movetec-border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+  font-family: inherit;
+}
+
+.comunidade-desafio-form input:focus,
+.comunidade-desafio-form textarea:focus {
+  border-color: var(--movetec-primary);
+}
+
+.comunidade-desafio-erro {
+  color: var(--movetec-danger);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* Cards de Desafio */
+.comunidade-desafios-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.comunidade-desafio-card {
+  background-color: var(--movetec-bg-card);
+  border: 1px solid var(--movetec-border);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--movetec-shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.comunidade-desafio-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.comunidade-desafio-card.expirado {
+  opacity: 0.7;
+  background-color: #f1f5f9;
+}
+
+.comunidade-desafio-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.comunidade-desafio-titulo {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--movetec-text);
+}
+
+.comunidade-desafio-prazo {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  background-color: #fff7ed;
+  color: var(--movetec-primary-hover);
+  border-radius: 6px;
+  border: 1px solid #ffedd5;
+}
+
+.comunidade-desafio-descricao {
+  font-size: 0.925rem;
+  color: var(--movetec-text-muted);
+  margin: 8px 0 16px;
+  line-height: 1.5;
+}
+
+.comunidade-desafio-autor,
+.comunidade-desafio-contagem {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--movetec-text-muted);
+  margin-bottom: 4px;
+}
+
+.comunidade-desafio-btn {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background-color: var(--movetec-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.comunidade-desafio-btn:hover {
+  background-color: var(--movetec-primary-hover);
+}
+
+.comunidade-desafio-btn.concluir {
+  background-color: var(--movetec-secondary);
+}
+
+.comunidade-desafio-btn.concluir:hover {
+  background-color: var(--movetec-secondary-hover);
+}
+
+.comunidade-desafio-concluido {
+  display: inline-block;
+  margin-top: 12px;
+  font-weight: 600;
+  color: var(--movetec-primary);
+  font-size: 0.875rem;
+}
+
+/* ============================================================
+   Modal de confirmação — Sair da comunidade
+   ============================================================ */
+
+.comunidade-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeInOverlay 0.18s ease;
+}
+
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.comunidade-modal {
+  background: var(--movetec-bg-card);
+  border-radius: 16px;
+  padding: 32px 28px 24px;
+  max-width: 360px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: slideUpModal 0.2s ease;
+}
+
+@keyframes slideUpModal {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.comunidade-modal-icone {
+  font-size: 2.8rem;
+  margin-bottom: 12px;
+}
+
+.comunidade-modal-titulo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--movetec-text);
+  margin: 0 0 10px;
+}
+
+.comunidade-modal-texto {
+  font-size: 0.92rem;
+  color: var(--movetec-text-muted);
+  line-height: 1.5;
+  margin: 0 0 24px;
+}
+
+.comunidade-modal-acoes {
+  display: flex;
+  gap: 10px;
+}
+
+.comunidade-modal-btn {
+  flex: 1;
+  padding: 11px 0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.comunidade-modal-btn:active {
+  transform: scale(0.97);
+}
+
+.comunidade-modal-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.comunidade-modal-btn.cancelar {
+  background: #f1f5f9;
+  color: var(--movetec-text-muted);
+}
+
+.comunidade-modal-btn.cancelar:hover:not(:disabled) {
+  background: #e2e8f0;
+}
+
+.comunidade-modal-btn.confirmar {
+  background: var(--movetec-danger);
+  color: #fff;
+}
+
+.comunidade-modal-btn.confirmar:hover:not(:disabled) {
+  opacity: 0.88;
+}

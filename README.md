@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>Trabalho de Conclusão de Curso (TCC) — ETEC de Campo Limpo Paulista</strong><br>
-  <em>Habilitação Profissional Técnica de Nível Médio em Desenvolvimento de Sistemas</em>
+  <em>Ensino Médio com Informática para Internet M-Tec</em>
 </p>
 
 ---
@@ -15,85 +15,71 @@
 
 ## 📌 Descrição
 
-O **MoveTec** é uma plataforma web desenvolvida para combater o sedentarismo e incentivar a prática regular de atividades físicas entre estudantes do ensino médio e técnico. 
-
-Estudos indicam que a transição para o ensino médio/técnico e a rotina escolar intensa provocam uma redução drástica no tempo dedicado ao movimento, gerando fadiga mental, falta de foco e impactos negativos na saúde física e emocional. 
-
-O MoveTec soluciona esse problema criando uma ponte digital e motivadora entre **alunos** e **professores de Educação Física**:
-- **Para o Aluno:** Oferece rotinas guiadas de exercícios rápidos, acompanhamento visual de metas semanais, histórico de desempenho, desafios, ranking saudável da turma e uma comunidade integrada com chat em tempo real para incentivo mútuo.
-- **Para o Professor:** Centraliza o planejamento pedagógico, cadastro de exercícios e montagem de fichas de treino personalizadas, além da validação de atividades executadas pelos discentes.
-- **Para a Escola/Administração:** Fornece um painel completo para gestão de salas, matrículas e acompanhamento de adesão discente.
-
+Nas escolas brasileiras, e especialmente no Ensino Médio, observamos que muitos jovens têm dificuldade de começar uma rotina de atividades físicas e, principalmente, de mantê-la. A falta de tempo, a falta de motivação e a dúvida de por onde começar aparecem com frequência, e a Educação Física escolar ainda enfrenta limitações de espaço e estrutura, o que torna difícil acompanhar cada aluno de perto. Foi pensando nisso que nasceu o MoveTec. Nosso objetivo foi criar uma plataforma que não fosse apenas "mais um aplicativo de treino", mas um ambiente onde o aluno pudesse seguir rotinas simples, registrar o que fez, definir metas, acompanhar seu progresso e se motivar com conquistas e desafios (gamificação), enquanto o professor acompanha a turma e orienta cada estudante. Durante o desenvolvimento, aplicamos um questionário com estudantes da ETECAMP e entrevistamos um professor de Educação Física, e percebemos que muitos já tinham tentado criar uma rotina sem conseguir manter. Assim, unimos a tecnologia web com a escola para criar uma ferramenta que busca apoiar o hábito de se exercitar, sem exigir equipamentos ou estrutura especializada.
 ---
 
 ## 👥 Equipe
 
-| Foto / Integrante | Nome | Função |
-| :--- | :--- | :--- |
-| 👩‍💻 | **Camila Pelinson e Silva** | UI/UX Design, Front-end & Documentação |
-| 👩‍💻 | **Livia Rafaelli Quatroque** | Front-end, Pesquisa de Campo & Usabilidade |
-| 👨‍💻 | **Milton Alecrim dos Santos** | Full Stack (Back-end & Front-end) & Banco de Dados |
+**Camila Pelinson e Silva** Documentação e arquivo
+**Livia Rafaelli Quatroque** Documentação e arquivo
+**Milton Alecrim dos Santos** Front e Back-end
 
 ### 🎓 Corpo Docente / Orientação
-- **Profª. Barbara Porfirio** — Orientadora de TCC / Usabilidade e Design
-- **Profª. Thaynara Maia** — Orientadora de TCC / Metodologia e Desenvolvimento
+- **Profª. Barbara Porfirio** — Orientadora de TCC
+- **Profª. Thaynara Maia** — Orientadora de TCC
 
 ---
 
 ## 💻 Tecnologias Utilizadas
 
 ### Front-end
-- **HTML5 & CSS3** (Design responsivo, Glassmorphism e CSS Grid/Flexbox)
-- **JavaScript (ES2024) / TypeScript** `v6.0.2`
-- **React** `v19.2.8`
-- **Vite** `v8.2.0` (Build tool e dev server de alta performance)
-- **React Router DOM** `v7.18.2` (Roteamento dinâmico SPA)
-- **Axios** `v1.19.0` (Comunicação com a API REST)
-- **Socket.io Client** `v4.8.3` (Comunicação em tempo real para chat e notificações)
-- **React Icons** `v5.7.0` & **Canvas-Confetti** `v1.9.4` (Feedback visual e gamificação)
+- **HTML5 e CSS3** — Estrutura, estilização e responsividade da interface.
+- **JavaScript e TypeScript** (`6.0.2`) — Desenvolvimento da lógica da aplicação.
+- **React** (`19.2.8`) — Construção da interface baseada em componentes.
+- **Vite** (`8.2.0`) — Ferramenta de desenvolvimento e build.
+- **React Router DOM** (`7.18.2`) — Gerenciamento de rotas da aplicação.
+- **Axios** (`1.19.0`) — Comunicação com a API REST.
+- **Socket.io Client** (`4.8.3`) — Comunicação em tempo real.
+- **React Icons** (`5.7.0`) e **Canvas Confetti** (`1.9.4`) — Ícones e efeitos visuais de gamificação.
 
 ### Back-end
-- **Node.js** `v22.14.0` (LTS)
-- **Express** `v5.2.1` (Servidor HTTP e API REST)
-- **Socket.io** `v4.8.3` (WebSockets para comunidades e mensagens instantâneas)
-- **JSON Web Token (JWT)** `v9.0.3` (Autenticação e controle de sessões seguras)
-- **Passport.js & Passport-Local** `v0.7.0` (Estratégias de autenticação)
-- **Express Mongo Sanitize** `v2.2.0` & **CORS** `v2.8.6` (Segurança contra NoSQL Injection)
+- **Node.js** (`22.14.0`) — Ambiente de execução JavaScript.
+- **Express** (`5.2.1`) — Construção do servidor e da API REST.
+- **Socket.io** (`4.8.3`) — Comunicação em tempo real.
+- **JSON Web Token (JWT)** (`9.0.3`) — Autenticação e gerenciamento de tokens de acesso.
+- **Passport.js** (`0.7.0`) e **Passport-Local** (`1.0.0`) — Estratégias de autenticação.
+- **Express Mongo Sanitize** (`2.2.0`) — Proteção contra determinados padrões de injeção NoSQL.
+- **CORS** (`2.8.6`) — Configuração do compartilhamento de recursos entre diferentes origens.
 
 ### Banco de Dados
-- **MongoDB Atlas** `v7.5.0` (SGBD NoSQL orientado a documentos na nuvem)
+- **MongoDB Atlas** — Serviço de banco de dados NoSQL em nuvem.
+- **MongoDB Driver** (`7.5.0`) — Integração entre o Node.js e o MongoDB.
 
 ---
 
 ## 📸 Demonstração do Sistema
 
 ### 🏠 Tela Inicial — Landing Page (Seção Clara)
-Apresentação da proposta de valor, botão de primeiro acesso/login e animação interativa com métricas de engajamento discente:
 
 ![Home - Seção Clara](./design/telas/01-home-secao-clara.png)
 
 ---
 
-### 📊 Painel de Metas, Recursos e Ranking (Seção Escura)
-Visualização do progresso semanal do aluno, destaque do Top 1 da turma e funcionalidades interativas:
+### 🏋️‍♂️ Gestão de Rotinas — Painel do Professor
 
-![Home - Seção Escura e Ranking](./design/telas/02-home-secao-escura.png)
-
----
-
-### 🏋️‍♂️ Gestão de Treinos — Painel do Professor
-Área onde os docentes de Educação Física gerenciam fichas de treino, séries, repetições e filtram treinos por categoria:
-
-![Lista de Treinos - Professor](./design/telas/03-lista-treinos-professor.png)
+![Lista de Rotinas - Professor](./design/telas/lista_rotinas.png)
 
 ---
 
-### 🏫 Gestão de Salas e Turmas — Painel Administrativo
-Visualização e organização de turmas escolares (ex: 3º A Informática) e listagem dos discentes matriculados:
+### 🏫 Gestão de Professores — Painel Administrativo
 
-![Detalhes da Sala - Administrador](./design/telas/04-detalhes-sala-admin.png)
+![Detalhes da Sala - Administrador](./design/telas/gerenciamento_professor.png)
 
 ---
+
+### 🏫 Home do Estudante
+
+![Home do Estudante - Estudante](./design/telas/Home_aluno.png)
 
 ## 🚀 Como Executar o Projeto (Passo a Passo)
 
@@ -131,7 +117,7 @@ cd MoveTecTCC
    ```bash
    npm run dev
    ```
-   O servidor estará ativo em: `http://localhost:3000`
+   O servidor estará ativo em: [http://localhost:3000](http://localhost:3000)
 
 ---
 
@@ -152,40 +138,11 @@ cd MoveTecTCC
 
 ---
 
-## 📁 Estrutura de Diretórios
-
-```plaintext
-MoveTecTCC/
-├── docs/                # Documentação acadêmica do TCC (questionário, fichamentos, usabilidade)
-│   ├── fichamento/      # Fichamentos teóricos de autores de referência
-│   ├── questionario/    # Levantamento de dados quantitativos com alunos
-│   ├── entrevista/      # Entrevista pedagógica e transcrição
-│   ├── usabilidade/     # Testes de usabilidade Maze II
-│   └── pitch/           # Roteiro e links do Pitch do projeto
-├── design/              # Identidade visual, protótipo Figma e telas
-│   ├── prototipo/       # Link do protótipo navegável oficial no Figma
-│   ├── identidade_visual/ # Manual de marca, cores e tipografia
-│   └── telas/           # Capturas de tela em alta resolução
-├── database/            # Scripts e modelos de dados
-│   ├── models/          # Schemas e validações das coleções MongoDB
-│   ├── scripts/         # Scripts de migração e seeds
-│   └── schema.sql       # Modelo relacional equivalente (SQL)
-├── backend/             # API REST e WebSockets em Node.js / Express
-│   ├── src/             # Rotas, controllers, middlewares e regras de negócio
-│   └── package.json
-├── frontend/            # Aplicação SPA em React / TypeScript
-│   ├── src/             # Páginas (Aluno, Professor, Admin), componentes e rotas
-│   └── package.json
-└── README.md            # Apresentação oficial do repositório
-```
-
----
-
 ## 📖 Como Citar o Projeto
 
 ```text
-PELINSON E SILVA, Camila; QUATROQUE, Livia Rafaelli; DOS SANTOS, Milton Alecrim. MoveTec: Desenvolvimento de um sistema web para incentivo à prática de atividades físicas no ambiente escolar. Orientadoras: Barbara Porfirio; Thaynara Maia. ETEC de Campo Limpo Paulista, 2026.
+PELINSON E SILVA, Camila; QUATROQUE, Livia Rafaelli; DOS SANTOS, Milton Alecrim. MoveTec: desenvolvimento de um sistema web para incentivo à prática de atividades físicas no ambiente escolar. Orientadoras: Barbara Porfirio; Thaynara Maia dos Santos. 2026. Artigo Científico, apresentado como Trabalho de Conclusão de Curso (Ensino Técnico em Informática para Internet) – ETECAMP: ETEC de Campo Limpo Paulista, Campo Limpo Paulista, 2026.
 ```
 
 - **Em caso de dúvidas, entre em contato:** [miltonalecrimdossantos@gmail.com](mailto:miltonalecrimdossantos@gmail.com)
-- **Repositório Institucional do Centro Paula Souza:** [https://ric.cps.sp.gov.br/](https://ric.cps.sp.gov.br/)
+- **Repositório Institucional do Centro Paula Souza:** [Repositório Institucional do Centro Paula Souza](https://ric.cps.sp.gov.br/)
