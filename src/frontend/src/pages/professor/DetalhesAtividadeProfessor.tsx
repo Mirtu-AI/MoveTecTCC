@@ -2,7 +2,16 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./DetalhesAtividadeProfessor.css";
-import { FiArrowLeft, FiEdit2, FiTrash2, FiImage, FiCheck, FiPaperclip } from "react-icons/fi";
+import {
+  FiArrowLeft,
+  FiEdit2,
+  FiTrash2,
+  FiImage,
+  FiCheck,
+  FiPaperclip,
+  FiMessageCircle,
+  FiSend,
+} from "react-icons/fi";
 
 interface ExercicioItem {
   concluido: boolean;
@@ -20,6 +29,12 @@ interface VideoComprovacao {
   duracaoSegundos: number;
 }
 
+interface Feedback {
+  reacao: string;
+  comentario: string | null;
+  dadoEm: string;
+}
+
 interface Atividade {
   titulo: string;
   descricao: string;
@@ -30,8 +45,11 @@ interface Atividade {
   permiteArquivoAlternativo: boolean;
   arquivoAlternativoAluno: ArquivoAlternativo | null;
   videoComprovacao?: VideoComprovacao | null;
+  feedback?: Feedback | null;
   exercicios: ExercicioItem[];
 }
+
+const REACOES = ["🔥", "👏", "💪", "⭐", "🎯", "🚀"];
 
 export default function DetalhesAtividadeProfessor() {
   const { id } = useParams();
@@ -41,22 +59,35 @@ export default function DetalhesAtividadeProfessor() {
   const [carregando, setCarregando] = useState(true);
   const [excluindo, setExcluindo] = useState(false);
 
+  const [reacaoSelecionada, setReacaoSelecionada] = useState("");
+  const [comentarioFeedback, setComentarioFeedback] = useState("");
+  const [enviandoFeedback, setEnviandoFeedback] = useState(false);
 
   function prazoAindaValido(dataEntregaIso: string) {
     return new Date(dataEntregaIso) >= new Date();
   }
 
   async function excluirAtividade() {
-    if (!window.confirm("Tem certeza que deseja excluir esta atividade? Essa ação não pode ser desfeita.")) {
+    if (
+      !window.confirm(
+        "Tem certeza que deseja excluir esta atividade? Essa ação não pode ser desfeita."
+      )
+    ) {
       return;
     }
 
     setExcluindo(true);
+
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:3000/api/professor/atividades/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+
+      await axios.delete(
+        `http://localhost:3000/api/professor/atividades/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
       navigate(-1);
     } catch (err) {
       console.error(err);
@@ -73,10 +104,25 @@ export default function DetalhesAtividadeProfessor() {
   async function buscarAtividade() {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`http://localhost:3000/api/atividades/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setAtividade(response.data.atividade || null);
+
+      const response = await axios.get(
+        `http://localhost:3000/api/atividades/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      const dadosAtividade: Atividade | null =
+        response.data.atividade || null;
+
+      setAtividade(dadosAtividade);
+
+      if (dadosAtividade?.feedback) {
+        setReacaoSelecionada(dadosAtividade.feedback.reacao);
+        setComentarioFeedback(
+          dadosAtividade.feedback.comentario || ""
+        );
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -84,17 +130,81 @@ export default function DetalhesAtividadeProfessor() {
     }
   }
 
+  async function enviarFeedback() {
+    if (!reacaoSelecionada) {
+      alert("Selecione uma reação para enviar o feedback.");
+      return;
+    }
+
+    setEnviandoFeedback(true);
+
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.put(
+        `http://localhost:3000/api/professor/atividades/${id}/feedback`,
+        {
+          reacao: reacaoSelecionada,
+          comentario: comentarioFeedback.trim(),
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      const feedbackAtualizado: Feedback = {
+        reacao: reacaoSelecionada,
+        comentario: comentarioFeedback.trim() || null,
+        dadoEm: new Date().toISOString(),
+      };
+
+      setAtividade((atual) =>
+        atual
+          ? { ...atual, feedback: feedbackAtualizado }
+          : atual
+      );
+
+      alert("Feedback enviado com sucesso!");
+    } catch (err: any) {
+      console.error(err);
+
+      alert(
+        err.response?.data?.erro ||
+          "Erro ao enviar feedback. Tente novamente."
+      );
+    } finally {
+      setEnviandoFeedback(false);
+    }
+  }
+
   function formatarData(dataIso: string) {
     const data = new Date(dataIso);
-    return data.toLocaleDateString("pt-BR", { timeZone: "UTC" });
+    return data.toLocaleDateString("pt-BR", {
+      timeZone: "UTC",
+    });
+  }
+
+  function formatarDataHora(dataIso: string) {
+    return new Date(dataIso).toLocaleString("pt-BR", {
+      dateStyle: "short",
+      timeStyle: "short",
+    });
   }
 
   if (carregando) {
-    return <p className="detalhes-atividade-mensagem">Carregando...</p>;
+    return (
+      <p className="detalhes-atividade-mensagem">
+        Carregando...
+      </p>
+    );
   }
 
   if (!atividade) {
-    return <p className="detalhes-atividade-mensagem">Atividade não encontrada.</p>;
+    return (
+      <p className="detalhes-atividade-mensagem">
+        Atividade não encontrada.
+      </p>
+    );
   }
 
   return (
@@ -107,72 +217,123 @@ export default function DetalhesAtividadeProfessor() {
         >
           <FiArrowLeft />
         </button>
+
         <h1>{atividade.titulo}</h1>
       </header>
 
       <main className="detalhes-atividade-conteudo">
-        {/* AÇÕES DE PROFESSOR (EDITAR / EXCLUIR) */}
-        {atividade && prazoAindaValido(atividade.dataEntrega) && (
+        {/* AÇÕES DO PROFESSOR */}
+        {prazoAindaValido(atividade.dataEntrega) && (
           <div className="detalhes-atividade-acoes">
             <button
               type="button"
               className="detalhes-atividade-btn-editar"
-              onClick={() => navigate(`/professor/atividades/${id}/editar`)}
+              onClick={() =>
+                navigate(`/professor/atividades/${id}/editar`)
+              }
             >
-              <FiEdit2 style={{ marginRight: 6 }} /> Editar
+              <FiEdit2 style={{ marginRight: 6 }} />
+              Editar
             </button>
+
             <button
               type="button"
               className="detalhes-atividade-btn-excluir"
               onClick={excluirAtividade}
               disabled={excluindo}
             >
-              {excluindo ? "Excluindo..." : (
+              {excluindo ? (
+                "Excluindo..."
+              ) : (
                 <>
-                  <FiTrash2 style={{ marginRight: 6 }} /> Excluir
+                  <FiTrash2 style={{ marginRight: 6 }} />
+                  Excluir
                 </>
               )}
             </button>
           </div>
         )}
 
+        {/* IMAGEM */}
         <div className="detalhes-atividade-midia">
-          {atividade.midiaUrl ? <img src={atividade.midiaUrl} alt="" /> : <span><FiImage /></span>}
+          {atividade.midiaUrl ? (
+            <img src={atividade.midiaUrl} alt="" />
+          ) : (
+            <span>
+              <FiImage />
+            </span>
+          )}
         </div>
 
+        {/* DESCRIÇÃO */}
         <div className="detalhes-atividade-secao">
-          <span className="detalhes-atividade-label">Descrição</span>
-          <p className="detalhes-atividade-texto">{atividade.descricao}</p>
+          <span className="detalhes-atividade-label">
+            Descrição
+          </span>
+
+          <p className="detalhes-atividade-texto">
+            {atividade.descricao}
+          </p>
         </div>
 
+        {/* INFORMAÇÕES */}
         <div className="detalhes-atividade-info-linha">
           <div>
-            <span className="detalhes-atividade-label">Entrega</span>
-            <p className="detalhes-atividade-texto">{formatarData(atividade.dataEntrega)}</p>
+            <span className="detalhes-atividade-label">
+              Entrega
+            </span>
+
+            <p className="detalhes-atividade-texto">
+              {formatarData(atividade.dataEntrega)}
+            </p>
           </div>
+
           <div>
-            <span className="detalhes-atividade-label">Progresso</span>
-            <p className="detalhes-atividade-texto">{atividade.progresso}%</p>
+            <span className="detalhes-atividade-label">
+              Progresso
+            </span>
+
+            <p className="detalhes-atividade-texto">
+              {atividade.progresso}%
+            </p>
           </div>
         </div>
 
+        {/* EXERCÍCIOS */}
         <div className="detalhes-atividade-secao">
-          <span className="detalhes-atividade-label">Exercícios</span>
+          <span className="detalhes-atividade-label">
+            Exercícios
+          </span>
+
           <div className="detalhes-atividade-exercicios-lista">
             {atividade.exercicios.map((item, indice) => (
-              <div key={indice} className="detalhes-atividade-exercicio-linha">
-                <span className={`detalhes-atividade-check ${item.concluido ? "concluido" : ""}`}>
+              <div
+                key={indice}
+                className="detalhes-atividade-exercicio-linha"
+              >
+                <span
+                  className={`detalhes-atividade-check ${
+                    item.concluido ? "concluido" : ""
+                  }`}
+                >
                   {item.concluido ? <FiCheck /> : null}
                 </span>
-                <span>{item.exercicio?.nome || "Exercício removido"}</span>
+
+                <span>
+                  {item.exercicio?.nome || "Exercício removido"}
+                </span>
               </div>
             ))}
           </div>
         </div>
 
+        {/* ARQUIVO ENVIADO */}
         {atividade.arquivoAlternativoAluno && (
           <div className="detalhes-atividade-secao">
-            <span className="detalhes-atividade-label">Arquivo enviado pelo aluno</span>
+            <span className="detalhes-atividade-label">
+              Arquivo enviado pelo aluno
+            </span>
+
             <a
               href={atividade.arquivoAlternativoAluno.arquivo}
               download={atividade.arquivoAlternativoAluno.nome}
@@ -180,23 +341,144 @@ export default function DetalhesAtividadeProfessor() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FiPaperclip style={{ marginRight: 6 }} />{atividade.arquivoAlternativoAluno.nome}
+              <FiPaperclip style={{ marginRight: 6 }} />
+              {atividade.arquivoAlternativoAluno.nome}
             </a>
           </div>
         )}
 
+        {/* VÍDEO DE COMPROVAÇÃO */}
         {atividade.videoComprovacao && (
           <div className="detalhes-atividade-secao">
             <span className="detalhes-atividade-label">
-              Vídeo de comprovação ({atividade.videoComprovacao.duracaoSegundos}s)
+              Vídeo de comprovação (
+              {atividade.videoComprovacao.duracaoSegundos}s)
             </span>
+
             <video
               src={atividade.videoComprovacao.arquivo}
               controls
-              style={{ width: "100%", borderRadius: 12 }}
+              style={{
+                width: "100%",
+                borderRadius: 12,
+              }}
             />
           </div>
         )}
+
+        {/* FEEDBACK DO PROFESSOR */}
+        <section className="detalhes-atividade-feedback">
+          <div className="detalhes-atividade-feedback-titulo">
+            <FiMessageCircle />
+            <h2>Feedback do professor</h2>
+          </div>
+
+          {atividade.status === "entregue" ? (
+            <>
+              {atividade.feedback && (
+                <div className="detalhes-atividade-feedback-registrado">
+                  <span className="detalhes-atividade-feedback-subtitulo">
+                    Feedback registrado
+                  </span>
+
+                  <div className="detalhes-atividade-feedback-reacao-atual">
+                    {atividade.feedback.reacao}
+                  </div>
+
+                  <p>
+                    {atividade.feedback.comentario ||
+                      "Nenhum comentário foi adicionado."}
+                  </p>
+
+                  <span className="detalhes-atividade-feedback-data">
+                    Enviado em{" "}
+                    {formatarDataHora(atividade.feedback.dadoEm)}
+                  </span>
+                </div>
+              )}
+
+              <div className="detalhes-atividade-feedback-form">
+                <label className="detalhes-atividade-label">
+                  Escolha uma reação
+                </label>
+
+                <div
+                  className="detalhes-atividade-reacoes"
+                  role="group"
+                  aria-label="Reações disponíveis"
+                >
+                  {REACOES.map((reacao) => (
+                    <button
+                      key={reacao}
+                      type="button"
+                      className={`detalhes-atividade-reacao-btn ${
+                        reacaoSelecionada === reacao
+                          ? "selecionada"
+                          : ""
+                      }`}
+                      onClick={() =>
+                        setReacaoSelecionada(reacao)
+                      }
+                      aria-label={`Selecionar reação ${reacao}`}
+                      aria-pressed={
+                        reacaoSelecionada === reacao
+                      }
+                    >
+                      {reacao}
+                    </button>
+                  ))}
+                </div>
+
+                <label
+                  htmlFor="comentario-feedback"
+                  className="detalhes-atividade-label"
+                >
+                  Comentário (opcional)
+                </label>
+
+                <textarea
+                  id="comentario-feedback"
+                  className="detalhes-atividade-feedback-textarea"
+                  placeholder="Escreva um comentário para o aluno..."
+                  value={comentarioFeedback}
+                  onChange={(e) =>
+                    setComentarioFeedback(e.target.value)
+                  }
+                  maxLength={140}
+                />
+
+                <div className="detalhes-atividade-feedback-contador">
+                  {comentarioFeedback.length}/140 caracteres
+                </div>
+
+                <button
+                  type="button"
+                  className="detalhes-atividade-feedback-enviar"
+                  onClick={enviarFeedback}
+                  disabled={
+                    enviandoFeedback || !reacaoSelecionada
+                  }
+                >
+                  {enviandoFeedback ? (
+                    "Enviando..."
+                  ) : (
+                    <>
+                      <FiSend />
+                      {atividade.feedback
+                        ? "Atualizar feedback"
+                        : "Enviar feedback"}
+                    </>
+                  )}
+                </button>
+              </div>
+            </>
+          ) : (
+            <p className="detalhes-atividade-feedback-aviso">
+              O feedback estará disponível após o aluno entregar
+              a atividade.
+            </p>
+          )}
+        </section>
       </main>
     </div>
   );
