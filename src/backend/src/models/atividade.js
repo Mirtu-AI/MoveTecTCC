@@ -41,12 +41,14 @@ function validarDados({ titulo, descricao, exercicios, dataEntrega, permiteArqui
 
     return erros;
 }
+
 function montarExercicios(exercicioIds) {
     return exercicioIds.map((id) => ({
         exercicioId: new ObjectId(id),
         concluido: false,
     }));
 }
+
 export async function cadastrarAtividade(db, professorId, alunoId, dados) {
     if (!ObjectId.isValid(alunoId) || !ObjectId.isValid(professorId)) {
         return { sucesso: false, erros: ['ID de aluno ou professor inválido.'] };
@@ -101,11 +103,11 @@ export async function atualizarAtividade(db, id, professorId, dados) {
                 status: 'andamento',
                 dataEntrega: new Date(dados.dataEntrega),
                 permiteArquivoAlternativo: Boolean(dados.permiteArquivoAlternativo),
-                videoComprovacao: null,        // <-- novo: limpa vídeo de uma entrega anterior
-                arquivoAlternativoAluno: null,  // <-- novo: limpa arquivo de uma entrega anterior
-                feedback: null,                 // <-- novo: limpa feedback de uma entrega anterior
+                videoComprovacao: null,        // limpa vídeo de uma entrega anterior
+                arquivoAlternativoAluno: null,  // limpa arquivo de uma entrega anterior
+                feedback: null,                 // limpa feedback de uma entrega anterior
             },
-            $unset: { entregueEm: '' },        // <-- novo: remove a data de entrega antiga
+            $unset: { entregueEm: '', validadaEm: '', devolvidaEm: '' }, // remove datas antigas
         }
     );
 
@@ -209,6 +211,10 @@ export async function alternarConclusaoExercicio(db, atividadeId, alunoId, exerc
     if (atividade.alunoId.toString() !== alunoId.toString()) {
         return { sucesso: false, erro: 'Você não tem acesso a essa atividade.' };
     }
+    // Depois de entregue ou validada, o aluno não mexe mais nos exercícios
+    if (['entregue', 'validada'].includes(atividade.status)) {
+        return { sucesso: false, erro: 'A atividade já foi entregue.' };
+    }
 
     const novosExercicios = atividade.exercicios.map((item) =>
         item.exercicioId.toString() === exercicioId
@@ -218,7 +224,7 @@ export async function alternarConclusaoExercicio(db, atividadeId, alunoId, exerc
 
     const todosConcluidos = novosExercicios.every((item) => item.concluido);
 
-    // Não marca mais 'entregue' aqui — agora depende do vídeo de comprovação
+    // Não marca 'entregue' aqui — depende do vídeo de comprovação
     await colecao.updateOne(
         { _id: new ObjectId(atividadeId) },
         { $set: { exercicios: novosExercicios } }
@@ -280,6 +286,9 @@ export async function enviarArquivoAlternativo(db, id, alunoId, arquivoBase64, n
     if (atividade.alunoId.toString() !== alunoId.toString()) {
         return { sucesso: false, erro: 'Você não tem acesso a essa atividade.' };
     }
+    if (atividade.status === 'validada') {
+        return { sucesso: false, erro: 'Esta atividade já foi validada pelo professor.' };
+    }
     if (!atividade.permiteArquivoAlternativo) {
         return { sucesso: false, erro: 'Essa atividade não aceita envio de arquivo alternativo.' };
     }
@@ -291,7 +300,9 @@ export async function enviarArquivoAlternativo(db, id, alunoId, arquivoBase64, n
                 arquivoAlternativoAluno: { arquivo: arquivoBase64, nome: nomeArquivo },
                 status: 'entregue',
                 entregueEm: new Date(),
+                feedback: null, // nova entrega: o feedback anterior não vale mais
             },
+            $unset: { devolvidaEm: '' },
         }
     );
 
@@ -311,6 +322,9 @@ export async function cancelarEnvioArquivoAlternativo(db, id, alunoId) {
     }
     if (atividade.alunoId.toString() !== alunoId.toString()) {
         return { sucesso: false, erro: 'Você não tem acesso a essa atividade.' };
+    }
+    if (atividade.status === 'validada') {
+        return { sucesso: false, erro: 'Esta atividade já foi validada pelo professor.' };
     }
     if (!atividade.arquivoAlternativoAluno) {
         return { sucesso: false, erro: 'Nenhum arquivo foi enviado ainda.' };
@@ -358,6 +372,9 @@ export async function enviarVideoComprovacao(db, atividadeId, alunoId, videoBase
     if (atividade.alunoId.toString() !== alunoId.toString()) {
         return { sucesso: false, erro: 'Você não tem acesso a essa atividade.' };
     }
+    if (atividade.status === 'validada') {
+        return { sucesso: false, erro: 'Esta atividade já foi validada pelo professor.' };
+    }
 
     const todosConcluidos = atividade.exercicios.every((item) => item.concluido);
     if (!todosConcluidos) {
@@ -371,7 +388,9 @@ export async function enviarVideoComprovacao(db, atividadeId, alunoId, videoBase
                 videoComprovacao: { arquivo: videoBase64, nome: nomeArquivo, duracaoSegundos },
                 status: 'entregue',
                 entregueEm: new Date(),
+                feedback: null, // nova entrega: o feedback anterior não vale mais
             },
+            $unset: { devolvidaEm: '' },
         }
     );
 
@@ -391,7 +410,7 @@ export async function excluirAtividade(db, id, professorId) {
 }
 
 export async function darFeedbackAtividade(db, atividadeId, professorId, { reacao, comentario }) {
-    if (!ObjectId.isValid(atividadeId)) {
+    if (!ObjectId.isValid(atividadeId) || !ObjectId.isValid(professorId)) {
         return { sucesso: false, erro: 'ID inválido.' };
     }
     if (!REACOES_VALIDAS.includes(reacao)) {
@@ -402,18 +421,23 @@ export async function darFeedbackAtividade(db, atividadeId, professorId, { reaca
     }
 
     const colecao = db.collection(NOME_COLECAO);
-    const atividade = await colecao.findOne({ _id: new ObjectId(atividadeId) });
+
+    // Só o professor dono da atividade pode dar feedback
+    const atividade = await colecao.findOne({
+        _id: new ObjectId(atividadeId),
+        professorId: new ObjectId(professorId),
+    });
     if (!atividade) {
-        return { sucesso: false, erro: 'Atividade não encontrada.' };
+        return { sucesso: false, erro: 'Atividade não encontrada ou sem permissão.' };
     }
 
-    // Novo: só permite feedback depois que o aluno entregou
-    if (atividade.status !== 'entregue') {
+    // Só permite feedback depois que o aluno entregou (ou depois de validada)
+    if (!['entregue', 'validada'].includes(atividade.status)) {
         return { sucesso: false, erro: 'Só é possível dar feedback depois que o aluno enviar a atividade.' };
     }
 
-    const resultado = await colecao.updateOne(
-        { _id: new ObjectId(atividadeId) },
+    await colecao.updateOne(
+        { _id: atividade._id },
         {
             $set: {
                 feedback: {
@@ -426,4 +450,58 @@ export async function darFeedbackAtividade(db, atividadeId, professorId, { reaca
     );
 
     return { sucesso: true };
+}
+
+export async function validarAtividade(db, atividadeId, professorId, aprovada) {
+    if (!ObjectId.isValid(atividadeId) || !ObjectId.isValid(professorId)) {
+        return { sucesso: false, erro: 'ID inválido.' };
+    }
+    if (typeof aprovada !== 'boolean') {
+        return { sucesso: false, erro: 'Informe se a atividade foi aprovada ou não.' };
+    }
+
+    const colecao = db.collection(NOME_COLECAO);
+
+    const atividade = await colecao.findOne({
+        _id: new ObjectId(atividadeId),
+        professorId: new ObjectId(professorId),
+    });
+    if (!atividade) {
+        return { sucesso: false, erro: 'Atividade não encontrada ou sem permissão.' };
+    }
+    if (atividade.status !== 'entregue') {
+        return { sucesso: false, erro: 'Só é possível validar atividades entregues.' };
+    }
+
+    if (aprovada) {
+        await colecao.updateOne(
+            { _id: atividade._id },
+            {
+                $set: { status: 'validada', validadaEm: new Date() },
+                $unset: { devolvidaEm: '' }, // apaga a marca de "devolvida"
+            }
+        );
+        return { sucesso: true, status: 'validada' };
+    }
+
+    // Recusada: o aluno precisa refazer (o feedback é mantido para ele ver o motivo)
+    const exerciciosResetados = atividade.exercicios.map((item) => ({
+        ...item,
+        concluido: false,
+    }));
+
+    await colecao.updateOne(
+        { _id: atividade._id },
+        {
+            $set: {
+                status: 'andamento',
+                exercicios: exerciciosResetados,
+                videoComprovacao: null,
+                arquivoAlternativoAluno: null,
+                devolvidaEm: new Date(), // marca que o professor devolveu
+            },
+            $unset: { entregueEm: '', validadaEm: '' },
+        }
+    );
+    return { sucesso: true, status: 'andamento' };
 }

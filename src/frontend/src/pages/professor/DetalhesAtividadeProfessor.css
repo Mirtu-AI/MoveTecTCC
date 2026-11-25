@@ -481,3 +481,54 @@
     height: 42px;
   }
 }
+
+.detalhes-atividade-selo-validada {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.detalhes-atividade-validacao {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.detalhes-atividade-validacao-botoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.detalhes-atividade-btn-validar,
+.detalhes-atividade-btn-refazer {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.detalhes-atividade-btn-validar {
+  background: #16a34a;
+  color: #fff;
+}
+
+.detalhes-atividade-btn-refazer {
+  background: #fff;
+  color: #dc2626;
+  border-color: #fca5a5;
+}
+
+.detalhes-atividade-btn-validar:disabled,
+.detalhes-atividade-btn-refazer:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -385,3 +385,21 @@
     opacity: 0;
   }
 }
+
+.detalhes-atividade-aluno-selo-validada {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.detalhes-atividade-aluno-feedback-card.devolvida {
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+  color: #9a3412;
+}

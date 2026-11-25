@@ -77,7 +77,8 @@ import {
     cancelarEnvioArquivoAlternativo,
     excluirAtividade,
     darFeedbackAtividade,
-    enviarVideoComprovacao
+    enviarVideoComprovacao,
+    validarAtividade
 } from './models/atividade.js';
 import {
     cadastrarRotina,
@@ -697,6 +698,22 @@ async function main() {
             res.status(500).send({ success: false, erro: 'Erro ao excluir sala.' });
         }
     });
+
+    app.put('/api/professor/atividades/:id/validacao', autenticarProfessor, async (req, res) => {
+    try {
+        const { aprovada } = req.body;
+        const resultado = await validarAtividade(db, req.params.id, req.professorId, aprovada);
+
+        if (!resultado.sucesso) {
+            return res.status(400).send({ success: false, erro: resultado.erro });
+        }
+
+        res.send({ success: true, status: resultado.status });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({ success: false, erro: 'Erro ao validar atividade.' });
+    }
+});
 
     // ---------- ALUNOS ----------
 

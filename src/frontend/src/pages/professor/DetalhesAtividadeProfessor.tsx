@@ -40,7 +40,7 @@ interface Atividade {
   descricao: string;
   midiaUrl: string | null;
   dataEntrega: string;
-  status: "andamento" | "entregue";
+  status: "andamento" | "entregue" | "validada";
   progresso: number;
   permiteArquivoAlternativo: boolean;
   arquivoAlternativoAluno: ArquivoAlternativo | null;
@@ -62,6 +62,8 @@ export default function DetalhesAtividadeProfessor() {
   const [reacaoSelecionada, setReacaoSelecionada] = useState("");
   const [comentarioFeedback, setComentarioFeedback] = useState("");
   const [enviandoFeedback, setEnviandoFeedback] = useState(false);
+
+  const [validando, setValidando] = useState(false);
 
   function prazoAindaValido(dataEntregaIso: string) {
     return new Date(dataEntregaIso) >= new Date();
@@ -177,6 +179,40 @@ export default function DetalhesAtividadeProfessor() {
     }
   }
 
+  async function validarAtividade(aprovada: boolean) {
+    const mensagem = aprovada
+      ? "Validar a conclusão desta atividade?"
+      : "Pedir para o aluno refazer? O progresso e a entrega serão zerados.";
+
+    if (!window.confirm(mensagem)) return;
+
+    setValidando(true);
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.put(
+        `http://localhost:3000/api/professor/atividades/${id}/validacao`,
+        { aprovada },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (aprovada) {
+        setAtividade((atual) =>
+          atual ? { ...atual, status: response.data.status } : atual
+        );
+      } else {
+        // recarrega para refletir exercícios zerados e entrega removida
+        await buscarAtividade();
+      }
+    } catch (err: any) {
+      console.error(err);
+      alert(err.response?.data?.erro || "Erro ao validar a atividade.");
+    } finally {
+      setValidando(false);
+    }
+  }
+
   function formatarData(dataIso: string) {
     const data = new Date(dataIso);
     return data.toLocaleDateString("pt-BR", {
@@ -207,6 +243,9 @@ export default function DetalhesAtividadeProfessor() {
     );
   }
 
+  const podeDarFeedback =
+    atividade.status === "entregue" || atividade.status === "validada";
+
   return (
     <div className="detalhes-atividade-page">
       <header className="detalhes-atividade-header">
@@ -219,6 +258,12 @@ export default function DetalhesAtividadeProfessor() {
         </button>
 
         <h1>{atividade.titulo}</h1>
+
+        {atividade.status === "validada" && (
+          <span className="detalhes-atividade-selo-validada">
+            <FiCheck /> Validada
+          </span>
+        )}
       </header>
 
       <main className="detalhes-atividade-conteudo">
@@ -373,7 +418,7 @@ export default function DetalhesAtividadeProfessor() {
             <h2>Feedback do professor</h2>
           </div>
 
-          {atividade.status === "entregue" ? (
+          {podeDarFeedback ? (
             <>
               {atividade.feedback && (
                 <div className="detalhes-atividade-feedback-registrado">
@@ -471,6 +516,36 @@ export default function DetalhesAtividadeProfessor() {
                   )}
                 </button>
               </div>
+
+              {/* VALIDAÇÃO DA ENTREGA */}
+              {atividade.status === "entregue" && (
+                <div className="detalhes-atividade-validacao">
+                  <span className="detalhes-atividade-label">
+                    Validação da entrega
+                  </span>
+
+                  <div className="detalhes-atividade-validacao-botoes">
+                    <button
+                      type="button"
+                      className="detalhes-atividade-btn-validar"
+                      onClick={() => validarAtividade(true)}
+                      disabled={validando}
+                    >
+                      <FiCheck style={{ marginRight: 6 }} />
+                      {validando ? "Processando..." : "Validar conclusão"}
+                    </button>
+
+                    <button
+                      type="button"
+                      className="detalhes-atividade-btn-refazer"
+                      onClick={() => validarAtividade(false)}
+                      disabled={validando}
+                    >
+                      Pedir para refazer
+                    </button>
+                  </div>
+                </div>
+              )}
             </>
           ) : (
             <p className="detalhes-atividade-feedback-aviso">

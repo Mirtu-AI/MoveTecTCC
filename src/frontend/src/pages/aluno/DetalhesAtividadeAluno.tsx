@@ -21,12 +21,13 @@ interface Atividade {
   titulo: string;
   midiaUrl: string | null;
   progresso: number;
-  status: "andamento" | "entregue";
+  status: "andamento" | "entregue" | "validada";
   dataEntrega: string;
   permiteArquivoAlternativo: boolean;
   arquivoAlternativoAluno: { nome: string } | null;
   exercicios: ExercicioItem[];
   feedback?: Feedback | null;
+  devolvidaEm?: string | null;
 }
 
 export default function DetalhesAtividadeAluno() {
@@ -161,8 +162,22 @@ export default function DetalhesAtividadeAluno() {
     return <p className="detalhes-atividade-aluno-mensagem">Atividade não encontrada.</p>;
   }
 
-  const atividadeFinalizada = atividade.status === "entregue";
+  const validada = atividade.status === "validada";
+  const entregue = atividade.status === "entregue";
+  const atividadeFinalizada = entregue || validada;
+  // devolvida: o professor pediu para refazer (voltou para "andamento")
+  const devolvida = atividade.status === "andamento" && Boolean(atividade.devolvidaEm);
   const dentroDoPrazo = new Date() <= new Date(atividade.dataEntrega);
+
+  const mostrarCardFeedback = atividadeFinalizada || devolvida;
+
+  let classeCardFeedback = "aguardando";
+  if (devolvida) classeCardFeedback = "devolvida";
+  else if (validada || atividade.feedback) classeCardFeedback = "recebido";
+
+  let tituloFeedback = "Seu professor avaliou sua atividade!";
+  if (devolvida) tituloFeedback = "O professor pediu para você refazer esta atividade.";
+  else if (validada) tituloFeedback = "Atividade validada pelo professor!";
 
   return (
     <div className="detalhes-atividade-aluno-page">
@@ -176,6 +191,12 @@ export default function DetalhesAtividadeAluno() {
         </button>
 
         <h1>{atividade.titulo}</h1>
+
+        {validada && (
+          <span className="detalhes-atividade-aluno-selo-validada">
+            <FiCheck /> Validada
+          </span>
+        )}
       </header>
 
       <main className="detalhes-atividade-aluno-conteudo">
@@ -193,18 +214,20 @@ export default function DetalhesAtividadeAluno() {
           </div>
         </div>
 
-        {atividadeFinalizada && (
-          <div className={`detalhes-atividade-aluno-feedback-card ${atividade.feedback ? "recebido" : "aguardando"}`}>
+        {mostrarCardFeedback && (
+          <div className={`detalhes-atividade-aluno-feedback-card ${classeCardFeedback}`}>
             {atividade.feedback ? (
               <>
                 <span className="detalhes-atividade-aluno-feedback-emoji">{atividade.feedback.reacao}</span>
-                <span className="detalhes-atividade-aluno-feedback-titulo">Seu professor avaliou sua atividade!</span>
+                <span className="detalhes-atividade-aluno-feedback-titulo">{tituloFeedback}</span>
                 {atividade.feedback.comentario && (
                   <p className="detalhes-atividade-aluno-feedback-comentario">
                     "{atividade.feedback.comentario}"
                   </p>
                 )}
               </>
+            ) : devolvida || validada ? (
+              <span className="detalhes-atividade-aluno-feedback-titulo">{tituloFeedback}</span>
             ) : (
               <p className="detalhes-atividade-aluno-feedback-texto-aguardando">
                 <FiClock style={{ marginRight: 6, verticalAlign: "middle" }} /> Atividade enviada! Seu professor ainda vai avaliar.
@@ -272,7 +295,8 @@ export default function DetalhesAtividadeAluno() {
             {atividadeFinalizada ? (
               <div className="detalhes-atividade-aluno-anexo-enviado">
                 <span><FiPaperclip style={{ marginRight: 6 }} /> Enviado: {atividade.arquivoAlternativoAluno?.nome}</span>
-                {dentroDoPrazo && (
+                {/* Só pode cancelar enquanto o professor ainda não validou */}
+                {entregue && dentroDoPrazo && (
                   <button
                     type="button"
                     className="detalhes-atividade-aluno-cancelar-btn"
@@ -293,7 +317,7 @@ export default function DetalhesAtividadeAluno() {
                   disabled={!arquivoSelecionado || enviandoArquivo}
                   style={{ opacity: !arquivoSelecionado || enviandoArquivo ? 0.6 : 1 }}
                 >
-                  <FiCheck style={{ marginRight: 6 }} /> {enviandoArquivo ? "Enviando..." : "Finalizar atividade"}
+                  <FiCheck style={{ marginRight: 6 }} /> {enviandoArquivo ? "Enviando..." : devolvida ? "Reenviar atividade" : "Finalizar atividade"}
                 </button>
 
                 {mostrarConfete && (
@@ -321,7 +345,7 @@ export default function DetalhesAtividadeAluno() {
             disabled
             style={{ opacity: 0.65, backgroundColor: "#22c55e" }}
           >
-            <FiCheck style={{ marginRight: 6 }} /> Atividade Finalizada
+            <FiCheck style={{ marginRight: 6 }} /> {validada ? "Atividade Validada" : "Atividade Finalizada"}
           </button>
         ) : (
           <button
@@ -330,7 +354,7 @@ export default function DetalhesAtividadeAluno() {
             onClick={comecar}
             disabled={iniciando}
           >
-            <FiPlay style={{ marginRight: 6 }} /> {iniciando ? "Iniciando..." : "Começar Atividade"}
+            <FiPlay style={{ marginRight: 6 }} /> {iniciando ? "Iniciando..." : devolvida ? "Refazer Atividade" : "Começar Atividade"}
           </button>
         )}
       </main>
