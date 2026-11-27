@@ -158,7 +158,7 @@ export default function DetalhesSala() {
   return (
     <div className="detalhes-page">
       <header className="detalhes-header">
-        <button className="voltar-btn" onClick={() => navigate("/admin/salas")}>
+        <button className="voltar-btn" onClick={() => navigate("/admin/grupos")}>
           <FiArrowLeft />
         </button>
         <h1>{sala.nome}</h1>

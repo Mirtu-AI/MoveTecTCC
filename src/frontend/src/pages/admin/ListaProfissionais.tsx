@@ -66,13 +66,13 @@ export default function ListaProfessores() {
         <div className="header-acoes desktop-only">
           <button
             className="salas-btn"
-            onClick={() => navigate("/admin/salas")}
+            onClick={() => navigate("/admin/grupos")}
           >
             Grupos
           </button>
           <button
             className="novo-professor-btn"
-            onClick={() => navigate("/admin/cadastrar-professor")}
+            onClick={() => navigate("/admin/cadastrar-profissional")}
           >
             <FiPlus style={{ marginRight: 4 }} /> Novo profissional
           </button>
@@ -91,7 +91,7 @@ export default function ListaProfessores() {
             <div
               key={professor._id}
               className="professor-card"
-              onClick={() => navigate(`/admin/professor/${professor._id}`)}
+              onClick={() => navigate(`/admin/profissional/${professor._id}`)}
             >
               <div className="professor-avatar">{getIniciais(professor.nome)}</div>
               <div className="professor-info">
@@ -107,15 +107,15 @@ export default function ListaProfessores() {
       <div className="fab-grupo-mobile mobile-only">
         <button
           className="fab-btn fab-secundario"
-          onClick={() => navigate("/admin/salas")}
-          aria-label="Ver salas"
+          onClick={() => navigate("/admin/grupo")}
+          aria-label="Ver grupos"
         >
           <FaSchool />
         </button>
         <button
           className="fab-btn"
-          onClick={() => navigate("/admin/cadastrar-professor")}
-          aria-label="Cadastrar novo professor"
+          onClick={() => navigate("/admin/cadastrar-profissional")}
+          aria-label="Cadastrar novo profissional"
         >
           <FiPlus />
         </button>

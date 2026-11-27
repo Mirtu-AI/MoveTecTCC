@@ -425,13 +425,13 @@ export default function PerfilAluno() {
 
                             <div
                                 className="perfil-aluno-secao perfil-aluno-secao-clicavel"
-                                onClick={() => navigate("/aluno/desempenho")}
+                                onClick={() => navigate("/jovem/desempenho")}
                                 role="button"
                                 tabIndex={0}
                                 onKeyDown={(e) => {
                                     if (e.key === "Enter" || e.key === " ") {
                                         e.preventDefault();
-                                        navigate("/aluno/desempenho");
+                                        navigate("/jovem/desempenho");
                                     }
                                 }}
                             >
@@ -462,14 +462,14 @@ export default function PerfilAluno() {
                                 <button
                                     type="button"
                                     className="btn btn-outline"
-                                    onClick={() => navigate("/aluno/minha-historia")}
+                                    onClick={() => navigate("/jovem/minha-historia")}
                                 >
                                     Histórico
                                 </button>
                                 <button
                                     type="button"
                                     className="btn btn-outline"
-                                    onClick={() => navigate("/aluno/metas")}
+                                    onClick={() => navigate("/jovem/metas")}
                                 >
                                     Metas
                                 </button>

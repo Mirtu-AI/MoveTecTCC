@@ -81,7 +81,7 @@ export default function ListaComunidades() {
 
         {geral && (
           <section className="comunidades-secao">
-            <span className="comunidades-secao-titulo">Sue grupo</span>
+            <span className="comunidades-secao-titulo">Seu grupo</span>
             <div className="comunidades-lista">
               <button
                 type="button"

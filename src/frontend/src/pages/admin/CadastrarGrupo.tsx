@@ -23,7 +23,7 @@ export default function CadastrarSala() {
   const [modalExcluirAberto, setModalExcluirAberto] = useState(false);
   const [excluindo, setExcluindo] = useState(false);
 
-  const voltarPara = id ? `/admin/sala/${id}/detalhes` : "/admin/salas";
+  const voltarPara = id ? `/admin/grupos/${id}/detalhes` : "/admin/grupos";
 
   useEffect(() => {
     async function carregarDados() {
@@ -86,7 +86,7 @@ export default function CadastrarSala() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      navigate("/admin/salas");
+      navigate("/admin/grupos");
     } catch (err) {
       console.error(err);
     } finally {

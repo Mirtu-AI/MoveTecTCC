@@ -63,7 +63,7 @@ export default function ListaSalas() {
           </button>
           <button
             className="novo-professor-btn"
-            onClick={() => navigate("/admin/cadastrar-sala")}
+            onClick={() => navigate("/admin/cadastrar-grupo")}
           >
             <FiPlus style={{ marginRight: 4 }} /> Novo grupo
           </button>
@@ -82,7 +82,7 @@ export default function ListaSalas() {
             <div
               key={sala._id}
               className="professor-card"
-              onClick={() => navigate(`/admin/sala/${sala._id}/detalhes`)}
+              onClick={() => navigate(`/admin/grupo/${sala._id}/detalhes`)}
             >
               <div className="professor-avatar"><FaSchool /></div>
               <div className="professor-info">
@@ -107,7 +107,7 @@ export default function ListaSalas() {
         </button>
         <button
           className="fab-btn"
-          onClick={() => navigate("/admin/cadastrar-sala")}
+          onClick={() => navigate("/admin/cadastrar-grupo")}
           aria-label="Cadastrar nova sala"
         >
           <FiPlus />

@@ -6,7 +6,7 @@ import EsqueciSenha from "./pages/EsqueciSenha/EsqueciSenha";
 import Cadastro from "./pages/admin/Cadastro";
 import ListaProfissionais from "./pages/admin/ListaProfissionais";
 import DetalhesProfissional from "./pages/admin/DetalhesProfissionais";
-import ListaSalas from "./pages/admin/ListaSalas";
+import ListaSalas from "./pages/admin/ListaGrupos";
 import CadastrarSala from "./pages/admin/CadastrarGrupo";
 import DetalhesSala from "./pages/admin/DetalhesGrupos";
 import ListaSalasProfissional from "./pages/professor/ListaGrupoProfissional";
@@ -445,7 +445,7 @@ function App() {
           }
         />
         <Route
-          path="/admin/salas"
+          path="/admin/grupos"
           element={
             <RotaProtegida tipoPermitido="adm">
               <ListaSalas />
@@ -453,7 +453,7 @@ function App() {
           }
         />
         <Route
-          path="/admin/cadastrar-sala"
+          path="/admin/cadastrar-grupo"
           element={
             <RotaProtegida tipoPermitido="adm">
               <CadastrarSala />
@@ -461,7 +461,7 @@ function App() {
           }
         />
         <Route
-          path="/admin/sala/:id"
+          path="/admin/grupo/:id"
           element={
             <RotaProtegida tipoPermitido="adm">
               <CadastrarSala />
@@ -469,7 +469,7 @@ function App() {
           }
         />
         <Route
-          path="/admin/sala/:id/detalhes"
+          path="/admin/grupo/:id/detalhes"
           element={
             <RotaProtegida tipoPermitido="adm">
               <DetalhesSala />

@@ -111,7 +111,7 @@ export default function ListaAvisos() {
                     <h3>{aviso.titulo}</h3>
                     <span className="aviso-card-data">{formatarData(aviso.data)}</span>
                     <span className="aviso-card-destinatario">
-                      {aviso.salaId ? "Sala específica" : "Geral — todos os alunos"}
+                      {aviso.salaId ? "Sala específica" : "Geral — todos os jovens"}
                     </span>
                   </div>
                   <button
