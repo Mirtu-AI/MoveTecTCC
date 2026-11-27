@@ -91,7 +91,7 @@ export default function ListaExercicios() {
           <button
             type="button"
             className="lista-exercicios-novo-btn"
-            onClick={() => navigate("/professor/exercicios/novo")}
+            onClick={() => navigate("/profissional/exercicios/novo")}
           >
             + Novo exercício
           </button>
@@ -125,7 +125,7 @@ export default function ListaExercicios() {
               <div
                 key={exercicio._id}
                 className="exercicio-card"
-                onClick={() => navigate(`/professor/exercicios/${exercicio._id}/editar`)}
+                onClick={() => navigate(`/profissional/exercicios/${exercicio._id}/editar`)}
               >
                 <div className="exercicio-card-midia">
                   {exercicio.midiaUrl ? <FiPlay /> : <FaDumbbell />}

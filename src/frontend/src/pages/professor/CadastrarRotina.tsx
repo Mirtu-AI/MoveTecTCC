@@ -168,7 +168,7 @@ export default function CadastrarRotina() {
       <header className="cadastrar-rotina-header">
         <button
           className="cadastrar-rotina-voltar"
-          onClick={() => navigate("/professor/rotinas")}
+          onClick={() => navigate("/profissional/rotinas")}
           aria-label="Voltar"
         >
           <FiArrowLeft />

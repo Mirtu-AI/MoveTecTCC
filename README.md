@@ -15,7 +15,9 @@
 
 ## 📌 Descrição
 
-Nas escolas brasileiras, e especialmente no Ensino Médio, observamos que muitos jovens têm dificuldade de começar uma rotina de atividades físicas e, principalmente, de mantê-la. A falta de tempo, a falta de motivação e a dúvida de por onde começar aparecem com frequência, e a Educação Física escolar ainda enfrenta limitações de espaço e estrutura, o que torna difícil acompanhar cada aluno de perto. Foi pensando nisso que nasceu o MoveTec. Nosso objetivo foi criar uma plataforma que não fosse apenas "mais um aplicativo de treino", mas um ambiente onde o aluno pudesse seguir rotinas simples, registrar o que fez, definir metas, acompanhar seu progresso e se motivar com conquistas e desafios (gamificação), enquanto o professor acompanha a turma durante as aulas e depois orienta cada estudante pela plataforma. Durante o desenvolvimento, aplicamos um questionário com estudantes da ETECAMP e entrevistamos um professor de Educação Física, e percebemos que muitos já tinham tentado criar uma rotina sem conseguir manter. Assim, unimos a tecnologia web com a escola para criar uma ferramenta que busca apoiar o hábito de se exercitar, sem exigir equipamentos ou estrutura especializada.
+Muitos jovens em idade pré-vestibular têm dificuldade de começar uma rotina de atividades físicas e, principalmente, de mantê-la. Entre as barreiras mais apontadas estão a falta de tempo e a falta de motivação, além do uso constante do smartphone, da timidez diante da turma e das limitações de espaço e estrutura da escola, o que dificulta acompanhar cada jovem de perto.
+Foi pensando nisso que nasceu o MoveTec. Nosso objetivo foi criar uma plataforma que não fosse apenas "mais um aplicativo de treino", mas um ambiente web em que o jovem pudesse seguir rotinas simples, com exercícios que exigem pouco ou nenhum equipamento, realizar as atividades atribuídas pelo profissional, registrar o que fez, definir metas, acompanhar seu progresso e se motivar com conquistas e desafios (gamificação). O profissional de Educação Física atribui atividades, acompanha o desempenho de cada jovem e avalia as entregas por meio de feedbacks.
+Durante o desenvolvimento, aplicamos um questionário on-line com 58 estudantes do Ensino Médio da ETECAMP e entrevistamos um professor de Educação Física. Entre os jovens que não praticam atividades físicas, a falta de tempo e a falta de motivação foram as principais dificuldades, e entre os que praticam, houve interesse por metas claras e pelo acompanhamento do progresso. Com base nesses resultados, unimos a tecnologia web e a escola para criar uma ferramenta que busca apoiar o hábito de se exercitar.
 ---
 
 ## 👥 Equipe
@@ -61,25 +63,21 @@ Nas escolas brasileiras, e especialmente no Ensino Médio, observamos que muitos
 
 ### 🏠 Tela Inicial — Landing Page (Seção Clara)
 
-![Home - Seção Clara](./design/telas/01-home-secao-clara.png)
+![Home - Seção Clara](./design/telas/Landing.png)
 
 ---
 
-### 🏋️‍♂️ Gestão de Rotinas — Painel do Professor
+### 🏋️‍♂️ Gestão de Rotinas — Painel do Profissional
 
 ![Lista de Rotinas - Professor](./design/telas/lista_rotinas.png)
 
----
 
-### 🏫 Gestão de Professores — Painel Administrativo
-
-![Detalhes da Sala - Administrador](./design/telas/gerenciamento_professor.png)
 
 ---
 
 ### 🏫 Home do Estudante
 
-![Home do Estudante - Estudante](./design/telas/Home_aluno.png)
+![Home do Estudante - Estudante](./design/telas/Home_jovem.png)
 
 ## 🚀 Como Executar o Projeto (Passo a Passo)
 
@@ -141,7 +139,7 @@ cd MoveTecTCC
 ## 📖 Como Citar o Projeto
 
 ```text
-PELINSON E SILVA, Camila; QUATROQUE, Livia Rafaelli; DOS SANTOS, Milton Alecrim. MoveTec: desenvolvimento de um sistema web para incentivo à prática de atividades físicas no ambiente escolar. Orientadoras: Barbara Porfirio; Thaynara Maia dos Santos. 2026. Artigo Científico, apresentado como Trabalho de Conclusão de Curso (Ensino Técnico em Informática para Internet) – ETECAMP: ETEC de Campo Limpo Paulista, Campo Limpo Paulista, 2026.
+PELINSON E SILVA, Camila; QUATROQUE, Livia Rafaelli; DOS SANTOS, Milton Alecrim. MoveTec: DESENVOLVIMENTO DE UM SISTEMA WEB PARA INCENTIVAR A PRÁTICA DE ATIVIDADES FÍSICAS ENTRE JOVENS ESTUDANTES EM FASE PRÉ-VESTIBULAR.. Orientadoras: Barbara Porfirio; Thaynara Maia dos Santos. 2026. Artigo Científico, apresentado como Trabalho de Conclusão de Curso (Ensino Técnico em Informática para Internet) – ETECAMP: ETEC de Campo Limpo Paulista, Campo Limpo Paulista, 2026.
 ```
 
 - **Em caso de dúvidas, entre em contato:** [miltonalecrimdossantos@gmail.com](mailto:miltonalecrimdossantos@gmail.com)

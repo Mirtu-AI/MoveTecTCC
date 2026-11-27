@@ -134,10 +134,10 @@ export default function ParabensAtividade({ tipo }: Props) {
           onClick={() =>
             navigate(
               tipo === "atividade"
-                ? `/aluno/atividades/${id}`
+                ? `/jovem/atividades/${id}`
                 : dados.rotinaId
-                ? `/aluno/rotinas/${dados.rotinaId}`
-                : "/aluno"
+                ? `/jovem/rotinas/${dados.rotinaId}`
+                : "/jovem"
             )
           }
         >

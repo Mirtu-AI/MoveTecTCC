@@ -223,7 +223,7 @@ export default function CadastrarTreino() {
         });
       }
 
-      navigate("/professor/treinos");
+      navigate("/profissional/treinos");
     } catch (err: any) {
       const mensagem =
         err.response?.data?.erros?.[0] ||
@@ -245,7 +245,7 @@ export default function CadastrarTreino() {
       <header className="cadastrar-treino-header">
         <button
           className="cadastrar-treino-voltar"
-          onClick={() => navigate("/professor/treinos")}
+          onClick={() => navigate("/profissional/treinos")}
           aria-label="Voltar"
         >
           <FiArrowLeft />
@@ -297,7 +297,7 @@ export default function CadastrarTreino() {
             <button
               type="button"
               className="cadastrar-treino-catalogo-link"
-              onClick={() => navigate("/professor/exercicios/novo")}
+              onClick={() => navigate("/profissional/exercicios/novo")}
             >
               Cadastrar novo exercício
             </button>

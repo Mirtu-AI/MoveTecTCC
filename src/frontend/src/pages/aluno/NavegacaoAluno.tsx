@@ -4,10 +4,10 @@ import Logotipo from "../../assets/logo/Logo_MoveTec.png";
 import { FiHome, FiCalendar, FiMessageSquare, FiUser } from "react-icons/fi";
 
 const ITENS = [
-  { rota: "/aluno", icone: <FiHome />, rotulo: "Início" },
-  { rota: "/aluno/plano-semanal", icone: <FiCalendar />, rotulo: "Plano" },
-  { rota: "/aluno/comunidades", icone: <FiMessageSquare />, rotulo: "Comunidades" },
-  { rota: "/aluno/perfil", icone: <FiUser />, rotulo: "Perfil" },
+  { rota: "/jovem", icone: <FiHome />, rotulo: "Início" },
+  { rota: "/jovem/plano-semanal", icone: <FiCalendar />, rotulo: "Plano" },
+  { rota: "/jovem/comunidades", icone: <FiMessageSquare />, rotulo: "Comunidades" },
+  { rota: "/jovem/perfil", icone: <FiUser />, rotulo: "Perfil" },
 ];
 
 export default function NavegacaoAluno() {

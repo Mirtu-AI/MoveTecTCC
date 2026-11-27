@@ -23,7 +23,7 @@ export default function RotaProtegida({ children, tipoPermitido }: RotaProtegida
 
   // Verifica permissão por tipo de usuário
   if (tipoPermitido && tipo !== tipoPermitido) {
-    let rotaPadrao = "/aluno";
+    let rotaPadrao = "/jovem";
     if (tipo === "adm") rotaPadrao = "/admin";
     if (tipo === "professor") rotaPadrao = "/dashboard";
 

@@ -34,7 +34,7 @@ export default function Login() {
       } else if (tipo === "professor") {
         navigate("/dashboard");
       } else if (tipo === "aluno") {
-        navigate("/aluno");
+        navigate("/jovem");
       }
     } catch (err: any) {
       setErro(err.response?.data?.erro || "E-mail ou senha inválidos.");

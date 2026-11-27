@@ -4,47 +4,47 @@ import Login from "./pages/Login/Login";
 import PrimeiroAcesso from "./pages/PrimeiroAcesso/PrimeiroAcesso";
 import EsqueciSenha from "./pages/EsqueciSenha/EsqueciSenha";
 import Cadastro from "./pages/admin/Cadastro";
-import ListaProfessores from "./pages/admin/ListaProfessores";
-import DetalhesProfessor from "./pages/admin/DetalhesProfessor";
+import ListaProfissionais from "./pages/admin/ListaProfissionais";
+import DetalhesProfissional from "./pages/admin/DetalhesProfissionais";
 import ListaSalas from "./pages/admin/ListaSalas";
-import CadastrarSala from "./pages/admin/CadastrarSalas";
-import DetalhesSala from "./pages/admin/DetalhesSala";
-import ListaSalasProfessor from "./pages/professor/ListaSalasProfessor";
-import PerfilProfessor from "./pages/professor/PerfilProfessor";
-import DetalhesSalaProfessor from "./pages/professor/DetalhesSalaProfessor";
-import DetalhesAlunoProfessor from "./pages/professor/DetalhesAlunoProfessor";
+import CadastrarSala from "./pages/admin/CadastrarGrupo";
+import DetalhesSala from "./pages/admin/DetalhesGrupos";
+import ListaSalasProfissional from "./pages/professor/ListaGrupoProfissional";
+import PerfilProfissional from "./pages/professor/PerfilProfissional";
+import DetalhesSalaProfissional from "./pages/professor/DetalhesGrupoProfissional";
+import DetalhesJovemProfissional from "./pages/professor/DetalhesJovemProfissional";
 import ListaTreinos from "./pages/professor/ListaTreinos";
 import CadastrarTreino from "./pages/professor/CadastrarTreino";
-import TelaAlunoLicitacao from "./pages/aluno/TelaAlunoLicitacao"; // import da tela do aluno
-import PerfilAluno from "./pages/aluno/PerfilAluno";
+import TelaJovemLicitacao from "./pages/aluno/TelaAlunoLicitacao"; // import da tela do jovem
+import PerfilJovem from "./pages/aluno/PerfilJovem";
 import NaoEncontrado from "./pages/NaoEncontrado/NaoEncontrado";
 import ListaExercicios from "./pages/professor/ListaExercicios";
 import CadastrarExercicio from "./pages/professor/CadastrarExercicio";
 import AdicionarAtividade from "./pages/professor/AdicionarAtividade";
 import DetalhesExercicio from "./pages/professor/DetalhesExercicio";
-import DetalhesAtividadeProfessor from "./pages/professor/DetalhesAtividadeProfessor";
-import DetalhesAtividadeAluno from "./pages/aluno/DetalhesAtividadeAluno";
-import DetalhesExercicioAluno from "./pages/aluno/DetalhesExercicioAluno";
+import DetalhesAtividadeProfissional from "./pages/professor/DetalhesAtividadeProfissional";
+import DetalhesAtividadeJovem from "./pages/aluno/DetalhesAtividadeJovem";
+import DetalhesExercicioJovem from "./pages/aluno/DetalhesExercicioJovem";
 import ExecutarExercicios from "./pages/aluno/ExecutarExercicios";
 import ParabensExercicios from "./pages/aluno/ParabensExercicios";
 import TelaFoguinho from "./pages/aluno/TelaFoguinho";
-import DetalhesRotinaAluno from "./pages/aluno/DetalhesRotinaAluno";
+import DetalhesRotinaJovem from "./pages/aluno/DetalhesRotinaJovem";
 import CadastrarRotina from "./pages/professor/CadastrarRotina";
 import ListaRotinas from "./pages/professor/ListaRotinas";
 import CadastrarAviso from "./pages/professor/cadastrarAviso";
 import ListaAvisos from "./pages/professor/ListaAvisos";
-import DesempenhoAluno from "./pages/aluno/DesempenhoAluno";
-import HistoriaAluno from "./pages/aluno/HistoricoAluno";
-import DetalhesTreinoEspecificaAluno from "./pages/aluno/DetalhesTreinoEspecifico";
-import DetalhesTreinoRotinaAluno from "./pages/aluno/DetalhesTreinoRotinaAluno";
-import MetasAluno from "./pages/aluno/MetasAluno";
+import DesempenhoJovem from "./pages/aluno/Desempenho";
+import HistoriaJovem from "./pages/aluno/Historico";
+import DetalhesTreinoEspecificaJovem from "./pages/aluno/DetalhesTreinoEspecifico";
+import DetalhesTreinoRotinaJovem from "./pages/aluno/DetalhesTreinoRotinaJovem";
+import MetasJovem from "./pages/aluno/MetasJovem";
 import AnexarVideoAtividade from "./pages/aluno/AnexarVideoAtividade";
 import ListaComunidades from "./pages/aluno/ListaComunidades";
 import CriarComunidade from "./pages/aluno/CriarComunidades";
 import DetalhesComunidade from "./pages/aluno/DetalhesComunidade";
-import ListaComunidadesProfessor from "./pages/professor/ListaComunidadesProfessor";
-import CriarComunidadeProfessor from "./pages/professor/CriarComunidadeProfessor";
-import PlanoSemanalAluno from "./pages/aluno/PlanoSemanalAluno";
+import ListaComunidadesProfissional from "./pages/professor/ListaComunidadesProfissional";
+import CriarComunidadeProfissional from "./pages/professor/CriarComunidadeProfissional";
+import PlanoSemanalJovem from "./pages/aluno/PlanoSemanalJovem";
 
 import RotaProtegida from "./pages/components/RotaProtegida";
 import RotaPublica from "./pages/components/RotaPublica";
@@ -87,196 +87,199 @@ function App() {
           }
         />
 
-        {/* Rotas Protegidas - Aluno */}
+        {/* Rotas Protegidas - Jovem */}
         <Route
-          path="/aluno"
+          path="/jovem"
           element={
             <RotaProtegida tipoPermitido="aluno">
-              <TelaAlunoLicitacao />
+              <TelaJovemLicitacao />
             </RotaProtegida>
           }
         />
         <Route
-          path="/aluno/plano-semanal"
+          path="/jovem/plano-semanal"
           element={
             <RotaProtegida tipoPermitido="aluno">
-              <PlanoSemanalAluno />
+              <PlanoSemanalJovem />
             </RotaProtegida>
           }
         />
         <Route
-          path="/aluno/perfil"
+          path="/jovem/perfil"
           element={
             <RotaProtegida tipoPermitido="aluno">
-              <PerfilAluno />
+              <PerfilJovem />
             </RotaProtegida>
           }
         />
         <Route
-          path="/aluno/atividades/:id"
+          path="/jovem/atividades/:id"
           element={
             <RotaProtegida tipoPermitido="aluno">
-              <DetalhesAtividadeAluno />
+              <DetalhesAtividadeJovem />
             </RotaProtegida>
           }
         />
         <Route
-          path="/aluno/exercicios/:id"
+          path="/jovem/exercicios/:id"
           element={
             <RotaProtegida tipoPermitido="aluno">
-              <DetalhesExercicioAluno />
+              <DetalhesExercicioJovem />
             </RotaProtegida>
           }
         />
         <Route
-          path="/aluno/atividades/:id/executar"
+          path="/jovem/atividades/:id/executar"
           element={
             <RotaProtegida tipoPermitido="aluno">
               <ExecutarExercicios tipo="atividade" />
-            </RotaProtegida>}
+            </RotaProtegida>
+          }
         />
         <Route
-          path="/aluno/atividades/:id/parabens"
+          path="/jovem/atividades/:id/parabens"
           element={
             <RotaProtegida tipoPermitido="aluno">
               <ParabensExercicios tipo="atividade" />
-            </RotaProtegida>}
+            </RotaProtegida>
+          }
         />
         <Route
-          path="/aluno/execucoes-treino/:id/executar"
+          path="/jovem/execucoes-treino/:id/executar"
           element={
             <RotaProtegida tipoPermitido="aluno">
               <ExecutarExercicios tipo="treino" />
-            </RotaProtegida>}
+            </RotaProtegida>
+          }
         />
         <Route
-          path="/aluno/execucoes-treino/:id/parabens"
+          path="/jovem/execucoes-treino/:id/parabens"
           element={
             <RotaProtegida tipoPermitido="aluno">
               <ParabensExercicios tipo="treino" />
-            </RotaProtegida>}
+            </RotaProtegida>
+          }
         />
         <Route
-          path="/aluno/foguinho"
+          path="/jovem/foguinho"
           element={
             <RotaProtegida tipoPermitido="aluno">
               <TelaFoguinho />
             </RotaProtegida>
           }
         />
-        <Route path="/aluno/rotinas/:id"
-          element={
-            <RotaProtegida tipoPermitido="aluno">
-              <DetalhesRotinaAluno />
-            </RotaProtegida>}
-        />
         <Route
-          path="/aluno/rotinas/:rotinaId/treinos/:treinoId"
+          path="/jovem/rotinas/:id"
           element={
             <RotaProtegida tipoPermitido="aluno">
-              <DetalhesTreinoRotinaAluno />
+              <DetalhesRotinaJovem />
             </RotaProtegida>
           }
         />
         <Route
-          path="/aluno/desempenho"
+          path="/jovem/rotinas/:rotinaId/treinos/:treinoId"
           element={
             <RotaProtegida tipoPermitido="aluno">
-              <DesempenhoAluno />
+              <DetalhesTreinoRotinaJovem />
             </RotaProtegida>
           }
         />
         <Route
-          path="/aluno/minha-historia"
+          path="/jovem/desempenho"
           element={
             <RotaProtegida tipoPermitido="aluno">
-              <HistoriaAluno />
+              <DesempenhoJovem />
             </RotaProtegida>
           }
         />
         <Route
-          path="/aluno/treinos-especificos/:id"
+          path="/jovem/minha-historia"
           element={
             <RotaProtegida tipoPermitido="aluno">
-              <DetalhesTreinoEspecificaAluno />
+              <HistoriaJovem />
             </RotaProtegida>
           }
         />
-
         <Route
-          path="/aluno/metas"
+          path="/jovem/treinos-especificos/:id"
           element={
             <RotaProtegida tipoPermitido="aluno">
-              <MetasAluno />
+              <DetalhesTreinoEspecificaJovem />
             </RotaProtegida>
           }
         />
-
         <Route
-          path="/aluno/atividades/:id/anexar-video"
+          path="/jovem/metas"
+          element={
+            <RotaProtegida tipoPermitido="aluno">
+              <MetasJovem />
+            </RotaProtegida>
+          }
+        />
+        <Route
+          path="/jovem/atividades/:id/anexar-video"
           element={
             <RotaProtegida tipoPermitido="aluno">
               <AnexarVideoAtividade />
             </RotaProtegida>
           }
         />
-
         <Route
-          path="/aluno/comunidades"
+          path="/jovem/comunidades"
           element={<RotaProtegida tipoPermitido="aluno"><ListaComunidades /></RotaProtegida>}
         />
         <Route
-          path="/aluno/comunidades/nova"
+          path="/jovem/comunidades/nova"
           element={<RotaProtegida tipoPermitido="aluno"><CriarComunidade /></RotaProtegida>}
         />
-
         <Route
-          path="/aluno/comunidades/:id"
+          path="/jovem/comunidades/:id"
           element={<RotaProtegida tipoPermitido="aluno"><DetalhesComunidade /></RotaProtegida>}
         />
-        {/* Rotas Protegidas - Professor */}
-        < Route
+
+        {/* Rotas Protegidas - Profissional */}
+        <Route
           path="/dashboard"
           element={
             <RotaProtegida tipoPermitido="professor">
-              <ListaSalasProfessor />
+              <ListaSalasProfissional />
             </RotaProtegida>
           }
         />
         <Route
-          path="/professor/perfil"
+          path="/profissional/perfil"
           element={
             <RotaProtegida tipoPermitido="professor">
-              <PerfilProfessor />
+              <PerfilProfissional />
             </RotaProtegida>
           }
         />
         <Route
-          path="/professor/sala/:id"
+          path="/profissional/sala/:id"
           element={
             <RotaProtegida tipoPermitido="professor">
-              <DetalhesSalaProfessor />
+              <DetalhesSalaProfissional />
             </RotaProtegida>
           }
         />
         <Route
-          path="/professor/aluno/:id"
+          path="/profissional/jovem/:id"
           element={
             <RotaProtegida tipoPermitido="professor">
-              <DetalhesAlunoProfessor />
+              <DetalhesJovemProfissional />
             </RotaProtegida>
           }
         />
         <Route
-          path="/professor/atividades/:id"
+          path="/profissional/atividades/:id"
           element={
             <RotaProtegida tipoPermitido="professor">
-              <DetalhesAtividadeProfessor />
+              <DetalhesAtividadeProfissional />
             </RotaProtegida>
           }
         />
         <Route
-          path="/professor/treinos"
+          path="/profissional/treinos"
           element={
             <RotaProtegida tipoPermitido="professor">
               <ListaTreinos />
@@ -284,7 +287,7 @@ function App() {
           }
         />
         <Route
-          path="/professor/treinos/novo"
+          path="/profissional/treinos/novo"
           element={
             <RotaProtegida tipoPermitido="professor">
               <CadastrarTreino />
@@ -292,7 +295,7 @@ function App() {
           }
         />
         <Route
-          path="/professor/aluno/:alunoId/atividades/nova"
+          path="/profissional/jovem/:alunoId/atividades/nova"
           element={
             <RotaProtegida tipoPermitido="professor">
               <AdicionarAtividade />
@@ -300,14 +303,15 @@ function App() {
           }
         />
         <Route
-          path="/professor/atividades/:id/editar"
+          path="/profissional/atividades/:id/editar"
           element={
             <RotaProtegida tipoPermitido="professor">
               <AdicionarAtividade />
             </RotaProtegida>
-          } />
+          }
+        />
         <Route
-          path="/professor/exercicios/:id"
+          path="/profissional/exercicios/:id"
           element={
             <RotaProtegida tipoPermitido="professor">
               <DetalhesExercicio />
@@ -315,42 +319,31 @@ function App() {
           }
         />
         <Route
-          path="/professor/rotinas"
+          path="/profissional/rotinas"
           element={
             <RotaProtegida tipoPermitido="professor">
               <ListaRotinas />
             </RotaProtegida>
           }
         />
-
         <Route
-          path="/professor/rotinas/nova"
+          path="/profissional/rotinas/nova"
           element={
             <RotaProtegida tipoPermitido="professor">
               <CadastrarRotina />
             </RotaProtegida>
           }
         />
-
         <Route
-          path="/professor/rotinas/:id/editar"
+          path="/profissional/rotinas/:id/editar"
           element={
             <RotaProtegida tipoPermitido="professor">
               <CadastrarRotina />
             </RotaProtegida>
           }
         />
-
         <Route
-          path="/aluno/rotinas/:id"
-          element={
-            <RotaProtegida tipoPermitido="aluno">
-              <DetalhesRotinaAluno />
-            </RotaProtegida>
-          }
-        />
-        <Route
-          path="/professor/avisos"
+          path="/profissional/avisos"
           element={
             <RotaProtegida tipoPermitido="professor">
               <ListaAvisos />
@@ -358,7 +351,7 @@ function App() {
           }
         />
         <Route
-          path="/professor/avisos/novo"
+          path="/profissional/avisos/novo"
           element={
             <RotaProtegida tipoPermitido="professor">
               <CadastrarAviso />
@@ -366,46 +359,77 @@ function App() {
           }
         />
         <Route
-          path="/professor/avisos/:id/editar"
+          path="/profissional/avisos/:id/editar"
           element={
             <RotaProtegida tipoPermitido="professor">
               <CadastrarAviso />
             </RotaProtegida>
           }
         />
-
         <Route
-          path="/professor/comunidades"
-          element={<RotaProtegida tipoPermitido="professor"><ListaComunidadesProfessor /></RotaProtegida>}
+          path="/profissional/comunidades"
+          element={<RotaProtegida tipoPermitido="professor"><ListaComunidadesProfissional /></RotaProtegida>}
         />
         <Route
-          path="/professor/comunidade"
-          element={<RotaProtegida tipoPermitido="professor"><ListaComunidadesProfessor /></RotaProtegida>}
+          path="/profissional/comunidade"
+          element={<RotaProtegida tipoPermitido="professor"><ListaComunidadesProfissional /></RotaProtegida>}
         />
         <Route
-          path="/professor/comunidades/nova"
-          element={<RotaProtegida tipoPermitido="professor"><CriarComunidadeProfessor /></RotaProtegida>}
+          path="/profissional/comunidades/nova"
+          element={<RotaProtegida tipoPermitido="professor"><CriarComunidadeProfissional /></RotaProtegida>}
         />
         <Route
-          path="/professor/comunidades/:id"
+          path="/profissional/comunidades/:id"
           element={<RotaProtegida tipoPermitido="professor"><DetalhesComunidade /></RotaProtegida>}
         />
-
         <Route
-          path="/professor/comunidades/:id/editar"
-          element={<RotaProtegida tipoPermitido="professor"><CriarComunidadeProfessor /></RotaProtegida>}
+          path="/profissional/comunidades/:id/editar"
+          element={<RotaProtegida tipoPermitido="professor"><CriarComunidadeProfissional /></RotaProtegida>}
         />
+        <Route
+          path="/profissional/treinos/:id/editar"
+          element={
+            <RotaProtegida tipoPermitido="professor">
+              <CadastrarTreino />
+            </RotaProtegida>
+          }
+        />
+        <Route
+          path="/profissional/exercicios"
+          element={
+            <RotaProtegida tipoPermitido="professor">
+              <ListaExercicios />
+            </RotaProtegida>
+          }
+        />
+        <Route
+          path="/profissional/exercicios/novo"
+          element={
+            <RotaProtegida tipoPermitido="professor">
+              <CadastrarExercicio />
+            </RotaProtegida>
+          }
+        />
+        <Route
+          path="/profissional/exercicios/:id/editar"
+          element={
+            <RotaProtegida tipoPermitido="professor">
+              <CadastrarExercicio />
+            </RotaProtegida>
+          }
+        />
+
         {/* Rotas Protegidas - Admin */}
         <Route
           path="/admin"
           element={
             <RotaProtegida tipoPermitido="adm">
-              <ListaProfessores />
+              <ListaProfissionais />
             </RotaProtegida>
           }
         />
         <Route
-          path="/admin/cadastrar-professor"
+          path="/admin/cadastrar-profissional"
           element={
             <RotaProtegida tipoPermitido="adm">
               <Cadastro />
@@ -413,10 +437,10 @@ function App() {
           }
         />
         <Route
-          path="/admin/professor/:id"
+          path="/admin/profissional/:id"
           element={
             <RotaProtegida tipoPermitido="adm">
-              <DetalhesProfessor />
+              <DetalhesProfissional />
             </RotaProtegida>
           }
         />
@@ -449,38 +473,6 @@ function App() {
           element={
             <RotaProtegida tipoPermitido="adm">
               <DetalhesSala />
-            </RotaProtegida>
-          }
-        />
-        <Route
-          path="/professor/treinos/:id/editar"
-          element={
-            <RotaProtegida tipoPermitido="professor">
-              <CadastrarTreino />
-            </RotaProtegida>
-          }
-        />
-        <Route
-          path="/professor/exercicios"
-          element={
-            <RotaProtegida tipoPermitido="professor">
-              <ListaExercicios />
-            </RotaProtegida>
-          }
-        />
-        <Route
-          path="/professor/exercicios/novo"
-          element={
-            <RotaProtegida tipoPermitido="professor">
-              <CadastrarExercicio />
-            </RotaProtegida>
-          }
-        />
-        <Route
-          path="/professor/exercicios/:id/editar"
-          element={
-            <RotaProtegida tipoPermitido="professor">
-              <CadastrarExercicio />
             </RotaProtegida>
           }
         />

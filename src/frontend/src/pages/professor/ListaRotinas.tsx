@@ -84,7 +84,7 @@ export default function ListaRotinas() {
           <button
             type="button"
             className="lista-rotinas-nova-btn"
-            onClick={() => navigate("/professor/rotinas/nova")}
+            onClick={() => navigate("/profissional/rotinas/nova")}
           >
             + Nova rotina
           </button>
@@ -116,7 +116,7 @@ export default function ListaRotinas() {
               <div
                 key={rotina._id}
                 className="rotina-card"
-                onClick={() => navigate(`/professor/rotinas/${rotina._id}/editar`)}
+                onClick={() => navigate(`/profissional/rotinas/${rotina._id}/editar`)}
               >
                 <div className="rotina-card-topo">
                   <h3>{rotina.titulo}</h3>

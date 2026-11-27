@@ -9,9 +9,9 @@ CREATE DATABASE IF NOT EXISTS movetec_db
 USE movetec_db;
 
 -- --------------------------------------------------------
--- 1. TABELA: PROFESSOR (Administradores / Docentes)
+-- 1. TABELA: PROFISSIONAL (Administradores / Docentes)
 -- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS professor (
+CREATE TABLE IF NOT EXISTS profissional (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL,
@@ -27,15 +27,15 @@ CREATE TABLE IF NOT EXISTS sala (
     nome VARCHAR(45) NOT NULL,
     data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
     administrador_id INT NULL,
-    CONSTRAINT fk_sala_professor
-        FOREIGN KEY (administrador_id) REFERENCES professor(id)
+    CONSTRAINT fk_sala_profissional
+        FOREIGN KEY (administrador_id) REFERENCES profissional(id)
         ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
--- 3. TABELA: ALUNOS
+-- 3. TABELA: JOVENS
 -- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS alunos (
+CREATE TABLE IF NOT EXISTS jovens (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS alunos (
     foguinho TINYINT DEFAULT 0,
     pontos INT DEFAULT 0,
     sala_id INT NULL,
-    CONSTRAINT fk_alunos_sala
+    CONSTRAINT fk_jovens_sala
         FOREIGN KEY (sala_id) REFERENCES sala(id)
         ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB;
@@ -74,14 +74,14 @@ CREATE TABLE IF NOT EXISTS avisos_sala (
 ) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
--- 6. TABELA: AVISO_PROFESSOR (Relacionamento Aviso <-> Professor)
+-- 6. TABELA: AVISO_PROFISSIONAL (Relacionamento Aviso <-> Profissional)
 -- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS aviso_professor (
+CREATE TABLE IF NOT EXISTS aviso_profissional (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    professor_id INT NOT NULL,
+    profissional_id INT NOT NULL,
     avisos_id INT NOT NULL,
-    CONSTRAINT fk_aviso_prof_professor
-        FOREIGN KEY (professor_id) REFERENCES professor(id)
+    CONSTRAINT fk_aviso_prof_profissional
+        FOREIGN KEY (profissional_id) REFERENCES profissional(id)
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_aviso_prof_avisos
         FOREIGN KEY (avisos_id) REFERENCES avisos(id)
@@ -98,9 +98,9 @@ CREATE TABLE IF NOT EXISTS metas (
     unidade VARCHAR(255) NOT NULL,
     periodo VARCHAR(255) NOT NULL,
     criadoEm DATETIME DEFAULT CURRENT_TIMESTAMP,
-    alunos_id INT NOT NULL,
-    CONSTRAINT fk_metas_alunos
-        FOREIGN KEY (alunos_id) REFERENCES alunos(id)
+    jovens_id INT NOT NULL,
+    CONSTRAINT fk_metas_jovens
+        FOREIGN KEY (jovens_id) REFERENCES jovens(id)
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
@@ -115,16 +115,16 @@ CREATE TABLE IF NOT EXISTS conquista (
 ) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
--- 9. TABELA: ALUNO_CONQUISTA
+-- 9. TABELA: JOVEM_CONQUISTA
 -- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS aluno_conquista (
+CREATE TABLE IF NOT EXISTS jovem_conquista (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    alunos_id INT NOT NULL,
+    jovens_id INT NOT NULL,
     conquista_id INT NOT NULL,
-    CONSTRAINT fk_aluno_conquista_aluno
-        FOREIGN KEY (alunos_id) REFERENCES alunos(id)
+    CONSTRAINT fk_jovem_conquista_jovem
+        FOREIGN KEY (jovens_id) REFERENCES jovens(id)
         ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_aluno_conquista_conquista
+    CONSTRAINT fk_jovem_conquista_conquista
         FOREIGN KEY (conquista_id) REFERENCES conquista(id)
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
@@ -140,16 +140,16 @@ CREATE TABLE IF NOT EXISTS treino (
 ) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
--- 11. TABELA: ALUNO_TREINO (Treinos atribuídos ao aluno)
+-- 11. TABELA: JOVEM_TREINO (Treinos atribuídos ao jovem)
 -- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS aluno_treino (
+CREATE TABLE IF NOT EXISTS jovem_treino (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    alunos_id INT NOT NULL,
+    jovens_id INT NOT NULL,
     treino_id INT NOT NULL,
-    CONSTRAINT fk_aluno_treino_aluno
-        FOREIGN KEY (alunos_id) REFERENCES alunos(id)
+    CONSTRAINT fk_jovem_treino_jovem
+        FOREIGN KEY (jovens_id) REFERENCES jovens(id)
         ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_aluno_treino_treino
+    CONSTRAINT fk_jovem_treino_treino
         FOREIGN KEY (treino_id) REFERENCES treino(id)
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
@@ -161,13 +161,13 @@ CREATE TABLE IF NOT EXISTS treino_realizados (
     id INT AUTO_INCREMENT PRIMARY KEY,
     realizado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
     treino_id INT NOT NULL,
-    alunos_id INT NOT NULL,
+    jovens_id INT NOT NULL,
     dia_da_semana VARCHAR(45) NULL,
     CONSTRAINT fk_treino_realizados_treino
         FOREIGN KEY (treino_id) REFERENCES treino(id)
         ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_treino_realizados_aluno
-        FOREIGN KEY (alunos_id) REFERENCES alunos(id)
+    CONSTRAINT fk_treino_realizados_jovem
+        FOREIGN KEY (jovens_id) REFERENCES jovens(id)
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
@@ -237,16 +237,16 @@ CREATE TABLE IF NOT EXISTS comunidade (
 ) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
--- 18. TABELA: COMUNIDADE_ALUNO
+-- 18. TABELA: COMUNIDADE_JOVEM
 -- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS comunidade_aluno (
+CREATE TABLE IF NOT EXISTS comunidade_jovem (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    alunos_id INT NOT NULL,
+    jovens_id INT NOT NULL,
     comunidade_id INT NOT NULL,
-    CONSTRAINT fk_comunidade_aluno_aluno
-        FOREIGN KEY (alunos_id) REFERENCES alunos(id)
+    CONSTRAINT fk_comunidade_jovem_jovem
+        FOREIGN KEY (jovens_id) REFERENCES jovens(id)
         ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_comunidade_aluno_comunidade
+    CONSTRAINT fk_comunidade_jovem_comunidade
         FOREIGN KEY (comunidade_id) REFERENCES comunidade(id)
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
@@ -258,8 +258,8 @@ CREATE TABLE IF NOT EXISTS comunidade_administrador (
     id INT AUTO_INCREMENT PRIMARY KEY,
     administrador_id INT NOT NULL,
     comunidade_id INT NOT NULL,
-    CONSTRAINT fk_comunidade_admin_professor
-        FOREIGN KEY (administrador_id) REFERENCES professor(id)
+    CONSTRAINT fk_comunidade_admin_profissional
+        FOREIGN KEY (administrador_id) REFERENCES profissional(id)
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_comunidade_admin_comunidade
         FOREIGN KEY (comunidade_id) REFERENCES comunidade(id)
@@ -273,14 +273,14 @@ CREATE TABLE IF NOT EXISTS mensagem (
     id INT AUTO_INCREMENT PRIMARY KEY,
     texto VARCHAR(255) NOT NULL,
     enviada_em DATETIME DEFAULT CURRENT_TIMESTAMP,
-    alunos_id INT NULL,
+    jovens_id INT NULL,
     administrador_id INT NULL,
     comunidade_id INT NOT NULL,
-    CONSTRAINT fk_mensagem_aluno
-        FOREIGN KEY (alunos_id) REFERENCES alunos(id)
+    CONSTRAINT fk_mensagem_jovem
+        FOREIGN KEY (jovens_id) REFERENCES jovens(id)
         ON DELETE SET NULL ON UPDATE CASCADE,
-    CONSTRAINT fk_mensagem_professor
-        FOREIGN KEY (administrador_id) REFERENCES professor(id)
+    CONSTRAINT fk_mensagem_profissional
+        FOREIGN KEY (administrador_id) REFERENCES profissional(id)
         ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT fk_mensagem_comunidade
         FOREIGN KEY (comunidade_id) REFERENCES comunidade(id)
@@ -306,13 +306,13 @@ CREATE TABLE IF NOT EXISTS atividade (
     data_entrega DATETIME NULL,
     criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
     justificativa_url TINYBLOB NULL,
-    alunos_id INT NULL,
-    professor_id INT NOT NULL,
-    CONSTRAINT fk_atividade_aluno
-        FOREIGN KEY (alunos_id) REFERENCES alunos(id)
+    jovens_id INT NULL,
+    profissional_id INT NOT NULL,
+    CONSTRAINT fk_atividade_jovem
+        FOREIGN KEY (jovens_id) REFERENCES jovens(id)
         ON DELETE SET NULL ON UPDATE CASCADE,
-    CONSTRAINT fk_atividade_professor
-        FOREIGN KEY (professor_id) REFERENCES professor(id)
+    CONSTRAINT fk_atividade_profissional
+        FOREIGN KEY (profissional_id) REFERENCES profissional(id)
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
@@ -339,7 +339,7 @@ CREATE TABLE IF NOT EXISTS atividade_realizadas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     realizado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
     id_atividade INT NOT NULL,
-    alunos_id INT NOT NULL,
+    jovens_id INT NOT NULL,
     campo_consentimento TINYINT(1) DEFAULT 1,
     video_comprobatorio BLOB NULL,
     status VARCHAR(45) DEFAULT 'Pendente',
@@ -347,16 +347,16 @@ CREATE TABLE IF NOT EXISTS atividade_realizadas (
     CONSTRAINT fk_ativ_realizadas_atividade
         FOREIGN KEY (id_atividade) REFERENCES atividade(id)
         ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_ativ_realizadas_aluno
-        FOREIGN KEY (alunos_id) REFERENCES alunos(id)
+    CONSTRAINT fk_ativ_realizadas_jovem
+        FOREIGN KEY (jovens_id) REFERENCES jovens(id)
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 -- ========================================================
 -- POVOAMENTO DE DADOS (INSERTS)
 -- ========================================================
--- 1. Professores
-INSERT INTO professor (id, email, senha, adm_geral) VALUES
+-- 1. Profissionais
+INSERT INTO profissional (id, email, senha, adm_geral) VALUES
 (1, 'barbara.porfirio@etec.sp.gov.br', 'senha_hash_123', 1),
 (2, 'thaynara.maia@etec.sp.gov.br', 'senha_hash_456', 1),
 (3, 'roberto.edfisica@etec.sp.gov.br', 'senha_hash_789', 0);
@@ -365,12 +365,12 @@ INSERT INTO sala (id, nome, data_criacao, administrador_id) VALUES
 (1, '3º A Informática', NOW(), 1),
 (2, '2º B Administração', NOW(), 2),
 (3, '1º A Ensino Médio', NOW(), 3);
--- 3. Alunos
-INSERT INTO alunos (id, email, senha, foguinho, pontos, sala_id) VALUES
-(1, 'camila.silva@etec.sp.gov.br', 'aluno123', 5, 250, 1),
-(2, 'livia.quatroque@etec.sp.gov.br', 'aluno123', 8, 380, 1),
-(3, 'milton.santos@etec.sp.gov.br', 'aluno123', 12, 520, 1),
-(4, 'pedro.henrique@etec.sp.gov.br', 'aluno123', 2, 90, 2);
+-- 3. Jovens
+INSERT INTO jovens (id, email, senha, foguinho, pontos, sala_id) VALUES
+(1, 'camila.silva@etec.sp.gov.br', 'jovem123', 5, 250, 1),
+(2, 'livia.quatroque@etec.sp.gov.br', 'jovem123', 8, 380, 1),
+(3, 'milton.santos@etec.sp.gov.br', 'jovem123', 12, 520, 1),
+(4, 'pedro.henrique@etec.sp.gov.br', 'jovem123', 2, 90, 2);
 -- 4. Avisos
 INSERT INTO avisos (id, titulo, descricao, data) VALUES
 (1, 'Início do Desafio Semanal', 'Todos devem registrar ao menos 1 treino até sexta-feira.', CURDATE()),
@@ -380,12 +380,12 @@ INSERT INTO avisos_sala (id, sala_id, avisos_id) VALUES
 (1, 1, 1),
 (2, 2, 1),
 (3, 1, 2);
--- 6. Aviso do Professor
-INSERT INTO aviso_professor (id, professor_id, avisos_id) VALUES
+-- 6. Aviso do Profissional
+INSERT INTO aviso_profissional (id, profissional_id, avisos_id) VALUES
 (1, 1, 1),
 (2, 3, 2);
--- 7. Metas dos Alunos
-INSERT INTO metas (idmetas, titulo, valorAlvo, unidade, periodo, criadoEm, alunos_id) VALUES
+-- 7. Metas dos Jovens
+INSERT INTO metas (idmetas, titulo, valorAlvo, unidade, periodo, criadoEm, jovens_id) VALUES
 (1, 'Tempo Semanal em Movimento', 150, 'minutos', 'Semanal', NOW(), 1),
 (2, 'Meta de Frequência', 4, 'treinos', 'Semanal', NOW(), 2),
 (3, 'Meta de Foco & Queima', 200, 'minutos', 'Semanal', NOW(), 3);
@@ -394,8 +394,8 @@ INSERT INTO conquista (id, nome, pontos) VALUES
 (1, 'Primeiro Passo (Primeiro Treino)', 50),
 (2, 'Constância de Fogo (7 dias seguidos)', 100),
 (3, 'Guerreiro Escolar (10 treinos no mês)', 200);
--- 9. Conquistas dos Alunos
-INSERT INTO aluno_conquista (id, alunos_id, conquista_id) VALUES
+-- 9. Conquistas dos Jovens
+INSERT INTO jovem_conquista (id, jovens_id, conquista_id) VALUES
 (1, 1, 1),
 (2, 2, 1),
 (3, 2, 2),
@@ -407,8 +407,8 @@ INSERT INTO treino (id, nome, descricao) VALUES
 (1, 'Circuito Funcional Escolar', 'Treino rápido com peso corporal para fazer em qualquer lugar.'),
 (2, 'Cardio HIIT 15 Minutos', 'Exercícios intensos para melhorar o condicionamento e foco.'),
 (3, 'Alongamento & Mobilidade', 'Ideal para relaxar a coluna após horas sentado nas aulas.');
--- 11. Treinos Atribuídos ao Aluno
-INSERT INTO aluno_treino (id, alunos_id, treino_id) VALUES
+-- 11. Treinos Atribuídos ao Jovem
+INSERT INTO jovem_treino (id, jovens_id, treino_id) VALUES
 (1, 1, 1),
 (2, 2, 1),
 (3, 2, 2),
@@ -416,7 +416,7 @@ INSERT INTO aluno_treino (id, alunos_id, treino_id) VALUES
 (5, 3, 2),
 (6, 3, 3);
 -- 12. Histórico de Treinos Realizados
-INSERT INTO treino_realizados (id, realizado_em, treino_id, alunos_id, dia_da_semana) VALUES
+INSERT INTO treino_realizados (id, realizado_em, treino_id, jovens_id, dia_da_semana) VALUES
 (1, '2026-11-20 10:30:00', 1, 3, 'Sexta-feira'),
 (2, '2026-11-22 15:45:00', 2, 3, 'Domingo'),
 (3, '2026-11-23 09:15:00', 1, 2, 'Segunda-feira'),
@@ -446,9 +446,9 @@ INSERT INTO treino_exercicio (id, serie, repeticoes, treino_id, exercicio_id) VA
 -- 17. Comunidades
 INSERT INTO comunidade (id, nome, descricao, criada_em) VALUES
 (1, 'Galera do 3º A Info', 'Comunidade da turma para trocar treinos e manter a sequência.', NOW()),
-(2, 'Desafio MoveTec Geral', 'Comunidade geral de todos os alunos da ETEC de Campo Limpo Paulista.', NOW());
--- 18. Alunos na Comunidade
-INSERT INTO comunidade_aluno (id, alunos_id, comunidade_id) VALUES
+(2, 'Desafio MoveTec Geral', 'Comunidade geral de todos os jovens da ETEC de Campo Limpo Paulista.', NOW());
+-- 18. Jovens na Comunidade
+INSERT INTO comunidade_jovem (id, jovens_id, comunidade_id) VALUES
 (1, 1, 1),
 (2, 2, 1),
 (3, 3, 1),
@@ -459,7 +459,7 @@ INSERT INTO comunidade_administrador (id, administrador_id, comunidade_id) VALUE
 (1, 1, 1),
 (2, 3, 2);
 -- 20. Mensagens
-INSERT INTO mensagem (id, texto, enviada_em, alunos_id, administrador_id, comunidade_id) VALUES
+INSERT INTO mensagem (id, texto, enviada_em, jovens_id, administrador_id, comunidade_id) VALUES
 (1, 'Bora treinar hoje galera? Já bati a meta de 30 min!', NOW() - INTERVAL 2 HOUR, 3, NULL, 1),
 (2, 'Vou fazer o circuito daqui a pouco!', NOW() - INTERVAL 1 HOUR, 2, NULL, 1),
 (3, 'Parabéns pela dedicação da turma nos treinos dessa semana!', NOW() - INTERVAL 30 MINUTE, NULL, 1, 1);
@@ -467,8 +467,8 @@ INSERT INTO mensagem (id, texto, enviada_em, alunos_id, administrador_id, comuni
 INSERT INTO desafio (id, nome, descricao) VALUES
 (1, 'Semana Sem Sedentarismo', 'Faça ao menos 15 min de atividade por 5 dias'),
 (2, 'Desafio dos 100 Polichinelos', 'Conclua 100 repetições acumuladas na semana');
--- 22. Atividades (Propostas pelos professores)
-INSERT INTO atividade (id, adaptacao, data_entrega, criado_em, alunos_id, professor_id) VALUES
+-- 22. Atividades (Propostas pelos profissionais)
+INSERT INTO atividade (id, adaptacao, data_entrega, criado_em, jovens_id, profissional_id) VALUES
 (1, 'Gravar 30 segundos executando o agachamento correto.', NOW() + INTERVAL 5 DAY, NOW(), 1, 3),
 (2, 'Executar a sequência de mobilidade e registrar foto/vídeo.', NOW() + INTERVAL 7 DAY, NOW(), 2, 3),
 (3, 'Avaliação prática de resistência: Prancha isométrica.', NOW() + INTERVAL 3 DAY, NOW(), 3, 1);
@@ -480,6 +480,6 @@ INSERT INTO atividade_treino (id, concluido, treino_id, atividade_id) VALUES
 (3, 1, 2, 3);
 
 -- 24. Atividades Realizadas (Entregas e Validação)
-INSERT INTO atividade_realizadas (id, realizado_em, id_atividade, alunos_id, campo_consentimento, status, feedback) VALUES
+INSERT INTO atividade_realizadas (id, realizado_em, id_atividade, jovens_id, campo_consentimento, status, feedback) VALUES
 (1, NOW() - INTERVAL 1 DAY, 1, 1, 1, 'Aprovado', 'Excelente postura e amplitude no agachamento!'),
-(2, NOW() - INTERVAL 2 HOUR, 3, 3, 1, 'Pendente', 'Aguardando validação do professor.');
+(2, NOW() - INTERVAL 2 HOUR, 3, 3, 1, 'Pendente', 'Aguardando validação do profissional.');

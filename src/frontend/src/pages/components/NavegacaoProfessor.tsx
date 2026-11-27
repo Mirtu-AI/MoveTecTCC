@@ -12,13 +12,13 @@ import {
 } from "react-icons/fa";
 
 const menuItens = [
-  { rota: "/dashboard", icone: <FaChalkboardTeacher />, rotulo: "Salas" },
-  { rota: "/professor/avisos", icone: <FaBullhorn />, rotulo: "Avisos" },
-  { rota: "/professor/comunidades", icone: <FaComments />, rotulo: "Comunidades" },
-  { rota: "/professor/rotinas", icone: <FaRunning />, rotulo: "Rotinas" },
-  { rota: "/professor/treinos", icone: <FaDumbbell />, rotulo: "Treinos" },
-  { rota: "/professor/exercicios", icone: <FaClipboardList />, rotulo: "Exercicios" },
-  { rota: "/professor/perfil", icone: <FaUser />, rotulo: "Perfil" },
+  { rota: "/dashboard", icone: <FaChalkboardTeacher />, rotulo: "Grupos" },
+  { rota: "/profissional/avisos", icone: <FaBullhorn />, rotulo: "Avisos" },
+  { rota: "/profissional/comunidades", icone: <FaComments />, rotulo: "Comunidades" },
+  { rota: "/profissional/rotinas", icone: <FaRunning />, rotulo: "Rotinas" },
+  { rota: "/profissional/treinos", icone: <FaDumbbell />, rotulo: "Treinos" },
+  { rota: "/profissional/exercicios", icone: <FaClipboardList />, rotulo: "Exercicios" },
+  { rota: "/profissional/perfil", icone: <FaUser />, rotulo: "Perfil" },
 ];
 
 export default function NavegacaoProfessor() {

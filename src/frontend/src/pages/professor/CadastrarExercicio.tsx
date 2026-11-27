@@ -68,7 +68,7 @@ export default function CadastrarExercicio() {
         });
       }
 
-      navigate("/professor/exercicios");
+      navigate("/profissional/exercicios");
     } catch (err: any) {
       const mensagem = err.response?.data?.erros?.[0] || "Não foi possível salvar o exercício.";
       setErro(mensagem);
@@ -86,7 +86,7 @@ export default function CadastrarExercicio() {
       <header className="cadastrar-exercicio-header">
         <button
           className="cadastrar-exercicio-voltar"
-          onClick={() => navigate("/professor/exercicios")}
+          onClick={() => navigate("/profissional/exercicios")}
           aria-label="Voltar"
         >
           <FiArrowLeft />

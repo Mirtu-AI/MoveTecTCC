@@ -167,7 +167,7 @@ export default function AdicionarAtividade() {
           corpo,
           cabecalho
         );
-        navigate(`/professor/aluno/${idDestino}`);
+        navigate(`/profissional/aluno/${idDestino}`);
       }
     } catch (err: any) {
       const mensagem = err.response?.data?.erros?.[0] || "Não foi possível salvar a atividade.";
@@ -290,7 +290,7 @@ export default function AdicionarAtividade() {
                             className="adicionar-atividade-exercicio-info-btn"
                             onClick={(e) => {
                               e.stopPropagation();
-                              navigate(`/professor/exercicios/${ex._id}`);
+                              navigate(`/profissional/exercicios/${ex._id}`);
                             }}
                             aria-label={`Ver detalhes de ${ex.nome}`}
                           >

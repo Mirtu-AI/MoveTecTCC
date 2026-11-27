@@ -81,12 +81,12 @@ export default function ListaComunidades() {
 
         {geral && (
           <section className="comunidades-secao">
-            <span className="comunidades-secao-titulo">Sua sala</span>
+            <span className="comunidades-secao-titulo">Sue grupo</span>
             <div className="comunidades-lista">
               <button
                 type="button"
                 className="comunidade-card"
-                onClick={() => navigate(`/aluno/comunidades/${geral._id}`)}
+                onClick={() => navigate(`/jovem/comunidades/${geral._id}`)}
               >
                 <span className="comunidade-card-icone"><FaSchool /></span>
                 <div className="comunidade-card-info">
@@ -109,7 +109,7 @@ export default function ListaComunidades() {
                 type="button"
                 key={c._id}
                 className="comunidade-card"
-                onClick={() => navigate(`/aluno/comunidades/${c._id}`)}
+                onClick={() => navigate(`/jovem/comunidades/${c._id}`)}
               >
                 <span className="comunidade-card-icone"><FaComments /></span>
                 <div className="comunidade-card-info">

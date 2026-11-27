@@ -66,13 +66,13 @@ export default function Cadastro() {
             <img src={Logo} alt="Logotipo MoveTec" className="login-logo-img" />
 
             <p className="login-brand-tagline">
-              Siga os passos para registrar um novo professor.
+              Siga os passos para registrar um novo profissional.
             </p>
 
             <div className="login-features-list">
               <div className="login-feature-item">
                 <span className="feature-emoji">1️⃣</span>
-                <span>Informe o nome completo do professor</span>
+                <span>Informe o nome completo do profissional</span>
               </div>
               <div className="login-feature-item">
                 <span className="feature-emoji">2️⃣</span>
@@ -88,9 +88,9 @@ export default function Cadastro() {
 
         {/* LADO DO FORMULÁRIO */}
         <div className="login-form-side">
-          <h1>Cadastrar <span className="destaque-tinta">professor</span></h1>
+          <h1>Cadastrar <span className="destaque-tinta">profissional</span></h1>
           <p className="login-subtitle">
-            Preencha os dados abaixo para registrar um novo docente no sistema.
+            Preencha os dados abaixo para registrar um novo usuário no sistema.
           </p>
 
           <form onSubmit={handleSubmit} className="login-form">
@@ -157,7 +157,7 @@ export default function Cadastro() {
             {erro && <p className="login-error">{erro}</p>}
 
             <button type="submit" className="login-btn" disabled={carregando}>
-              {carregando ? "Criando..." : "Cadastrar professor"}
+              {carregando ? "Criando..." : "Cadastrar profissional"}
             </button>
           </form>
         </div>

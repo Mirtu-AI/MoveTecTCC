@@ -1,0 +1,207 @@
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import "./DetalhesTreinoRotinaJovem.css";
+import { FiArrowLeft, FiClock, FiChevronRight, FiPlay } from "react-icons/fi";
+import { FaDumbbell } from "react-icons/fa";
+
+interface ItemExercicio {
+  exercicioId: string;
+  series: string;
+  repeticoes: string;
+  exercicio: { nome: string; tempoEstimado: number | null } | null;
+}
+
+interface Treino {
+  titulo: string;
+  descricao: string;
+  midiaUrl: string | null;
+  exercicios: ItemExercicio[];
+}
+
+export default function DetalhesTreinoRotinaAluno() {
+  const { rotinaId, treinoId } = useParams();
+  const navigate = useNavigate();
+
+  const [treino, setTreino] = useState<Treino | null>(null);
+  const [carregando, setCarregando] = useState(true);
+  const [concluindo] = useState(false);
+  const [mostrarConfete] = useState(false);
+
+  useEffect(() => {
+    buscarTreino();
+  }, [treinoId]);
+
+  async function buscarTreino() {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`http://localhost:3000/api/aluno/treinos/${treinoId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setTreino(response.data.treino || null);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setCarregando(false);
+    }
+  }
+
+  function formatarTempo(segundos: number | null) {
+    if (!segundos) return "--";
+    const min = Math.floor(segundos / 60);
+    const seg = segundos % 60;
+    return min > 0 ? `${min}min ${seg > 0 ? seg + "s" : ""}` : `${seg}s`;
+  }
+
+  async function comecar() {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `http://localhost:3000/api/aluno/treinos/${treinoId}/iniciar-execucao`,
+        { rotinaId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      navigate(`/aluno/execucoes-treino/${response.data.execucaoId}/executar`);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  if (carregando) {
+    return (
+      <div className="detalhes-treino-rotina-carregando">
+        <div className="detalhes-treino-rotina-spinner" />
+        <p>Carregando detalhes do treino...</p>
+      </div>
+    );
+  }
+
+  if (!treino) {
+    return (
+      <div className="detalhes-treino-rotina-page">
+        <div className="detalhes-treino-rotina-vazio-card">
+          <p>Treino não encontrado ou indisponível.</p>
+          <button className="detalhes-treino-rotina-voltar-btn" onClick={() => navigate(-1)}>
+            Voltar
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="detalhes-treino-rotina-page">
+      <header className="detalhes-treino-rotina-header">
+        <button
+          className="detalhes-treino-rotina-voltar"
+          onClick={() => navigate(`/jovem/rotinas/${rotinaId}`)}
+          aria-label="Voltar"
+        >
+          <FiArrowLeft />
+        </button>
+        <h1>{treino.titulo}</h1>
+      </header>
+
+      <main className="detalhes-treino-rotina-conteudo">
+        {/* Banner de Mídia */}
+        <div className="detalhes-treino-rotina-midia">
+          {treino.midiaUrl ? (
+            <img src={treino.midiaUrl} alt={treino.titulo} />
+          ) : (
+            <div className="detalhes-treino-rotina-placeholder">
+              <span className="detalhes-treino-rotina-icone-placeholder"><FaDumbbell /></span>
+            </div>
+          )}
+        </div>
+
+        {/* Descrição */}
+        {treino.descricao && (
+          <div className="detalhes-treino-rotina-descricao-box">
+            <span className="detalhes-treino-rotina-descricao-label">Orientação:</span>
+            <p>{treino.descricao}</p>
+          </div>
+        )}
+
+        {/* Lista de Exercícios */}
+        <div className="detalhes-treino-rotina-secao-header">
+          <span className="detalhes-treino-rotina-secao-titulo">Exercícios do Treino</span>
+          <span className="detalhes-treino-rotina-badge-count">
+            {treino.exercicios.length} {treino.exercicios.length === 1 ? "exercício" : "exercícios"}
+          </span>
+        </div>
+
+        <div className="detalhes-treino-rotina-exercicios-lista">
+          {treino.exercicios.map((item, index) => (
+            <button
+              type="button"
+              key={item.exercicioId || index}
+              className="detalhes-treino-rotina-exercicio-item"
+              onClick={() => navigate(`/jovem/exercicios/${item.exercicioId}`)}
+            >
+              <div className="detalhes-treino-rotina-exercicio-badge">
+                {index + 1}
+              </div>
+              
+              <div className="detalhes-treino-rotina-exercicio-info">
+                <span className="detalhes-treino-rotina-exercicio-nome">
+                  {item.exercicio?.nome || "Exercício não especificado"}
+                </span>
+                <span className="detalhes-treino-rotina-exercicio-detalhes">
+                  {(() => {
+                    const partes = [];
+                    if (item.series && item.repeticoes) partes.push(`${item.series}x ${item.repeticoes}`);
+                    else if (item.series) partes.push(`${item.series} séries`);
+                    else if (item.repeticoes) partes.push(`${item.repeticoes} reps`);
+
+                    if ((item as any).distancia) partes.push(`Distância: ${(item as any).distancia}`);
+                    if ((item as any).tempo) partes.push(`Tempo: ${(item as any).tempo}`);
+                    if ((item as any).descanso) partes.push(`Descanso: ${(item as any).descanso}`);
+                    if ((item as any).carga) partes.push(`Carga: ${(item as any).carga}`);
+                    if ((item as any).notas) partes.push(`Obs: ${(item as any).notas}`);
+                    return partes.length > 0 ? partes.join(" • ") : "Sem orientações específicas";
+                  })()}
+                </span>
+              </div>
+
+              <div className="detalhes-treino-rotina-exercicio-meta">
+                <span className="detalhes-treino-rotina-exercicio-tempo">
+                  <FiClock style={{ marginRight: 4 }} />
+                  {formatarTempo(item.exercicio?.tempoEstimado ?? null)}
+                </span>
+                <span className="detalhes-treino-rotina-seta"><FiChevronRight /></span>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* Ação de Início */}
+        <div className="detalhes-treino-rotina-comecar-wrap">
+          <button
+            type="button"
+            className="detalhes-treino-rotina-comecar-btn"
+            onClick={comecar}
+            disabled={concluindo}
+          >
+            {concluindo ? "Iniciando..." : <><FiPlay style={{ marginRight: 6 }} /> Começar Treino</>}
+          </button>
+
+          {mostrarConfete && (
+            <div className="detalhes-treino-rotina-confete-container">
+              {Array.from({ length: 16 }).map((_, i) => (
+                <span
+                  key={i}
+                  className="detalhes-treino-rotina-confete-peca"
+                  style={{
+                    left: `${i * 6.5}%`,
+                    backgroundColor: i % 2 === 0 ? "#ff552e" : "#10b981",
+                    animationDelay: `${i * 0.04}s`,
+                  }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </main>
+    </div>
+  );
+}

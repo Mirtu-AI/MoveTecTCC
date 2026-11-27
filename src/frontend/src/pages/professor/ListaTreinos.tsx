@@ -101,14 +101,14 @@ export default function ListaTreinos() {
             <button
               type="button"
               className="lista-treinos-exercicios-btn"
-              onClick={() => navigate("/professor/exercicios")}
+              onClick={() => navigate("/profissional/exercicios")}
             >
               Exercícios
             </button>
             <button
               type="button"
               className="lista-treinos-novo-btn"
-              onClick={() => navigate("/professor/treinos/novo")}
+              onClick={() => navigate("/profissional/treinos/novo")}
             >
               + Novo treino
             </button>
@@ -141,7 +141,7 @@ export default function ListaTreinos() {
               <div
                 key={treino._id}
                 className="treino-card"
-                onClick={() => navigate(`/professor/treinos/${treino._id}/editar`)}
+                onClick={() => navigate(`/profissional/treinos/${treino._id}/editar`)}
               >
                 <div className="treino-card-topo">
                   <h3>{treino.titulo}</h3>

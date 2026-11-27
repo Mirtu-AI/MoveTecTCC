@@ -92,7 +92,7 @@ export default function DetalhesExercicio() {
           <button
             type="button"
             className="detalhes-exercicio-editar-btn"
-            onClick={() => navigate(`/professor/exercicios/${id}/editar`)}
+            onClick={() => navigate(`/profissional/exercicios/${id}/editar`)}
           >
             Editar exercício
           </button>

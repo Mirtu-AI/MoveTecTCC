@@ -274,9 +274,9 @@ export default function TelaAlunoLicitacao() {
   function abrirItemDoPlano(item: ItemPlanoDia | null | undefined) {
     if (!item) return;
     if (item.tipo === "rotina") {
-      navigate(`/aluno/rotinas/${item.id}`);
+      navigate(`/jovem/rotinas/${item.id}`);
     } else {
-      navigate(`/aluno/treinos-especificos/${item.id}`);
+      navigate(`/jovem/treinos-especificos/${item.id}`);
     }
   }
 
@@ -298,7 +298,7 @@ export default function TelaAlunoLicitacao() {
                 <button
                   type="button"
                   className="aluno-home-avatar-btn"
-                  onClick={() => navigate("/aluno/perfil")}
+                  onClick={() => navigate("/jovem/perfil")}
                   aria-label="Meu perfil"
                 >
                   {perfil?.foto ? <img src={perfil.foto} alt="Foto de perfil" /> : <span><FaUser /></span>}
@@ -308,7 +308,7 @@ export default function TelaAlunoLicitacao() {
                 <button
                   type="button"
                   className={`aluno-home-streak ${streakAnimando ? "animando" : ""}`}
-                  onClick={() => navigate("/aluno/foguinho")}
+                  onClick={() => navigate("/jovem/foguinho")}
                   aria-label="Ver detalhes da sequência"
                 >
                   <span className="aluno-home-streak-icone"><FaFire /></span>
@@ -358,20 +358,20 @@ export default function TelaAlunoLicitacao() {
 
           {atividades.length > 0 && (
             <section className="aluno-home-secao">
-              <span className="aluno-home-secao-titulo">Atividade proposta pelo professor</span>
+              <span className="aluno-home-secao-titulo">Atividade proposta pelo profissional</span>
 
               <div className="aluno-home-atividades-carrossel">
                 {atividadesVisiveis.map((atividade) => (
                   <div
                     key={atividade._id}
                     className="aluno-home-atividade-card"
-                    onClick={() => navigate(`/aluno/atividades/${atividade._id}`)}
+                    onClick={() => navigate(`/jovem/atividades/${atividade._id}`)}
                     role="button"
                     tabIndex={0}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
                         e.preventDefault();
-                        navigate(`/aluno/atividades/${atividade._id}`);
+                        navigate(`/jovem/atividades/${atividade._id}`);
                       }
                     }}
                   >
@@ -459,7 +459,7 @@ export default function TelaAlunoLicitacao() {
               <button
                 type="button"
                 className="aluno-plano-hoje-btn-gerenciar"
-                onClick={() => navigate("/aluno/plano-semanal")}
+                onClick={() => navigate("/jovem/plano-semanal")}
               >
                 {temAlgumDiaPlanejado ? "Ver semana" : "Montar plano →"}
               </button>
@@ -479,7 +479,7 @@ export default function TelaAlunoLicitacao() {
                   type="button"
                   key={rotina._id}
                   className="aluno-home-treino-card"
-                  onClick={() => navigate(`/aluno/rotinas/${rotina._id}`)}
+                  onClick={() => navigate(`/jovem/rotinas/${rotina._id}`)}
                 >
                   <span className="aluno-home-treino-icone"><FaRunning /></span>
                   <span className="aluno-home-treino-nome">{rotina.titulo}</span>
@@ -501,7 +501,7 @@ export default function TelaAlunoLicitacao() {
                   type="button"
                   key={treino._id}
                   className="aluno-home-treino-card"
-                  onClick={() => navigate(`/aluno/treinos-especificos/${treino._id}`)}
+                  onClick={() => navigate(`/jovem/treinos-especificos/${treino._id}`)}
                 >
                   <span className="aluno-home-treino-icone"><FaDumbbell /></span>
                   <span className="aluno-home-treino-nome">{treino.titulo}</span>
@@ -579,7 +579,7 @@ export default function TelaAlunoLicitacao() {
           {metaAtiva && (
             <div
               className="aluno-widget-card"
-              onClick={() => navigate("/aluno/metas")}
+              onClick={() => navigate("/jovem/metas")}
               role="button"
               tabIndex={0}
             >
@@ -600,13 +600,13 @@ export default function TelaAlunoLicitacao() {
           {ultimaComFeedback && (
             <div
               className="aluno-widget-card destaque-feedback"
-              onClick={() => navigate(`/aluno/atividades/${ultimaComFeedback._id}`)}
+              onClick={() => navigate(`/jovem/atividades/${ultimaComFeedback._id}`)}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
-                  navigate(`/aluno/atividades/${ultimaComFeedback._id}`);
+                  navigate(`/jovem/atividades/${ultimaComFeedback._id}`);
                 }
               }}
             >

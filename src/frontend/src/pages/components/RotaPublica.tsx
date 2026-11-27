@@ -11,7 +11,7 @@ export default function RotaPublica({ children }: RotaPublicaProps) {
 
   if (token) {
     // Se o usuário já estiver logado, redireciona para a home correspondente
-    let destino = "/aluno";
+    let destino = "/jovem";
     if (tipo === "adm") destino = "/admin";
     if (tipo === "professor") destino = "/dashboard";
 

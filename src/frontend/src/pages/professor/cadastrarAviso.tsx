@@ -100,7 +100,7 @@ export default function CadastrarAviso() {
   return (
     <div className="cadastrar-aviso-page">
       <header className="cadastrar-aviso-header">
-        <button className="cadastrar-aviso-voltar" onClick={() => navigate("/professor/avisos")} aria-label="Voltar">
+        <button className="cadastrar-aviso-voltar" onClick={() => navigate("/profissional/avisos")} aria-label="Voltar">
           <FiArrowLeft />
         </button>
         <h1>{modoEdicao ? "Editar aviso" : "Novo aviso"}</h1>
@@ -131,10 +131,10 @@ export default function CadastrarAviso() {
 
           <label htmlFor="sala">Destinatário</label>
           <select id="sala" value={salaId} onChange={(e) => setSalaId(e.target.value)}>
-            <option value="">Geral — todos os meus alunos</option>
+            <option value="">Geral</option>
             {salas.map((sala) => (
               <option key={sala._id} value={sala._id}>
-                Apenas a sala: {sala.nome}
+                Apenas o grupo: {sala.nome}
               </option>
             ))}
           </select>

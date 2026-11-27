@@ -80,7 +80,7 @@ export default function ListaAvisos() {
       <div className="lista-avisos-main">
         <header className="lista-avisos-header">
           <h1>Central de Avisos</h1>
-          <button type="button" className="lista-avisos-novo-btn" onClick={() => navigate("/professor/avisos/novo")}>
+          <button type="button" className="lista-avisos-novo-btn" onClick={() => navigate("/profissional/avisos/novo")}>
             + Novo aviso
           </button>
         </header>
@@ -96,13 +96,13 @@ export default function ListaAvisos() {
               <div
                 key={aviso._id}
                 className="aviso-card"
-                onClick={() => navigate(`/professor/avisos/${aviso._id}/editar`)}
+                onClick={() => navigate(`/profissional/avisos/${aviso._id}/editar`)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
-                    navigate(`/professor/avisos/${aviso._id}/editar`);
+                    navigate(`/profissional/avisos/${aviso._id}/editar`);
                   }
                 }}
               >

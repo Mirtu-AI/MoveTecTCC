@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./ListaProfessores.css";
+import "./ListaProfissionais.css";
 import ModalConfirmacao from "../components/ModalConfirmacao";
 import { FiLogOut, FiPlus } from "react-icons/fi";
 import { FaSchool, FaUser } from "react-icons/fa";
@@ -52,20 +52,20 @@ export default function ListaSalas() {
         >
           <FiLogOut />
         </button>
-        <h1>Salas</h1>
+        <h1>Grupos</h1>
 
         <div className="header-acoes desktop-only">
           <button
             className="salas-btn"
             onClick={() => navigate("/admin")}
           >
-            Professores
+            Profissionais
           </button>
           <button
             className="novo-professor-btn"
             onClick={() => navigate("/admin/cadastrar-sala")}
           >
-            <FiPlus style={{ marginRight: 4 }} /> Nova sala
+            <FiPlus style={{ marginRight: 4 }} /> Novo grupo
           </button>
         </div>
       </header>
@@ -74,7 +74,7 @@ export default function ListaSalas() {
         {carregando && <p className="lista-mensagem">Carregando...</p>}
 
         {!carregando && salas.length === 0 && (
-          <p className="lista-mensagem">Nenhuma sala cadastrada ainda.</p>
+          <p className="lista-mensagem">Nenhum grupo cadastrada ainda.</p>
         )}
 
         <div className="professores-grid">
@@ -88,7 +88,7 @@ export default function ListaSalas() {
               <div className="professor-info">
                 <span className="professor-nome">{sala.nome}</span>
                 <span className="professor-email">
-                  {sala.professorId ? "Professor vinculado" : "Sem professor vinculado"}
+                  {sala.professorId ? "Profissional vinculado" : "Sem profissional vinculado"}
                 </span>
               </div>
             </div>
@@ -96,12 +96,12 @@ export default function ListaSalas() {
         </div>
       </main>
 
-      {/* botões flutuantes no mobile: um pra professores, outro pra cadastrar sala */}
+      {/* botões flutuantes no mobile: um pra profissionais, outro pra cadastrar grupo */}
       <div className="fab-grupo-mobile mobile-only">
         <button
           className="fab-btn fab-secundario"
           onClick={() => navigate("/admin")}
-          aria-label="Ver professores"
+          aria-label="Ver profissionais"
         >
           <FaUser />
         </button>
