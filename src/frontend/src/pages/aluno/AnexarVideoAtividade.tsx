@@ -74,7 +74,7 @@ export default function AnexarVideoAtividade() {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      navigate(`/aluno/atividades/${id}/parabens`);
+      navigate(`/jovem/atividades/${id}/parabens`);
     } catch (err: any) {
       setErro(err.response?.data?.erro || "Não foi possível enviar o vídeo.");
     } finally {

@@ -243,9 +243,9 @@ export default function ExecutarExercicios({ tipo }: Props) {
       const ultimo = indiceAtual === dados.exercicios.length - 1;
       if (ultimo) {
         if (tipo === "atividade") {
-          navigate(`/aluno/atividades/${id}/anexar-video`);
+          navigate(`/jovem/atividades/${id}/anexar-video`);
         } else {
-          navigate(`/aluno/execucoes-treino/${id}/parabens`);
+          navigate(`/jovem/execucoes-treino/${id}/parabens`);
         }
       } else {
         setIndiceAtual((a) => a + 1);

@@ -54,7 +54,7 @@ export default function DetalhesTreinoEspecificaAluno() {
         { rotinaId: null },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      navigate(`/aluno/execucoes-treino/${response.data.execucaoId}/executar`);
+      navigate(`/jovem/execucoes-treino/${response.data.execucaoId}/executar`);
     } catch (err) {
       console.error(err);
       setIniciando(false);

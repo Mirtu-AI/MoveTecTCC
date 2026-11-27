@@ -90,7 +90,7 @@ export default function DetalhesRotinaAluno() {
                     type="button"
                     key={item.treinoId}
                     className={`detalhes-rotina-item ${vezes > 0 ? "com-repeticoes" : ""}`}
-                    onClick={() => navigate(`/aluno/rotinas/${id}/treinos/${item.treinoId}`)}
+                    onClick={() => navigate(`/jovem/rotinas/${id}/treinos/${item.treinoId}`)}
                   >
                     <span className="detalhes-rotina-item-icone"><FaDumbbell /></span>
                     <span className="detalhes-rotina-item-nome">

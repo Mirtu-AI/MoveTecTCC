@@ -150,7 +150,7 @@ export default function ListaComunidadesProfessor() {
   }
 
   function abrirComunidade(comunidadeId: string) {
-    navigate(`/professor/comunidades/${comunidadeId}`);
+    navigate(`/profissional/comunidades/${comunidadeId}`);
   }
 
   function renderCard(
